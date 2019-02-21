@@ -1,0 +1,46 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage{hyperref}
+\title{keccak preimage}
+\usepackage{graphicx}
+\usepackage{tikz}
+\usepackage{tikz,graphicx}
+\usepackage[absolute,overlay]{textpos} 
+\usetikzlibrary{decorations.pathmorphing,matrix,decorations.pathreplacing,arrows,decorations.markings}
+\usetikzlibrary{fit,calc,shapes,arrows,positioning,shadings,backgrounds,patterns,tikzmark,matrix,spy}
+\usetikzlibrary{decorations.markings}
+
+\usepackage[T1]{fontenc}
+\begin{document}
+
+\maketitle
+
+\section{Introduction}
+
+The observations based on the following paper : \textbf{Linear Structures: Applications to Cryptanalysis of Round-Reduced Keccak}.
+
+\subsection{2R Keccak-512}
+
+See Fig. 8, for each guess :
+we set 
+\[
+    A[0, 1] = A[0, 0] \oplus \alpha_{0}
+\]
+\[
+    A[2, 1] = A[2, 0] \oplus \alpha_{2}
+\]
+with $\alpha_0$ and $\alpha_2$ as random constants
+
+Since $A[0,0]$ and $A[2,0]$ have 128 bits. So we have a complexity gain over bruteforce of $2^{128}$. Hence the time complexity $= 2^{512 - 128} = 2^{384}$.
+
+Input degree of freedom : 
+\begin{enumerate}
+    \item 64 bits from $A[0, 0]$ , 64 bits from $A[2,0]$.
+    \item (320 -1) bits from white lanes
+    \item 128 bits from $\alpha_0, \alpha_2$
+\end{enumerate}
+
+This sums upto 575 bits larger than required 512 bits.
+
+
+\end{document}
