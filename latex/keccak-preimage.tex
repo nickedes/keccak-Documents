@@ -42,5 +42,20 @@ Input degree of freedom :
 
 This sums upto 575 bits larger than required 512 bits.
 
+\subsection{2R Keccak-384}
+
+\begin{enumerate}
+    \item Attack similar to Keccak-512
+    \item Can obtain a linear structure of 256 bits variables from 
+    \[
+        (A[0, 0], A[0, 1], A[2, 0], A[2, 1])
+    \]
+    
+    \item with : $A[0, 2] = A[0, 0] \oplus A[0, 1] \oplus \alpha_0$
+    \item and $A[2, 2] = A[2, 0] \oplus A[2, 1] \oplus \alpha_2$
+    \item Hence a linear system of 256-bit equations
+    \item Msg satisfying padding rule, need a solution with the last bit of A[2,2] being 1
+    \item Time Complexity of Attack $ = 2^{384 - 256 + 1} = 2^{129}$
+\end{enumerate}
 
 \end{document}
