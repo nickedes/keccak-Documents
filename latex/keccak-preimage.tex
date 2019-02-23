@@ -65,6 +65,16 @@ This sums upto 575 bits larger than required 512 bits.
 \subsection{Mail : 5 Feb}
 
 Mail contents are : 
+\begin{quote}
+    I mainly refer to : https://eprint.iacr.org/2016/878
+    
+    We try to loosen restrictions imposed by linear structures to increase freedom degrees.
+    
+    An example is 2-round Keccak-384. I refer to Fig. 9. In addition to the colored 6 lanes that are variable, we also keep lanes 3,0 and 3,1 variable, still so that sum of columns is kept constant. Then $\chi$ produces one quadratic lane. We substitute quadratic monomials by 64 linear variables.
+    
+    We can invert the first row of image (green), and we require that the map to the 6-th green lane is linear (i.e. quadratic part happens to vanish). The probability for this event is about $.75^{64} = 2^{27}$
+
+    Then we have $ 4*64 + 64 + 64 = 384$ variables and the same number of conditions. Solving this linear system has about 1 solution, that we may check by substituting it into 2-round Keccak. Genuine number of freedom degrees is 320, and artficial ones 384. It is likely to find a correct solution in $2^{64} * 2^{27}= 2^{91}$ trials. This case was found in discussion with Meicheng Liu and Jian Guo.
 
 
 \end{document}
