@@ -75,6 +75,18 @@ Mail contents are :
     We can invert the first row of image (green), and we require that the map to the 6-th green lane is linear (i.e. quadratic part happens to vanish). The probability for this event is about $.75^{64} = 2^{27}$
 
     Then we have $ 4*64 + 64 + 64 = 384$ variables and the same number of conditions. Solving this linear system has about 1 solution, that we may check by substituting it into 2-round Keccak. Genuine number of freedom degrees is 320, and artficial ones 384. It is likely to find a correct solution in $2^{64} * 2^{27}= 2^{91}$ trials. This case was found in discussion with Meicheng Liu and Jian Guo.
+    I believe that something similar (or better) will work for 2-round Keccak-512. In addition to substitution of a quadratic lane by linear variables, we know that variables in same column are linearly related. This means that in quadratic lanes after $\chi$, some linear factors  are essentially "the same".
 
+    The probability of a1*a2 =a1*a3 is 0.75 for any values a1, a2, a3. We substitute monomials of the form a1*a2  and a1*a3 by the same linear variable to get more linear equations that will hold true with reasonable probability. We introduce artificial linear variables economically, so that we don't have more linear variables (genuine and artificial ones) than equations.Details need to be checked.
+    
+    Wonder whether this could also help, e.g., in 3-round Keccak-256 in \url{https://tosc.iacr.org/index.php/ToSC/article/view/802}.
+    
+    An issue is how far these observations extend to improve 3 round preimages of Keccak-384 and Keccak-512, as described in Sect. 6.3.
+    
+    As complexities of known preimages of 4-round Keccak-512 are still close to $2^{512}$, there is some slight hope that we might reach 4 rounds for this case.
+    
+    Do you have any comments on this?
+    \end{quote}
+    
 
 \end{document}
