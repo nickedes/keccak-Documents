@@ -88,5 +88,23 @@ Mail contents are :
     Do you have any comments on this?
     \end{quote}
     
+    \begin{enumerate}
+        \item Here in addition to Keccak-384 setting for 2 Round attack.
+        \item In Fig. 9 we keep lanes (3, 0) and (3, 1) also as variables
+        \item $A[3, 1] = A[3, 0] \oplus \alpha_3$ (so that sum of columns remains constant)
+        \item Linear structure of 320-bit :
+        \item $( A[0, 0], A[0, 1], A[2, 0], A[2, 1], A[3, 0] )$
+        \item A quadratic term is introduced after 1st $\chi$ by product of $(2, 0), (3, 1)$ as both are variables.
+        \item For this we substitute quadratic monomials by 64 linear variables.
+        \item Now next problem was for last round : $(\chi o \iota)^{-1}$
+        \item For the green lane of second row, this happens to be linear with probability $= 0.75$
+        \item For 64 slices, this $= 0.75^{64}$, which adds $2^{27}$ trials
+        \item Complexity comes out to be $ = 2^{64} * 2^{27} = 2^{91}$ trials.
+        \item \textbf{ Comments : }
+        \begin{enumerate}
+            \item Any issue of Linear independent variable for solution of equations?
+            \item Otherwise the analysis is fine here.
+        \end{enumerate}
+    \end{enumerate}
 
 \end{document}
