@@ -133,5 +133,14 @@ nodes={inner sep=5pt,text width=0.5cm,align=center,minimum height=.5cm, draw,tex
 \end{center}
 \caption{Computation of $\chi^{-1}$\label{chi_inv2}}
 \end{figure}
+    \item Here in Fig. ~\ref{chi_inv2}, we fix the lane adjacent to 6th green lane as $1$ before $\chi$ operation. If this is assumed then the 6th lane is inverted as it is and seems like a constant.
+    \item No. of variables : 5 lane variables + 1(substitute for quadratic terms) and 6 linear conditions. So we Linear structure : $(A[0,0], A[0,1], A[2, 0], A[2,1], A[3,0])$
+    \item White lane (constants) : 5 lanes and $64*3$ bits from $\alpha_0, \alpha_2, \alpha_3$
+    \item So the degree of freedom is much larger than required 384 bits.
+    \item We just want a solution with last bit of $A[2,2]$ being 1.
+    \item Time complexity = $2^{384 - (64*5) + 1} = 2^{65}$
+    \item If this turns out to be correct then we have a much better attack than proposed by us in our indocrypt-2018 paper with complexity of $2^{88}$
+    \item Please verify/correct this. If this is correct then something similar can also be applied to Keccak-512.
+\end{enumerate}
 
 \end{document}
