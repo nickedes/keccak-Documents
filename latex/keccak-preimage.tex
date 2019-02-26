@@ -106,5 +106,32 @@ Mail contents are :
             \item Otherwise the analysis is fine here.
         \end{enumerate}
     \end{enumerate}
+    \subsection{Suggestion for Keccak-384, 2R}
+\begin{enumerate}
+    \item \textbf{Note :} After verification this comes out to be incorrect
+    \item Same as the setting introduced by WM for 2R Keccak-384 where we keep (3,0) and (3,1) also as variables
+    \item Here we introduced a new variable for each quadratic term
+    \item The suggestion here is for reducing the trials due to the last round linear $\chi$ inversion.
+    \item Instead of inverting $\chi$ for 6th green lane as suggested by WM we can do something like this :
+    \item \label{ob2}\textbf{Observation :} When only one output bit is known after $\chi$ step, then the corresponding input bits have $2^4$ possibilities. A way to fix the first output bit to be the same as input bit and the second bit as $1$. It is shown in the Figure~\ref{chi_inv2}.
+\begin{figure}[ht]
+\begin{center}
+\begin{tikzpicture}[ampersand replacement=\&]
+\matrix (m1) [matrix of nodes,
+nodes={inner sep=5pt,text width=0.5cm,align=center,minimum height=.5cm, draw,text height=1em,text depth=.2em}
+]{
+	$a_0$ \& $*$ \& $*$ \& $*$ \& $*$\\
+};
+
+\matrix (m2) [right = 1.2cm of m1, matrix of nodes,
+nodes={inner sep=5pt,text width=0.5cm,align=center,minimum height=.5cm, draw,text height=1em,text depth=.2em}
+]{
+	$a_0$ \& $1$ \& $*$ \& $*$ \& $*$\\
+};
+\draw[->, very thick] (m1)-- node[above, pos=0.5] {$\chi^{-1}$} (m2);
+\end{tikzpicture}
+\end{center}
+\caption{Computation of $\chi^{-1}$\label{chi_inv2}}
+\end{figure}
 
 \end{document}
