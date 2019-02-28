@@ -143,4 +143,37 @@ nodes={inner sep=5pt,text width=0.5cm,align=center,minimum height=.5cm, draw,tex
     \item Please verify/correct this. If this is correct then something similar can also be applied to Keccak-512.
 \end{enumerate}
 
+\subsection{WM mail : 08/02/19}
+For 2R Keccak-512 : 
+\begin{enumerate}
+    \item 1st row of hashes can be inverted
+    \item For 2nd row, we know 3 consecutive outputs. So as in paper (Linear Structures: Applications to Cryptanalysis of Round-Reduced Keccak)
+    \item Using table 4, we know that for 3 consecutive output bits in a row known we get 2 linear equations.
+    \item For 64 lane size, we get $ 2*64 = 128 $ equations.
+    \item For the Message : we keep columns 0, 1, 2 and 3 as variables
+    \item \[ A[0, 1] = A[0, 0] \oplus \alpha_0 \]
+        \[ A[1, 1] = A[1, 0] \oplus \alpha_1 \]
+         \[ A[2, 1] = A[2, 0] \oplus \alpha_2 \]
+         \[ A[3, 1] = A[3, 0] \oplus \alpha_3 \]
+    \item This state produces quadratic variables after $\pi \circ \rho \circ \theta$.
+    \item  This creates 3 quadratic lanes after $\chi$ of 1st round, caused by product of [0,0] with [1,1], and [1,0] with [2,1], and [2,0] with [3,1].
+    \item Substitute each of the above quadratic variable by a new linear variable.
+    \item So we need $3*64$ new linear variables
+    \item Degree of freedom : 
+    \begin{enumerate}
+        \item Linear structure : $( A[0,0], A[1,0], A[2,0], A[3,0] )$ i.e. $4*64$ variables
+        \item Artificial : $3*64$ linear variables
+        \item Adds upto overall : $7*64$
+    \end{enumerate}
+    \item No. of linear conditions :
+    \begin{enumerate}
+        \item 5 from inversion of chi from the first row of hashes
+        \item 2 from inversion of chi from 3 consecutive output bits of hash
+        \item Hence, overall 7 equations
+    \end{enumerate}
+    \item We have 7 linear variables and 7 equations so we can expect to find a solution.
+    \item But Actual degree of freedom : 4 i.e. $( A[0,0], A[1,0], A[2,0], A[3,0] )$ and 8 conditions on the final hash (8 lanes)
+    \item So, no. of trials $= 2^{512 - 4*64} = 2^{64*4} = 2^{256}$
+\end{enumerate}
+
 \end{document}
