@@ -176,4 +176,44 @@ For 2R Keccak-512 :
     \item So, no. of trials $= 2^{512 - 4*64} = 2^{64*4} = 2^{256}$
 \end{enumerate}
 
+\subsection{Suggestion for Keccak-384, 2R}
+\begin{enumerate}
+    \item Same as the setting introduced by WM for 2R Keccak-384 where we keep (4,0) and (4,1) also as variables
+    \item Here we introduced two new variable for the quadratic terms.
+    \item 2 quadratic lanes after $\chi$ of 1st round, caused by product of (4,0), (0,1) and (4,1), (0,2).
+    \item The suggestion here is for reducing the trials due to the last round linear $\chi$ inversion.
+    \item Instead of inverting $\chi$ for 6th green lane as suggested by WM we can do something like this :
+    \item \label{ob2}\textbf{Observation :} When only one output bit is known after $\chi$ step, then the corresponding input bits have $2^4$ possibilities. A way to fix the first output bit to be the same as input bit and the second bit as $1$. It is shown in the Figure~\ref{chi_inv2}.
+\begin{figure}[ht]
+\begin{center}
+\begin{tikzpicture}[ampersand replacement=\&]
+\matrix (m1) [matrix of nodes,
+nodes={inner sep=5pt,text width=0.5cm,align=center,minimum height=.5cm, draw,text height=1em,text depth=.2em}
+]{
+	$a_0$ \& $*$ \& $*$ \& $*$ \& $*$\\
+};
+
+\matrix (m2) [right = 1.2cm of m1, matrix of nodes,
+nodes={inner sep=5pt,text width=0.5cm,align=center,minimum height=.5cm, draw,text height=1em,text depth=.2em}
+]{
+	$a_0$ \& $1$ \& $*$ \& $*$ \& $*$\\
+};
+\draw[->, very thick] (m1)-- node[above, pos=0.5] {$\chi^{-1}$} (m2);
+\end{tikzpicture}
+\end{center}
+\caption{Computation of $\chi^{-1}$\label{chi_inv2}}
+\end{figure}
+    \item Here in Fig. ~\ref{chi_inv2}, we fix the lane adjacent to 6th green lane as $1$ before $\chi$ operation. If this is assumed then the 6th lane is inverted as it is and seems like a constant.
+    \item No. of variables : 5 lane variables + 2(substitute for quadratic terms) and 7 ( 6 linear + 1 constant) conditions. So we have Linear structure : $(A[0,0], A[0,1], A[2, 0], A[2,1], A[4,0])$
+    \item White lane (constants) : 5 lanes and $64*3$ bits from $\alpha_0, \alpha_2, \alpha_4$
+    \item So the degree of freedom is much larger than required 384 bits.
+    \item We just want a solution with last bit of $A[2,2]$ being 1.
+    \item Time complexity = $2^{384 - (64*5) + 1} = 2^{65}$
+    \item If this turns out to be correct then we have a much better attack than proposed by us in our indocrypt-2018 paper with complexity of $2^{88}$
+    \item We indeed have 7 variable lanes and 7 conditions.
+    \item However, two of them are now artificial, and genuine number of freedom degrees is still 5. Thus we need about $2^128$ trials to satisfy the 7 conditions. Hence this doesn't work.
+    \item Complexity here is $= 2^{65*\text{number\_artificial\_degree}} $
+    \item But still this is our own solution for the complexity $2^{130}$.
+\end{enumerate}
+
 \end{document}
