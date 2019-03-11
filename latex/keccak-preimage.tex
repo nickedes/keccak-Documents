@@ -216,4 +216,37 @@ nodes={inner sep=5pt,text width=0.5cm,align=center,minimum height=.5cm, draw,tex
     \item But still this is our own solution for the complexity $2^{130}$.
 \end{enumerate}
 
+\subsection{Keccak-512, 1R}
+\begin{enumerate}
+    \item The idea is based upon linear structures though they are used for more no. of rounds but I will be using them for 1 Round.
+    \item Here we linearize Keccak-f permutation for 1 round.
+    \item The Preimage attack using linear structures depends directly on the space size of the variables of the linear structures formed below.
+    \item d $=$ No. of output bits and $c = 2*d$
+    \item $d = 512$, $c = 1024$
+    \item $r = 1600 - 1025 = 576$
+    \item For the Message : we keep columns 0, 1, 2 and 3 as variables
+    \item \[ A[0, 1] = A[0, 0] \oplus \alpha_0 \]
+        \[ A[1, 1] = A[1, 0] \oplus \alpha_1 \]
+         \[ A[2, 1] = A[2, 0] \oplus \alpha_2 \]
+         \[ A[3, 1] = A[3, 0] \oplus \alpha_3 \]
+    \item Keep A[4,0] as constant
+    \item Here $\alpha_0, \alpha_1, \alpha_2, \alpha_3$ are random constants
+    \item After $\theta$ the state is only affected by constants.
+    \item The $\rho$ step only rotation in lane. [Still the variables remain same]
+    \item After $\pi$ step, the variables namely $(A[0,0], A[1,0], A[2,0], A[3,0])$ are shifted to different lanes.
+    \item This was going forward. We have a linear structure after the above steps.
+    \item Now going backward, invert $\iota$ from the hash.
+    \item Invert the first 320 bits of hash by $\chi^{-1}$ i.e. the first row of hashes.
+    \item We have $4*64$ free variables.
+    \item So, we have a complexity gain over bruteforce of $2^{4*64}$, i.e., $2^{512 - 256} = 2 ^{256}$.
+    \item Attack complexity of $2^{256}$ for 1R, Keccak-512.
+    \item Verification : The Degree of freedom should be sufficient to expect a solution.
+    \item Degree of freedom : $4*64$ ( from  $A[0,0], A[1,0], A[2,0], A[3,0]$) and $4*64$ (from $\alpha_0, \alpha_1, \alpha_2, \alpha_3$ ) and $1*64$ (from $A[4,0]$ constant lane)
+    \item This sums up to be $9*64 = 576$, larger than required $512$.
+    \item Note : More variable bits will result in lower attack complexity.
+    \item This method works for all possible hash values.
+    \item Present attack for 1R, Keccak-512 is \url{https://eprint.iacr.org/2017/1028.pdf}.
+    \item The best attack complexity for the above is $2^{191}$.
+    \item Note : Try to improve the above complexity.
+\end{enumerate}
 \end{document}
