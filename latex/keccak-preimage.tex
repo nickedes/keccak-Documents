@@ -249,4 +249,36 @@ nodes={inner sep=5pt,text width=0.5cm,align=center,minimum height=.5cm, draw,tex
     \item The best attack complexity for the above is $2^{191}$.
     \item Note : Try to improve the above complexity.
 \end{enumerate}
+
+\subsection{Keccak-384, 1R}
+\begin{enumerate}
+    \item The idea is based upon linear structures though they are used for more no. of rounds but I will be using them for 1 Round.
+    \item Here we linearize Keccak-f permutation for 1 round.
+    \item The Preimage attack using linear structures depends directly on the space size of the variables of the linear structures formed below.
+    \item d $=$ No. of output bits and $c = 2*d$
+    \item $d = 384$, $c = 768$
+    \item $r = 1600 - 768 = 832$
+    \item For the Message : we keep columns 0, 2 and 4 as variables
+    \item \[ A[0, 2] = A[0, 0] \oplus A[0, 1] \oplus \alpha_0 \]
+         \[ A[2, 1] = A[2, 0] \oplus A[2, 1] \oplus \alpha_2 \]
+         \[ A[4, 1] = A[4, 0] \oplus \alpha_4 \]
+    \item Keep column 1, 3 as constant
+    \item Here $\alpha_0, \alpha_2, \alpha_4$ are random constants
+    \item After $\theta$ the state is only affected by constants.
+    \item The $\rho$ step only rotation in lane. [Still the variables remain same]
+    \item After $\pi$ step, the variables namely $(A[0,0], A[0,1], A[2,0], A[2,1], A[4,0])$ are shifted to different lanes.
+    \item This was going forward. We have a linear structure after the above steps.
+    \item Now going backward, invert $\iota$ from the hash.
+    \item Invert the first 320 bits of hash by $\chi^{-1}$ i.e. the first row of hashes.
+    \item We have $5*64$ free variables.
+    \item So, we have a complexity gain over bruteforce of $2^{5*64}$, i.e., $2^{384 - 5*64} = 2^{64}$.
+    \item Hence, a linear system of 320-bit equations.
+    \item For generating a message satisfying the padding rule, we just need a solution with the last bit of A[2,2] being 1.
+    \item Attack complexity of $2^{64 + 1} = 2^{65}$ for 1R, Keccak-384.
+    \item Verification : The Degree of freedom should be sufficient to expect a solution.
+    \item Degree of freedom : $5*64$ ( from  $A[0,0], A[1,0], A[2,0], A[2,1], A[4,0]$) and $3*64$ (from $\alpha_0, \alpha_2, \alpha_4$ ) and many from constant lanes
+    \item This sums up to be larger than required $384$.
+    \item This method works for all possible hash values.
+    \item Don't know the state of the art for 1R, keccak-384.
+\end{enumerate}
 \end{document}
