@@ -281,4 +281,27 @@ nodes={inner sep=5pt,text width=0.5cm,align=center,minimum height=.5cm, draw,tex
     \item This method works for all possible hash values.
     \item Don't know the state of the art for 1R, keccak-384.
 \end{enumerate}
+
+\subsection{Preimage attack on 2-round Keccak-256}
+\begin{enumerate}
+    \item \textbf{Note :} This subsection contains my explaination for the attack mentioned in section 6.1 from paper : Linear Structures: Applications to Cryptanalysis
+of Round-Reduced Keccak.
+    \item The message here is in lanes (0, 0), (0, 1), (0, 2), (2, 0), (2, 1), (2, 2).
+    \item Keep the sum of variables in column 0, 2 constant by choosing the sum of variables in a column to be $\alpha_0 $ and $\alpha_2$ resp as constants.
+    \item $d = 256 \rightarrow 4$ lanes.
+    \item $c = 512 \rightarrow 8$ lanes.
+    \item We can get 4 linear equations on the input bits given 4 output bits of the 5-bits.
+    \item Therefore, we need 4 variables in our state to build a linear system of 256-bit equation.
+    \item We have $h_0, h_1, h_2, h_3$  hash lanes in the output.
+    \item By using property of $\chi$, we can get 4 linear equations on the input to the $\chi$ when 4 output bits are given.
+    \item The above is true for each lane in row 0. i.e. we can get $4*64$ linear equations on the input to the $\chi$.
+    \item So in one slice, we need 4 variables to map them to 4 output bits given. (according to $\chi$)
+    \item So we build initial state such that we have $4*64$ free variables.
+    \item So take the same structure as for 2R, Keccak-384
+    \item Take $A[0, 2] = A[0, 0] \oplus A[0, 1] \oplus \alpha_0$
+    \item and $A[2, 2] = A[2, 0] \oplus A[2, 1] \oplus \alpha_2$
+    \item All the variable lanes will be linear.
+    \item By solving the system of linear equations just once we get a solution i.e. Time complexity 1.
+    \item Time complexity of attack $ = 2^{256 - 256} = 2^{0} = 1$
+\end{enumerate}
 \end{document}
