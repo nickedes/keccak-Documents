@@ -332,4 +332,20 @@ of Round-Reduced Keccak.
     \item Time complexity of preimage attack $= 2^{512 - 11} = 2^{501}$.
     \item \textbf{Note:} There is an improvement for the above attack mentioned in 6.3 by which attack complexity is $= 2^{482}$.
 \end{enumerate}
+
+\subsection{Preimage attack on 3-round Keccak-256}
+\begin{enumerate}
+    \item \textbf{Note} : The time complexity for attack on 3R, Keccak-256 mentioned in section 6.2 of Guo-Song-Liu paper is $ = 2^{192}$.
+    \item In this method, we try to extend the structure used for preimage attack on 2R, Keccak-384 as shown in Fig. 9 of section 6.1 .
+    \item For Keccak-256, $d = 256$
+    \item $c = 512 = 8 $ lanes
+    \item We add one more variable lane as compared to the initial state shown in Fig. 9
+    \item So in Column 0, we keep $A[0,0], A[0,1], A[0,2], A[0,3]$ as variables.
+    \item In Column 2, we keep $A[2,0], A[2,1], A[2,2]$ as variables.
+    \item Keep \[
+        A[0,3] = A[0,0] \oplus A[0,1] \oplus A[0, 2] \oplus \alpha_0
+    \]
+    \item \[
+        A[2,2] = A[2,0] \oplus A[2,1] \oplus \alpha_2
+    \]
 \end{document}
