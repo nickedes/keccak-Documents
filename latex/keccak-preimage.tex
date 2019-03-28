@@ -348,4 +348,18 @@ of Round-Reduced Keccak.
     \item \[
         A[2,2] = A[2,0] \oplus A[2,1] \oplus \alpha_2
     \]
+    \item Here, $\alpha_0, \alpha_2$ are random constants.
+    \item After applying $\iota \circ \chi \circ \pi \circ \rho \circ \theta $ i.e. One round the state remains linear.
+    \item Input to the step $\chi$ of second round are all linear.
+    \item Since we have hash of only 4 lanes, assume any random value as value of 5th lane.
+    \item We can directly inverse these 320 bits through $\chi^{-1} \circ \iota^{-1}$ from given modified hash value.
+    \item Then we can apply the same technique as mentioned in section 6.3 for this structure also.
+    \item We linearize the $C[x][y][z]$ term as in $(14)$.
+    \item As mentioned in \textbf{Improved preimage attacks on 3-round Keccak-384 and Keccak-512.}
+    \item We can match $2\floor*{\frac{t - 5}{8}}$ bits of a given hash value if we have $t$ variables.
+    \item For Keccak-256, we have $t = 5*64 = 320$ variables.
+    \item Match bits = $78$
+    \item Attack complexity $ = 2^{256 - 78} = 2^{178}$.
+    \item If correct, there is a small improvement of $2^{14}$.
+\end{enumerate}
 \end{document}
