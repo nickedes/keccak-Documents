@@ -370,4 +370,100 @@ of Round-Reduced Keccak.
     \item Try to use two message blocks instead of one, so as to satisfy some initial conditions by xor-ing the second message block into the output state of the first block.
     \item Keep the structure simple
 \end{enumerate}
+
+\subsection{Try : Preimage Attack on Round-reduced Keccak-384 via an Allocating Approach}
+
+\textbf{Note :} Refer mainly, \url{https://eprint.iacr.org/2019/248.pdf}
+
+\begin{enumerate}
+    \item To meet this condition : (Theorem 1)
+    \item \textbf{Theorem 1 :} Let the messaged state be (a') in figure 5, i.e. bits in Row 0, 2 are unknown and bits in Row 1,3,4 are constants such that 
+    \begin{enumerate}
+        \item $a_{x, 1, z} = a_{x, 3, z} = a_{x, 4, z} \oplus 1$ and
+        \item $\bigoplus a_{x,4,z} = 0$ 
+    \end{enumerate}
+    \item For Keccak-384, capacity $= 384*2 = 768 = 12 $ lanes
+    \item Which means that the last 12 lanes of bits can't be changed after second message block being XOR-ed.
+    \item So the last 12 lines in State (A) and (B) are identical. (refer Fig. 6)
+    \item The values of the first 13 lanes in state (B) can be adjusted by second message block, to make bits in state (B) meet condition (i) and (ii) in Theorem 1.
+    \item Here take state (A) of the form that variables :
+    \begin{enumerate}
+        \item in row 4 : $e(0,4), e(1,4), e(2,4), e(3,4), e(4,4)$
+        \item in row 3 : $e(0,3), e(1,3), e(2,3), e(3,3), e(4,3)$
+    \end{enumerate}
+    \item It suffices to ensure :
+    \item $\bigoplus e_{x,4,z} = 0$
+    \item For $ a_{x, 3, z}  \oplus 1 = a_{x, 4, z}$. We ensure :
+    \item $e_{0,3,z} \oplus 1 = e_{0,4,z}$,  $e_{1,3,z} \oplus 1 = e_{1,4,z}$,  $e_{2,3,z} \oplus 1 = e_{2,4,z}$
+    \item $e_{3,3,z} \oplus 1 = e_{3,4,z}$, $e_{4,3,z} \oplus 1 = e_{4,4,z}$
+    \item The above equations are referred as equation (3).
+    \item To make bits in state (B) meet condition in theorem 1, we need $64*5 + 1 = 321$ equations to hold.
+    \item Attack for keccak-384 via allocating approach, consists of 2 stages:
+    \begin{enumerate}
+        \item Precomputation stage : Find a first message block such that equation (3) hold for output bits of 1st block.
+        \item Online stage : Construct an algebraic system using the structure in Theorem 1 for a given hash value, and solve this system for a second message block.
+    \end{enumerate}
+    \item Attack has 3 parts : 
+    \begin{enumerate}
+        \item Find a 1st message block such that equation (3) holds in precomputation stage.
+        \item Find a 2nd message block such that the state (B) meets condition in theorem 1 and the outputs of the second block equal the given hash value in online stage.
+        \item At last, check how to deal with the paddings.
+    \end{enumerate}
+    \item Part 1 : Finding a first message block
+    \item Fix lanes (0,0), (0,1), (0,2), (2,0), (2,1), (2,2) as variables.
+    \item Fix lane (1,0), (3, 0) as $1$ lane. Rest are $0$ lanes
+    \item The state \textbf{doesnt} remain linear after 2 rounds.
+    \item To find the 1st msg block satisfy equation (3).
+    \item In the messaged state of 1st round, bits of 6 lanes are set as unknowns.
+    \item Which means there are $6*64 = 384$ unknowns.
+    \item During this procedure to avoid propagation by $\theta$ in first round, $2*64 = 128$ linear constraints are added to the system by assuming sum of linear columns as constants.
+    \item The state becomes quadratic after 2 rounds.
+    \item By equation (3) we obtain another 321 quadratic equations.
+    \item Overall equations : $128 + 321 = 449$ in 384 unknowns.
+    \item As stated in section 4.1 of this paper by Li-Sun, we use the following methods to create more linear equations : (The details are in reference with Fig 7 of the same paper)
+    \begin{enumerate}
+        \item Let $p_{i,j}$ be the linear representation (polynomial) of bits in state (c) of 2nd round and 
+        \item $e_{i,j}$ represents the lane after 2 rounds of 1st msg block, these are quadratic variables, because before the second $\chi$ the full state was linear.
+        \item By $\chi$ we have :
+        \item \[
+            e_{3,4} = p_{3,4} \oplus (p_{4,4} \oplus 1 ) \cdot p_{0,4}
+        \]
+        \item \[
+            e_{4,4} = p_{4,4} \oplus (p_{0,4} \oplus 1 ) \cdot p_{1,4}
+        \]
+        \item By Equation (3) of same paper we have the following equations :
+        \item \[
+         e_{3,4} \oplus e_{4,4} = 1
+        \]
+        \item Hence Equation(5) 
+        \[
+             p_{3,4} \oplus (p_{4,4} \oplus 1 ) \cdot p_{0,4} \oplus p_{4,4} \oplus (p_{0,4} \oplus 1 ) \cdot p_{1,4} = 1
+        \]
+        \item Similarly, Equation (6) 
+        \[
+            p_{4,4} \oplus (p_{0,4} \oplus 1 ) \cdot p_{1,4} \oplus p_{4,3} \oplus (p_{0,3} \oplus 1 ) \cdot p_{1,3} = 1
+        \]
+        \item If the values of pair $(p_{0,3}, p_{0,4})$ are enumerated then both Equation (5) and (6) are linearized in each slice.
+        \item Out of the $449$ equations only $128$ are linear due to $\theta$
+        \item Get $256$ linear equations from equation 5 & 6 by enumeration for 64 slices.
+        \item So no. of linear equations and unknowns match, so we can expect a solution.
+        \item Actuall complexity $= 2^{449 - 384} = 2^{65}$
+    \end{enumerate}
+    \item The probability of existence of a solution is $2^{-65}$.
+    \item The whole complexity of finding 1st msg block consists of 2 parts : Complexity $2^{65}$ of ensuring the system has a solution, and complexity constant of solving the system.
+    \item Part 2 : Finding a second message block 
+    \item By part 1, we get an initial state of 2nd block satisfying equation (3).
+    \item For 2nd round, keep structure similar to one proposed by Guo-Song in Linear structure approach.
+    \item Linear constraints by 1st $\theta$ : $2*64$ (on all columns). To avoid propagation by $\theta$ in 1st round of the second msg.
+    \item Based on hash value, we can setup 320 linear equations.
+    % \item 10 lanes in messaged state are unknowns. The no. of unknowns are $= 10*64$
+    % \item lanes : (0,0), (0,1), (0,2), (0,3), (0,4), (1,0), (1,2), (2,0), (2,1), (2,2) are kept as variables.
+    \item The system has :
+    \item No. of linear equations : 2*64 + 320 = 7*64
+    \item No. of unknowns = 64*6
+    \item To enusre this system has a solution we enumerate $2^{64*7-64*6} = 2^{64}$
+    \item So overall it will add up to $2^{66}$
+    \item This is a rough bigger idea, of how to think. We need to ensure that the 2 rounds for second block are done properly.
+    \item We can also make state (B) similar to the one used in (Fig 8 of paper).
+\end{enumerate}
 \end{document}
