@@ -478,5 +478,25 @@ In Guo-Liu-Song, Fig. 13 the (allowed) linear pattern after 32 rounds is the sam
     \item Use the (updated image) Fig. 9 
     \item To find a first message block, we set
     \item $2*64 + 3*4 = 5*64 = 320$ linear equations
-
+    \item By Assuming sum of linear constants in state $(a)$ and $(d)$
+    \item The state after 3rd $\chi$ will be quadratic
+    \item We need $e_{2,3,z} \oplus 1 = e_{2,4,z}$, $e_{3,3,z} \oplus 1 = e_{3,4,z}$, $e_{4,3,z} \oplus 1 = e_{4,4,z}$, 
+    \item and $\bigoplus_{x,z} e_{x,4,z} = 1$
+    \item Total $3*64 + 1 = 193$ quadratic equations to meet conditions in Theorem 1.
+    \item The no. of unknowns is $6*64 = 384$
+    \item So, this system consists of $320 + 193 = 513$ equations
+    \item Probability of existence of a solution is $ = \frac{1}{2^{512 - 384}} = 2^{-129}$
+    \item That is we need to enumerate $2^{129}$ sum values of linear columns in state $(d)$ to ensure the system has a solution.
+    \item To solve : We need to enumerate the values of pair $(p_{0,3}, p_{0,4})$ in $16$ slices and obtain $64$ linear equations.
+    \item Then, we obtain $64$ new linear equations and already has $320$ equations. So total $= 384$ linear equations.
+    \item and then the system can be solved with a constant time complexity.
+    \item Thus, the complexity of finding a first msg block $ = 2^{129 + 32} = 2^{161}$.
+    \item $2^{32}$ is due to : we need to enumerate 2 variables in 16 slices i.e. 32 variables
+    \item To solve a second message block, the procedure is same as that of Keccak-224
+    \item Except that we obtain $4*64 = 256$ linear equations from the hash value.
+    \item The System of this stage consists of : $5*64 + 2*64 0 2 + 256 = 702$ linear equations
+    \item and we have $10$ variable lanes $ = 64*10 $ unknowns.
+    \item We need to try $= 2^{702 - 640} = 2^{62}$ sum values of the linear columns in the state(a) of the 2nd round, to ensure that there is a solution to this system.
+    \item Complexity of this stage is $2^{62}$
+\end{enumerate}
 \end{document}
