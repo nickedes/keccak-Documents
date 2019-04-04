@@ -466,4 +466,17 @@ of Round-Reduced Keccak.
     \item This is a rough bigger idea, of how to think. We need to ensure that the 2 rounds for second block are done properly.
     \item We can also make state (B) similar to the one used in (Fig 8 of paper).
 \end{enumerate}
+
+\newpage
+\textbf{Key Observation }: 
+
+In Guo-Liu-Song, Fig. 13 the (allowed) linear pattern after 32 rounds is the same as in Li-Sun, Fig. 9 (forbidden, in our view) but complexity seems $2^{192}$ rather than $2^{161}$.
+
+\subsection{Preimage Attack on 3R, Keccak-256 using Allocating Approach}
+\textbf{Note :} I refer to : \url{https://eprint.iacr.org/2019/248.pdf}
+\begin{enumerate}
+    \item Use the (updated image) Fig. 9 
+    \item To find a first message block, we set
+    \item $2*64 + 3*4 = 5*64 = 320$ linear equations
+
 \end{document}
