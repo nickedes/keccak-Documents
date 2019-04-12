@@ -647,6 +647,15 @@ To prevent the spread of $\theta$ in first round we need to add constraints :
     \]
 \end{enumerate}
 Here, $\alpha_0, \alpha_2$ are random constants.
+Due to the above constraints the state remains linear and the variables will not spread after application of \theta step mapping. So, After applying $\iota \circ \chi \circ \pi \circ \rho \circ \theta $ i.e. a round the state remains linear.
+Moving on to the second round, the state is linear even after application of $\pi \circ \rho \circ \theta$, since these step mappings are linear. So, input state to the step $\chi$ of second round is linear.
+
+On the other hand we have hash value of only 4 lanes, assume any random value as value of 5th lane.
+We can directly inverse these 320 bits through $\chi^{-1} \circ \iota^{-1}$ from given modified hash value.
+Then we can apply the same technique as mentioned in section 6.3 \cite{} for this structure also. We linearize the $C[x][y][z]$ term as in $(14)$. We can match $2\floor*{\frac{t - 5}{8}}$ bits of a given hash value if we have $t$ variables.
+For \Keccak-$256$, we have $t = 5*64 = 320$ variables.
+So the no. of matched bits = $78$, with this we have a complexity gain over bruteforce of $2^{78}$
+Attack complexity $ = 2^{256 - 78} = 2^{178}$.
 
 \section{Conclusion and Future works}
 In this paper, we have presented a preimage attack on the $2$ rounds of round-reduced \KECCAK-$384$. The attack is not yet practical but it is much better than the existing best-known attack in term of the time complexity. The basic idea of the attack can be used to mount a practical preimage attack on the $\Keccak[r:=400-192,\, c:=192]$ and $\Keccak[r:=800-384,\,c:=384]$. 
