@@ -1,0 +1,663 @@
+% This is samplepaper.tex, a sample chapter demonstrating the
+% LLNCS macro package for Springer Computer Science proceedings;
+% Version 2.20 of 2017/10/04
+%
+\RequirePackage{amsmath}
+% \documentclass[pss]{wiley2sp}
+\documentclass[runningheads]{llncs}
+%
+
+\usepackage{amsmath}
+\usepackage{soul}
+
+
+\usepackage{graphicx}
+\usepackage{tikz}
+\usepackage{tikz,graphicx}
+\usepackage[absolute,overlay]{textpos} 
+\usetikzlibrary{decorations.pathmorphing,matrix,decorations.pathreplacing,arrows,decorations.markings}
+\usetikzlibrary{fit,calc,shapes,arrows,positioning,shadings,backgrounds,patterns,tikzmark,matrix,spy}
+\usetikzlibrary{decorations.markings}
+
+\usepackage[T1]{fontenc}
+% Used for displaying a sample figure. If possible, figure files should
+% be included in EPS format.
+%
+% If you use the hyperref package, please uncomment the following line
+% to display URLs in blue roman font according to Springer's eBook style:
+% \renewcommand\UrlFont{\color{blue}\rmfamily}
+
+\newcommand{\KECCAK}{\mbox{\textsc{Keccak}}}
+\newcommand{\Keccak}{\mbox{\textsc{Keccak}}}
+\newcommand{\SHA}{\textsc{Sha}}
+\newcommand{\etal}{\textit{et al. }}
+\newcommand{\grd}{
+	\begin{tikzpicture}[on grid,scale=0.8]
+		\draw[xslant=0.5,step=0.5cm] (0,0) grid (2.5,2.5);
+	\end{tikzpicture}
+}
+
+\tikzset{myrow/.style args = {(#1,#2)}{%
+		row #1/.style={nodes={fill=#2}}}}
+
+\tikzset{mycolumn/.style args = {(#1,#2)}{%
+		column #1/.style={nodes={fill=#2}}}}
+
+\tikzset{mycell/.style args = {(#1,#2,#3)}{%
+		row #1 column #2/.style={nodes={fill=#3}}}}
+
+\makeatletter
+\usetikzlibrary{chains,patterns,shadows}
+\tikzset{% customization of pattern
+	% based on <m.wibrow@gm...> - 2013-03-24 07:20: 
+	hatch distance/.store in=\hatchdistance,
+	hatch distance=5pt,
+	hatch thickness/.store in=\hatchthickness,
+	hatch thickness=5pt
+}
+\pgfdeclarepatternformonly[\hatchdistance,\hatchthickness]{north east hatch}% name
+{\pgfqpoint{0pt}{0pt}}% below left
+{\pgfqpoint{\hatchdistance}{\hatchdistance}}% above right
+{\pgfpoint{\hatchdistance-1pt}{\hatchdistance-1pt}}%
+{
+	\pgfsetcolor{\tikz@pattern@color}
+	\pgfsetlinewidth{\hatchthickness}
+	\pgfpathmoveto{\pgfqpoint{0pt}{0pt}}
+	\pgfpathlineto{\pgfqpoint{\hatchdistance}{\hatchdistance}}
+	\pgfusepath{stroke}
+}
+\makeatother
+
+
+
+\newcommand{\query}[1]{\textcolor{red}{#1}}
+\newcommand{\shashank}[1]{\textcolor{blue}{#1}}
+
+
+\begin{document}
+%
+\title{Cryptanalysis of $2$ round \KECCAK-$384$}
+%
+%\titlerunning{Abbreviated paper title}
+% If the paper title is too long for the running head, you can set
+% an abbreviated paper title here
+%
+
+\author{Rajendra Kumar\inst{1} \and
+Nikhil Mittal\inst{1} \and
+Shashank Singh\inst{2}}
+
+\authorrunning{Kumar \etal}
+% First names are abbreviated in the running head.
+% If there are more than two authors, 'et al.' is used.
+
+\institute{Center for Cybersecurity, Indian Institute of Technology Kanpur, India
+\email{mnikhil@iitk.ac.in, rjndr@iitk.ac.in}\\ \and
+Indian Institute of Science Education and Research Bhopal\\
+\email{shashank@iiserb.ac.in}}
+%
+
+\maketitle              % typeset the header of the contribution
+%
+\begin{abstract}
+In this paper, we present a cryptanalysis of round reduced \KECCAK-$384$ for $2$ rounds. The best known preimage attack for this variant of \KECCAK{} has the time complexity $2^{129}$.  In our analysis, we find a preimage in the time complexity of $2^{89}$ and the same memory is required.
+
+\keywords{\KECCAK \and \SHA-3 \and Cryptanalysis \and Hash Functions \and Preimage Attack.}
+\end{abstract}
+%
+%
+%
+\section{Introduction}
+
+Cryptographic hash functions are the important component of  modern cryptography. In 2008, U.S. National Institute of Standards and Technology (NIST) announced a competition for the Secure Hash Algorithm-3 (\SHA-3). A total of $64$ proposals were submitted to the competition. In the year $2012$, NIST announced \KECCAK{} as the winner of the competition. The \KECCAK{} hash function was designed by Guido Bertoni, Joan Daemen, Micha\"{e}l Peeters, and Gilles Van Assche~\cite{bertoni2009keccak}. Since $2015$, \KECCAK{} has been standardized as \SHA-$3$ by the NIST.
+
+The \KECCAK{} hash function is based on sponge construction~\cite{bertoni2011cryptographic} which is different from previous \SHA{} standards. Intensive cryptanalysis of \KECCAK{} is done since its inception ~\cite{bernstein2010second}~\cite{naya2011practical}~\cite{dinur2012new}~\cite{dinur2013collision}~\cite{morawiecki2013sat}~\cite{dinur2014improved}~\cite{chang20141st}~\cite{guo2016linear}~\cite{qiao2017new}~\cite{song2017non}~\cite{kumar2018cryptanalysis}. In $2012$, Dinur \etal  gave a practical collision attack for $4$ rounds of \Keccak-$224$ and \Keccak-$256$ using differential and algebraic techniques~\cite{dinur2012new} and also provided attacks for $3$ rounds for \Keccak-$384$ and \Keccak-$512$. They further gave collision attacks in $2013$ for $5$ rounds of \Keccak-$256$ using internal differential techniques~\cite{dinur2013collision}. In $2016$, using linear structures, Guo \etal proposed preimage attacks for $2$ and $3$ rounds of \Keccak-$224$, \Keccak-$256$, \Keccak-$384$, \Keccak-$512$ and for $4$ rounds in case of smaller hash lengths~\cite{guo2016linear}. Recently, in the year $2017$, Kumar \etal gave efficient preimage and collision attacks for $1$ round of \Keccak~\cite{kumar2018cryptanalysis}. There are hardly any attack for the full round \KECCAK{}, but there are many attacks for reduced round \Keccak{}. Some of the important results are shown in the Table~\ref{tab1} and Table~\ref{tab2}.
+\newline
+
+\textbf{Our Contribution:} We propose a preimage attack for $2$ rounds of round-reduced \KECCAK-$384$. The time complexity of attack is $2^{89}$ and the memory complexity is $2^{87}$. The attack is not practical, but it outperforms the previous best-known attack~\cite{guo2016linear}, with a good gap. The proposed attack does not affect the security of full \KECCAK{}.
+
+\begin{table}
+\begin{center}
+\caption{Preimage attack results.}\label{tab1}
+\begin{tabular}{|c|l|l|c|}
+\hline
+No. of rounds & Hash length & Time Complexity & Reference\\
+\hline
+1 & \Keccak - $224/256/384/512$ & Practical & ~\cite{kumar2018cryptanalysis} \\
+2 & \Keccak - $224/256$ & $2^{33}$ & ~\cite{naya2011practical} \\
+2 & \Keccak - $224/256$ & 1 & ~\cite{guo2016linear} \\
+2 & \Keccak - $384/512$ & $2^{129} / 2^{384}$ & ~\cite{guo2016linear}\\
+3 & \Keccak - $224/256/384/512$ & $2^{97} / 2^{192} / 2^{322} / 2^{484}$ & ~\cite{guo2016linear}\\
+4 & \Keccak - $224/256$ & $2^{213} / 2^{251}$ & ~\cite{guo2016linear}\\
+4 & \Keccak - $384/512$ & $2^{378} / 2^{506}$ & ~\cite{morawiecki2013rotational}\\
+\hline
+\end{tabular}
+\end{center}
+\end{table}
+
+\begin{table}
+\begin{center}
+\caption{Collision attack results.}\label{tab2}
+\begin{tabular}{|c|l|l|c|}
+\hline
+No. of rounds & Hash length & Time Complexity & Reference\\
+\hline
+1 & \Keccak - $224/256/384/512$ & Practical & ~\cite{kumar2018cryptanalysis} \\
+2 & \Keccak - $224/256$ & $2^{33}$ & ~\cite{naya2011practical}\\
+3 & \Keccak - $384/512$ & practical & ~\cite{dinur2013collision}\\
+4 & \Keccak - $224/256$ & $2^{24}$ & ~\cite{dinur2012new}\\
+4 & \Keccak - $224/256$ & $2^{12}$ & ~\cite{qiao2017new}\\
+4 & \Keccak - $384$ & $2^{147}$ & ~\cite{dinur2013collision}\\
+5 & \Keccak - $224$ & $2^{101}$ & ~\cite{qiao2017new}\\
+5 & \Keccak - $224$ & Practical & ~\cite{song2017non}\\
+5 & \Keccak - $256$ & $2^{115}$ & ~\cite{dinur2013collision}\\
+\hline
+\end{tabular}
+\end{center}
+\end{table}
+
+\section{\Keccak{} Description and Notations}
+\Keccak{} is a family of sponge hash functions with arbitrary output length. A sponge construction consists of a permutation function, denoted by $f$, a parameter ``rate'', denoted by $r$, and a padding rule ${pad}$. The construction 
+produces a sponge function which takes as input a bit string $N$ and output length $d$. 
+It is described below.
+
+\begin{figure}
+\includegraphics[width=\textwidth]{sponge}
+\caption{The sponge construction~\cite{bertoni2011cryptographic}\label{sponge}}
+\end{figure}
+The bit string $N$ is first padded based on the $pad$ rule. The padded string is divided into blocks of length $r$. The function $f$ 
+maps a string of length $b$ to another of same length.
+The capacity, denoted by $c$, is a positive integer such that $r + c = b$. The initial state is a $b$-bit string which is set to all zeros. 
+After a string $N$ is padded, it undergoes two phases of sponge, namely absorbing and squeezing. In the absorbing phase, the padded string $N^\prime$ is split into $r$-bit blocks, say $N_1, N_2, N_3,\ldots,N_m$.
+The first $r$ bits of initial state are XOR-ed with the first block and the remaining $c$ bits are appended to the output of XOR. Then it is given as input to the function $f$ as shown in the diagram given in the Figure~\ref{sponge}. The output of this $f$ becomes the initial state for the next block and the process is repeated for all blocks of the message. After all the blocks are absorbed, let the resulting state be $P$. 
+
+In the squeezing phase, an string $Z$ is initialized with the first $r$ bits of the state $P$. The function $f$ is applied on the state $P$ and the first $r$ bits of output, say $P^\prime$, is appended to $Z$. The $P^\prime$ is again passed to $f$ and this process is repeated until $|Z| \geq d$. The output of sponge construction is given by the first $d$ bits of $Z$.
+% 
+
+The \Keccak{} family of hash functions is based on the sponge construction. The function $f$, in the sponge construction, is denoted by \Keccak-$f\left[b\right]$, where $b$ is the length of input string. Internally \Keccak-$f\left[b\right]$ consists of a round function $p$ which is recursively applied to a specified number of times, say $n_r$. More precisely \Keccak-$f\left[b\right]$ function is specialization of \Keccak-$p\left[b,\,n_r\right]$ family where $n_r = 12 + 2\,l$ and $l = \log_2 (b/25)$ i.e.,
+\[
+	\Keccak\text{-}f\left[b\right] = \Keccak\text{-}p\left[b,  12 + 2l\right].
+\]
+
+The round function $p$ in \Keccak{} consists of $5$ steps, in each of which the state undergoes transformations specified by the step mapping. These step mappings are called $\theta, \rho, \pi, \chi$ and  $\iota$. A state $S$, which is a $b$-bit string, in \Keccak{} is usually denoted by a $3$-dimensional grid of size $(5 \times 5 \times w)$ as shown in the Figure~\ref{ss}. The value of $w$ depends on the parameters of \Keccak{}. For example in the case of \Keccak-$f\left[1600\right]$, $w$ is equal to $64$. It is usual practice to represent a state in terms of rows, columns, lanes, and slices of the $3$-dimensional grid. 
+Given a bit location $(x,y,z)$ in the grid, the corresponding row is given by $\left( S[x+i \pmod 5,y,z] : \, i \in [0,4] \right)$. Similarly the corresponding column is given by the bits $\left( S[x,y+i \pmod 5,z] : \, i \in [0,4] \right)$ and the corresponding lane is given by $\left( S[x,y,z+i \pmod w] : \, i \in [0,w-1] \right)$. 
+Further the slice corresponding to a location $(x,y,z)$, consists of $\left( S[x+j \pmod 5,y+i \pmod 5,z] : \, i,\,j \in [0,4] \right)$ bits.
+It is pictorially shown in the Figure~\ref{ss}.
+\begin{figure}
+  \begin{tikzpicture}[on grid,scale=0.4]
+  \shade[yslant=-0.5,right color=gray!10, left color=black!40] (0,2) rectangle +(5,1) node[xshift=-1.2cm, yshift=0.2cm] at (0,2){ a row($5$-bits)};
+%lane 1x1
+  \shade[yslant=-0.5,left color=black!40,  color=black!10] (4,4) rectangle +(1,1);
+%column
+  \draw[yslant=-0.5,pattern=north east hatch,  pattern color=black!70, hatch distance=3pt, hatch thickness=0.5pt] (2,0) rectangle +(1,5)
+  node[xshift=-0.8cm, yshift=-0.2cm] at (2,0){ a column($5$-bits)};
+  
+  \draw[yslant=-0.5, dashed] (0,0) grid (5,5);
+  \shade[yslant=0.5,right color=black!60,left color=black!40](5,-1) rectangle +(8,1);
+  \draw[yslant=0.5] (5,-5) grid (13,0);
+  \node at (15.9,6.5){a lane($w$-bits)};
+%slice front
+  \draw[yslant=0.5,pattern=north east hatch,  pattern color=black!70, hatch distance=3pt, hatch thickness=0.5pt](7,-5) rectangle +(1,5)
+   node[xshift=1.5cm, yshift=-0.1cm] at (7,-5){ a slice($5\times 5$-bits)};
+%row front
+ \shade[yslant=0.5,left color=black!20,right color=black!70] (5,-3) rectangle +(1,1);
+%top shade
+  \shade[yslant=0.5,xslant=-1,bottom color=gray!5,top color=gray!60] (5,0) rectangle +(8,5);
+  \shade[yslant=0.5,xslant=-1, bottom color=black!40,top color=black!60](5,0) 
+  rectangle +(8,1); 
+ %slice top 
+  \draw[yslant=0.5,xslant=-1,pattern=north east hatch,  pattern color=black, hatch distance=3pt, hatch thickness=0.5pt] (7,0) rectangle +(1,5);
+%column top
+  \draw[yslant=0.5,xslant=-1,pattern=north east hatch,  pattern color=black, hatch distance=3pt, hatch thickness=0.5pt] (5,2) rectangle +(1,1);
+  
+  \draw[yslant=0.5,xslant=-1] (5,0) grid (13,5);
+  \end{tikzpicture}
+\caption{A state in \Keccak{}\label{ss}}
+\end{figure}
+%
+%
+%
+
+In the following, we provide a brief description of the step mappings.
+ Let $A$ and $B$ respectively denote input and output states of a step mapping.
+\begin{enumerate}
+    \item $\theta$ ({\bf theta}): The theta step XORs each bit in the state with the parities of two neighboring columns. For a given bit position $(x, y, z)$, one column is $((x - 1) \bmod 5, z) $ and the other is $((x+1)\bmod 5, (z - 1) \bmod w)$. Thus, we have
+    \begin{align}\nonumber
+        B[x, y, z] &= A[x, y, z] \oplus P[ (x - 1) \bmod 5 ,\, z ] \\
+        &\hspace{1.3cm}\oplus P[ (x + 1) \bmod 5 ,\, (z - 1) \bmod w ]
+    \end{align}
+    where $P[x, z]  = \oplus_{y = 0}^{4} A[x, y, z] $.
+    %%% CHECK: Done
+    \vskip5pt
+    \item $\rho$ ({\bf rho}): This step rotates each lane by a constant value towards the MSB i.e., 
+    \begin{align}
+        B[x, \,y,\, z] = A[x, \,y, \,z + \rho(x, y) \bmod w ],
+    \end{align}
+    where $\rho(x, y)$ is the constant for lane $(x, y)$. The constant value $\rho(x, y)$ is specified for each lane in the construction of \Keccak{}. 
+    \vskip5pt
+    \item $\pi$ ({\bf pi}): It permutes the positions of lanes. The new position of a lane is determined by a matrix, 
+    \begin{align}
+    \begin{bmatrix} x'\\ y'\end{bmatrix} = 
+    \begin{bmatrix} 0 & 1 \\ 2 &  3 \end{bmatrix} \cdot \begin{bmatrix} x\\ y\end{bmatrix},
+    \end{align}
+    where $(x', y')$ is the position of lane $(x, y)$ after $\pi$ step.
+    \vskip5pt
+    \item $\chi$ ({\bf chi}): This is a non-linear operation, where each bit in the original state is XOR-ed with a non-linear function of next two bits in the same row i.e.,
+    \begin{align}\nonumber
+        B[x, y, z] &=  A[x, y, z] \;\oplus \\
+        & \hspace{0.5cm} \left( \left(A[ (x + 1 )\bmod 5, y, z] \oplus 1\right) \cdot  A[ (x + 2) \bmod 5, y, z] ) \right).
+    \end{align}
+    \vskip5pt
+    \item $\iota$ ({\bf iota}): This step mapping only modifies the $(0, 0)$ lane depending on the round number i.e., 
+    \begin{align}
+       B[0, 0] = A[0, 0] \oplus RC_i,
+   \end{align}
+    where $RC_i$ is round constant that depends on the round number. The remaining $24$ lanes remain unaffected.
+\end{enumerate}
+
+Thus a round in \Keccak{} is given by ${\tt Round}(A, i_r) = \iota( \chi( \pi ( \rho ( \theta ( A ) ) ) ) , i_r)$, where $A$ is the state and $i_r$ is the round index. In the \Keccak-$p[b, n_r]$, $n_r$ iterations of ${\tt Round}(\cdot)$ is applied on the state $A$.
+
+%% Check
+The \SHA-3 hash function is \Keccak-$p[b, 12 + 2\,l]$, where $w = b/25$ and $l = \log_{2}(w)$. The value of $b$ is $1600$, so we have $l = 6$. Thus the $f$ function in \SHA-3 is \Keccak-$p[1600, 24]$.
+
+The \Keccak{} team denotes the instances of \Keccak{} by $\Keccak[r,c]$, where $r=1600-c$ and the capacity $c$ is chosen to be twice the size of hash output $d$, to avoid generic attacks with expected cost below $2^d$. Thus the hash function with output length $d$ is denoted by 
+\begin{eqnarray}
+\mbox{\Keccak-$d$}  &=& \Keccak[r:=1600-2d,\;c:=2d],
+\end{eqnarray}
+truncated to $d$ bits.
+The \SHA-3 hash family supports minimum four different  output length $d \in \{224,256,384,512\}$. In the \Keccak-384, the size of $c = 2\cdot d = 768$ and the rate $r = 1600 - c = 1600 - 768 = 832= 13\cdot 64$.
+
+\section{Preimage Attack for $2$ Rounds of Round Reduced \KECCAK-384}
+
+In this section, we present a preimage attack for a round reduced \KECCAK{}. We will show that the preimage can be found in $2^{88}$ time and $2^{87}$ memory for $2$ rounds of round-reduced \Keccak-$384$. Although it is not a practical attack, but it is an improvement over the existing best attack, for $2$ rounds of \Keccak-$384$, which takes $2^{129}$ time~\cite{guo2016linear}.
+
+
+\subsection{Notations and Observations}
+In the analysis, we will represent a state by the lanes. There are in total $5\times 5$ lanes. Each lane in a state will be represented by a
+ variable which is a $64$-bit array. 
+A variable with a number in round bracket $``( . )"$ represents the shift of the bits in array towards MSB. A variable with a number in square bracket $``[ . ]"$ represents the bit value of the variable at that index. If there are multiple numbers in the square bracket then it represents the corresponding bit values.
+
+%% More details
+
+We are going to use the following observations in our analysis.
+\begin{enumerate}
+\item \label{ob1}\textbf{Observation 1:} The $\chi$ is a row-dependent operation. Guo \etal in~\cite{guo2016linear}, observed that if we know all the bits of a row then we can invert $\chi$ for that row. It is depicted in the Figure~\ref{chi_inv}.
+%------------------------------------------------------
+\begin{figure}
+\begin{center}
+\begin{tikzpicture}[ampersand replacement=\&]
+\matrix (m1) [matrix of nodes,
+nodes={inner sep=5pt,text width=0.5cm,align=center,minimum height=.5cm, draw,text height=1em,text depth=.2em}
+]{
+	$a_0$ \& $a_1$\& $a_2$ \& $a_3$ \& $a_4$\\
+};
+
+\matrix (m2) [right = 1.2cm of m1, matrix of nodes,
+nodes={inner sep=5pt,text width=0.5cm,align=center,minimum height=.5cm, draw,text height=1em,text depth=.2em}
+]{
+	$a_0^\prime$ \& $a_1^\prime$\& $a_2^\prime$ \& $a_3^\prime$ \& $a_4^\prime$\\
+};
+\draw[->, very thick] (m1)-- node[above, pos=0.5] {$\chi^{-1}$} (m2);
+\end{tikzpicture}
+\end{center}
+\caption{Computation of $\chi^{-1}$\label{chi_inv}}
+\end{figure}
+%------------------------------------------------------
+% check it for correctness
+\begin{align}
+a_i^\prime = a_i \oplus \left( a_{i+1} \oplus 1\right) \cdot \left( a_{i+2} \oplus \left( a_{i+3} \oplus 1 \right) \cdot a_{i+4}\right)
+\end{align}
+
+
+\item \label{ob2}\textbf{Observation 2:} When only one output bit is known after $\chi$ step, then the corresponding input bits have $2^4$ possibilities. Kumar \etal\cite{kumar2018cryptanalysis} gave a way to fix the first output bit to be the same as input bit and the second bit as $1$. It is shown in the Figure~\ref{chi_inv2}.
+
+%------------------------------------------------------
+\begin{figure}[ht]
+\begin{center}
+\begin{tikzpicture}[ampersand replacement=\&]
+\matrix (m1) [matrix of nodes,
+nodes={inner sep=5pt,text width=0.5cm,align=center,minimum height=.5cm, draw,text height=1em,text depth=.2em}
+]{
+	$a_0$ \& $*$ \& $*$ \& $*$ \& $*$\\
+};
+
+\matrix (m2) [right = 1.2cm of m1, matrix of nodes,
+nodes={inner sep=5pt,text width=0.5cm,align=center,minimum height=.5cm, draw,text height=1em,text depth=.2em}
+]{
+	$a_0$ \& $1$ \& $*$ \& $*$ \& $*$\\
+};
+\draw[->, very thick] (m1)-- node[above, pos=0.5] {$\chi^{-1}$} (m2);
+\end{tikzpicture}
+\end{center}
+\caption{Computation of $\chi^{-1}$\label{chi_inv2}}
+\end{figure}
+
+%------------------------------------------------------
+\end{enumerate}
+
+
+\subsection{Description of the Attack}
+The \Keccak-{384} outputs $384$ bits hash value, which is represented by the first $6$ lanes in the state obtained in the start of the squeezing phase. The diagram in the Figure~\ref{initial_sq} represents this state. The values of remaining lanes are represented by $\star$ and we do not care these values. We are interested in finding a preimage for which $6$ lanes of corresponding state matches. We will call this state as \emph{final state}.
+%------------------------------------------------
+\begin{figure}[ht]
+\begin{center}
+\begin{tikzpicture}[ampersand replacement=\&]
+\matrix (sm1) [matrix of nodes,
+nodes={inner sep=5pt,text width=0.5cm,align=center,minimum height=.5cm, draw,text height=1em,text depth=.2em}
+]{
+	$\star$ \& $\star$\& $\star$ \& $\star$ \& $\star$\\
+	$\star$ \& $\star$\& $\star$ \& $\star$ \& $\star$\\
+	$\star$ \& $\star$\& $\star$ \& $\star$ \& $\star$\\
+	$h_5$ \& $\star$\& $\star$ \& $\star$ \& $\star$\\
+	$h_0$ \& $h_1$\& $h_2$ \& $h_3$ \& $h_4$\\
+};
+\node[] at (-1.7,-2.2) { 0 };
+\node[] at (-0.85,-2.2) { 1 };
+\node[] at (0.0,-2.2) { 2 };
+\node[] at (0.9,-2.2) { 3 };
+\node[] at (1.8,-2.2) { 4 };
+\draw[thick,->] (-1.5, -2.8) -- node [above] {$x$} (0.0, -2.8);
+\node[] at (-2.5,-1.5) { 0 };
+\node[] at (-2.5,-0.75) { 1 };
+\node[] at (-2.5,0.0) { 2 };
+\node[] at (-2.5,0.8) { 3 };
+\node[] at (-2.5,1.5) { 4 };
+\draw[thick,->] (-3, -0.7) --  (-3, 0.8);
+\node[] at (-3.3, 0) {$y$};
+\end{tikzpicture}
+\end{center}
+\caption{Final State\label{initial_sq}}
+\end{figure}
+%------------------------------------------------
+Furthermore, we can ignore the {$\iota$} step without the loss of generality, as it does not affect the procedure of the attack. However it should be taken into account while implementing the attack.
+
+We further note that the initial state, which is fed to \Keccak-$f$ function, is the first message block which is represented by $25-2\cdot 6$ i.e., $13$ lanes. The remaining $12$ lanes are set to $0$. Pictorially, this state is represented by the diagram in the Figure~\ref{initial_state}. We call this state \emph{initial state}.
+Our aim is to find the values of $a_0, a_1, a_2$, $b_0, b_1, b_2$, $c_0, c_1, c_2$, $d_0, d_1$ and $e_0, e_1$ in the initial state which lead to a final state having first six lanes as $h_0, h_1, h_2,h_3, h_4$ and $h_5$. 
+
+We follow the basic idea of the attack, given in the paper~\cite{naya2011practical}.
+We start the attack by setting variables in the initial state which ensures zero column parity. 
+This is done by imposing the following restrictions.
+\begin{align}\nonumber
+a_2 &= a_0 \oplus a_1,\quad b_2 = b_0 \oplus b_1, \quad c_2 = c_0 \oplus c_1\\ \label{cond_state1}
+d_1 & = 0,\quad d_0 = 0\;\;\text{ and }\;\; e_1 = e_0. 
+\end{align}
+
+\begin{figure}
+\begin{center}
+\begin{tikzpicture}[ampersand replacement=\&]
+\matrix (sm1) [matrix of nodes,
+nodes={inner sep=5pt,text width=0.5cm,align=center,minimum height=.5cm, draw,text height=1em,text depth=.2em}
+]{
+	$0$ \& $0$\& $0$ \& $0$ \& $0$\\
+	$0$ \& $0$\& $0$ \& $0$ \& $0$\\
+	$a_1$ \& $b_1$\& $c_2$ \& $0$ \& $0$\\
+	$a_2$ \& $b_2$\& $c_1$ \& $d_1$ \& $e_1$\\
+	$a_0$ \& $b_0$\& $c_0$ \& $d_0$ \& $e_0$\\
+};
+\end{tikzpicture}
+\end{center}
+\caption{Setting of Initial State in the Attack\label{initial_state}}
+\end{figure}
+%--------------------------------------------------------
+This type of assignment to the initial state will make the {$\theta$} step mapping, an identity mapping. Even though we have put some restrictions to the initial state, we still find the input space of \Keccak-$384$ (with $1$ message block) large enough to ensure first $6$ lanes of output state, the given hash value. We explain the details of the analysis below. 
+
+Note that the output of attack is an assignment to the variables $a_0, a_1, a_2$, $b_0, b_1, b_2$, $c_0, c_1, c_2$, $d_0, d_1$ and $e_0, e_1$, which gives the target hash value. Recall that we are mounting an attack on the $2$-Round \Keccak-$384$ (see the diagram in Figure~\ref{two_rnd}).
+\begin{figure}
+\begin{center}
+\begin{tikzpicture}
+\node(A1)[]{\grd};
+\node(A2)[right=0.6cm of A1]{\grd};
+\node(A3)[right=0.6cm of A2]{\grd};
+\draw [very thick, ->,] (A1) -- node[above]{{\tt Round$\,1$}} 
+node[below]{$\theta,\rho,\pi,\chi,\iota$} (A2);
+\draw [very thick, ->,] (A2) -- node[above]{{\tt Round$\,2$}} node[below]{$\theta,\rho,\pi,\chi,\iota$}(A3);
+\node [below=0.0cm of A1, xshift=-0.5cm]{Intial State};
+\node [below=0.0cm of A3, xshift=-0.5cm]{Final State};
+\node [below=0.0cm of A2, xshift=-0.5cm]{Intermediate State};
+\end{tikzpicture}
+\caption{Two round of Keccak-$384$\label{two_rnd}}
+\end{center}
+\end{figure}
+%
+%
+The overall attack is summarized in the  diagram given in the Figure~\ref{atk}. 
+%
+\begin{figure}[!t]
+\begin{center}
+\resizebox{\textwidth}{!}{%
+\begin{tikzpicture}[ampersand replacement=\&, scale=0.5]
+\matrix (am1) [matrix of nodes,nodes in empty cells,
+nodes={inner sep=5pt,text width=1.0cm,align=center,minimum height=1.0cm, draw,text height=1em,text depth=.2em},
+myrow/.list={(1,white),(2,white),(4,gray!30),(5,gray!30)},
+mycell/.list={(3,1,gray!30),(3,2,gray!30),(3,3,gray!30),(3,4,white),(3,5,white)}]	
+{
+	$0$ \& $0$\& $0$ \& $0$ \& $0$\\
+	$0$ \& $0$\& $0$ \& $0$ \& $0$\\
+	$a_1$ \& $b_1$\& $c_2$ \& $0$ \& $0$\\
+	$a_2$ \& $b_2$\& $c_1$ \& $d_1$ \& $e_1$\\
+	$a_0$ \& $b_0$\& $c_0$ \& $d_0$ \& $e_0$\\
+};
+\matrix (am2) [right=1.5 cm of am1,matrix of nodes,nodes in empty cells,
+nodes={inner sep=5pt,text width=1.0cm,align=center,minimum height=1.0cm, draw,text height=1em,text depth=.2em},
+mycolumn/.list={(1,gray!30),(2,gray!30),(4,white),(5,white)},
+mycell/.list={(1,3,white),(3,3,white),(2,3,gray!30),(4,3,gray!30),(5,3,gray!30)}
+]	
+{
+	$c_0(62)$ \& $d_1(55)$ \& $0$ 		\& $0$ \& $0$\\
+	$e_0(27)$ \& $a_2(36)$ \& $b_1(10)$ \& $0$ \& $0$\\
+	$b_0(1)$  \& $c_1(6)$  \& $0$ 		\& $0$ \& $0$\\
+	$d_0(28)$ \& $e_1(20)$ \& $a_1(3)$  \& $0$ \& $0$\\
+	$a_0(0)$  \& $b_2(44)$ \& $c_2(43)$ \& $0$ \& $0$\\
+};
+
+\matrix (am3) [below=1.5 cm of am2,matrix of nodes,nodes in empty cells,
+nodes={inner sep=5pt,text width=1.0cm,align=center,minimum height=1.0cm, draw,text height=1em,text depth=.2em, fill=gray!10},
+mycell/.list={(5,1,gray!50),(4,2,gray!50),(3,3,gray!50),(2,4,gray!50),(1,5,gray!50),(5,4,gray!50),(4,5,gray!50)}
+]	
+{
+		\&  	\&   	\&  	\& $h_4^\prime(50)$\\
+		\&  	\&   	\&$h_3^\prime(43)$ \& 		\\
+		\&  	\& $h_2^\prime(21)$\&  	\& 		\\
+		\&$h_1^\prime(20)$ \&   	\&  	\& $1$		\\
+  $h_0^\prime(0)$ \& 		\&  	\& $h_5^\prime(36)$ 	\& 		\\
+};
+\matrix (am4) [left=1.50 cm of am3,matrix of nodes,nodes in empty cells,
+nodes={inner sep=5pt,text width=1.0cm,align=center,minimum height=1.0cm, draw,text height=1em,text depth=.2em, fill=gray!10},
+mycell/.list={(5,1,gray!50),(5,2,gray!50),(5,3,gray!50),(5,4,gray!50),(5,5,gray!50),(4,1,gray!50)}
+]	
+{
+	\&  \&   \&  \& \\
+	\&  \&   \&  \& \\
+	\&  \&   \&  \& \\
+	$h_5$ \&  \&   \&  \& \\
+	$h_0$ \& $h_1$\& $h_2$ \& $h_3$ \& $h_4$\\
+};
+
+\node[ below=0.2cm of am1-5-3]{\bf State~1};
+\node[ below=0.2cm of am2-5-4]{\bf State~2};
+\node[ below=0.2cm of am3-5-3]{\bf State~3};
+\node[ below=0.2cm of am4-5-3]{\bf State~4};
+\draw[->, very thick] (am1)-- node[above]{$\theta, \pi,\rho$} (am2);
+\draw[->, very thick] (am2)-- node[left]{$\chi, \iota,\theta$} (am3);
+\draw[->, very thick] (am4)-- node[above, pos=0.4]{$\iota^{-1},\chi^{-1}$} node[below, pos=0.6]{$ \pi^{-1},\rho^{-1}$} (am3);
+\end{tikzpicture}
+}
+\caption{Diagram for $2$-round preimage attack on \Keccak-$384$ \label{atk}}
+\end{center}
+\end{figure}
+%-------------------------------------
+The State~$2$, in the Figure~\ref{atk}, represents the state after $\pi \circ \rho \circ \theta$ is applied to the State~$1$. 
+The $\theta$-mapping becomes identity due to the condition
+(Equation~\ref{cond_state1}) imposed on the initial state. 
+The $\rho$ and $\pi$ mappings are, nevertheless, linear.
+
+We are given with a hash value which is represented by first $6$ lanes in the State~$4$ [Figure~\ref{atk}]. It represents the final state ({\tt Round}~2) of \Keccak-$384$. The state can be inverted by applying $\chi^{-1} \circ \iota^{-1}$ mapping. The $\iota^{-1}$ is trivial and $\chi^{-1}$ can be computed using the Observations~\ref{ob1} and~\ref{ob2}. The first $7$ lanes of the output is $\{h_0',h_1',h_2',h_3',h_4',h_5',h_6',1\}$. We do not care the remaining  lanes. 
+Then the mappings $\pi^{-1}$ and $\rho^{-1}$ are applied, which are very easy to compute, to get the State~$3$ [Figure~\ref{atk}]. Note that, at this point, the blank lanes in the State~$3$, of the Figure~\ref{atk}, could take any random value and this does not affect the target hash value.
+The number shown in round brackets along with the variable, in the State~$2$ and State~$3$ [Figure~\ref{atk}], is due to $\rho$ step mapping.
+On applying $\theta \circ \iota \circ \chi$, operation on the State~$2$, the output should match with the State~$3$ [Figure~\ref{atk}]. In the State~$3$, there are $7$ lanes whose values are fixed. 
+This will impose a total of $7\times 64$ conditions on the variables we have set in the initial state. As mentioned earlier, we have also set $6$ conditions (see the Equation~\ref{cond_state1}) on the initial state variable and this will further add $6 \times 64$ conditions. So there are in total $13\times 64$ conditions. Since the number of variables and the number of conditions is equal, we can expect to find one solution and it is indeed the case. In the rest of this section, we provide an algorithm to get the unique solution. Our method is based on the technique proposed by Naya-Plasencia \etal in the paper~\cite{naya2011practical}.
+
+
+ We aim to find the assignment of bits to the initial state which leads to a target hash value. We proceed as follows. We start with all possible assignments in the groups successive $3$ slices. Using the constraints (transformation from State~2 to State~3 [Figure~\ref{atk}]), we discard some of the assignments, and store the remaining ones, out of which one would be a part of the solution. This is done for every $3$-slice. Next step is to merge the two successive $3$-slices. Again we do discard certain choices of assignments and keep the remaining ones. This process is continued to fix a set of good assignments to the $6$-slices, $12$-slices, $16$-slices, $24$-slices and $48$-slice. In the last, after combining all the assignments we are left with a unique assignment, which is the required preimage. We explain the details in the Section~\ref{sec:partial_sol} below. 
+
+\subsection{Finding Partial Solutions\label{sec:partial_sol}}
+We focus on the two intermediate states of the attack i.e., the State~2 and the State~3 (see the Figure~\ref{atk_partial} below). Note that, since $d_0$ and $d_1$ are set to $0$ in the beginning, we are now left with $11$ lane variables $a_0, a_1, a_2$, $b_0, b_1, b_2$, $c_0, c_1, c_2$, $e_0$ and $e_1$ only.
+\begin{figure}
+	\begin{center}
+		\resizebox{\textwidth}{!}{%
+			\begin{tikzpicture}[ampersand replacement=\&, scale=0.5]
+			
+			\matrix (am2) [matrix of nodes,nodes in empty cells,
+			nodes={inner sep=5pt,text width=1.0cm,align=center,minimum height=1.0cm, draw,text height=1em,text depth=.2em},
+			mycolumn/.list={(1,gray!30),(2,gray!30),(4,white),(5,white)},
+			mycell/.list={(1,3,white),(3,3,white),(2,3,gray!30),(4,3,gray!30),(5,3,gray!30)}
+			]	
+			{
+				$c_0(62)$ \& $0$ \& $0$ 		\& $0$ \& $0$\\
+				$e_0(27)$ \& $a_2(36)$ \& $b_1(10)$ \& $0$ \& $0$\\
+				$b_0(1)$  \& $c_1(6)$  \& $0$ 		\& $0$ \& $0$\\
+				 $0$\& $e_1(20)$ \& $a_1(3)$  \& $0$ \& $0$\\
+				$a_0(0)$  \& $b_2(44)$ \& $c_2(43)$ \& $0$ \& $0$\\
+			};
+			
+			\matrix (am3) [right=1.5 cm of am2,matrix of nodes,nodes in empty cells,
+			nodes={inner sep=5pt,text width=1.0cm,align=center,minimum height=1.0cm, draw,text height=1em,text depth=.2em, fill=gray!10},
+			mycell/.list={(5,1,gray!50),(4,2,gray!50),(3,3,gray!50),(2,4,gray!50),(1,5,gray!50),(5,4,gray!50),(4,5,gray!50)}
+			]	
+            {
+                    \&  	\&   	\&  \& $h_4^\prime(50)$ \\
+                    \&  	\&   	\&$h_3^\prime(43)$ \& 	\\
+                    \&  	\& $h_2^\prime(21)$\&  	\& 		\\
+                    \&$h_1^\prime(20)$ \&   \&  \& $1$		\\
+              $h_0^\prime(0)$ \& \& \& $h_5^\prime(36)$ \& 	\\
+            };
+			
+			\node[ below=0.2cm of am2-5-3]{\bf State~2};
+			\node[ below=0.2cm of am3-5-3]{\bf State~3};
+
+			\draw[->, very thick] (am2)-- node[above]{$\chi, \iota,\theta$} (am3);
+			\end{tikzpicture}
+		}
+		\caption{Intermediate States in $2$-round preimage attack on \Keccak-$384$ \label{atk_partial}}
+	\end{center}
+\end{figure}
+We can ignore the $\iota$ mapping in the transformation form State~2 to State~3, without the loss of generality. The $\chi$-mapping depends only on the row, so it will not get affected by the bit values of the other slices. It is $\theta$-mapping that depends on the values in the two slices; the slice on its original bit position and a slice just before it.
+
+\subsubsection{Possible solutions for $3$-slices} 
+In a $3$-slice there are $3 \cdot 11 = 33$ bit variables for which we have to find the possible assignments. 
+
+Note that the bit variables, for example take $a_0[i]$, $a_1[i]$ and $a_2[i]$, are related ($a_2 = a_0 \oplus a_1$), but due to rotation, they do not 
+appear together when the successive $3$ slices are considered.
+Similarly, the other variables are also independent when restricted to a $3$-slice.
+This can be explained using the following example. If we take the first three slices then we get the following $33$ independent variables, given in the Equation~\ref{eq:lab1}.
+\begin{equation}
+\label{eq:lab1}
+\begin{aligned}
+&a_0[0,1,2],\;\;a_1[3,4,5],\;\;a_2[36,37,38],\\
+&b_0[1,2,3],\;\; b_1[10,11,12],\;\;b_2[44,45,46],\\
+&c_0[62,63,0],\;\;c_1[6,7,8],\;\;c_2[43,44,45],\\
+&e_0[27,28,29],\;\; e_1[20,21,22].
+\end{aligned}
+\end{equation}
+None of these variables have any dependency despite the initial restriction, given by Equation~\ref{cond_state1}. So we have an input space of $33$ independent variables in a given $3$-slice. 
+
+Given a $3$-slice in the State~2, we need to apply $\theta \circ \iota \circ \chi$ mapping to get an output in the State~3. Since the $\theta$ mapping depends on the values of two slices; the current slice and one preceding it, we will only able to get the correct output for two slices. In the State~3, we have the values of $7$ lanes available with us. So for the two slices, we have $7\cdot 2$ fixed bit values.
+For each of $2^{33}$ assignments in a $3$-slice of the State~2, we compute the output of
+$\theta \circ \iota \circ \chi$ mapping and match it to the $14$ bit locations, the values of which are available in the State~3.
+Thus for each $3$-slice, we get $2^{33-14} = 2^{19}$ solutions. This is repeated for $16$ consecutive $3$-slices, other than last $16$ slices. We use the fact that the time complexity of building the list is given by the size of the list as stated in Section~6.4 of~\cite{naya2011practical}. Thus the required time and memory complexity is of the order $16 \cdot 2^{19} = 2^{23}$.
+
+\subsubsection{Possible solutions for  $6$-slices} 
+The possible solutions for a $6$-slice are obtained by merging the possible solutions of its constituents two $3$-slices. The variables restricted to the $6$-slice is again independent. This can be explained in the following manner. Consider the rotated lanes $a_0(0)$, $a_1(3)$ and $a_2(36)$. Since the lane variable $a_2$ is rotated by $36$ and $a_1$ is rotated by $3$, the corresponding bits of original lanes are still $33$ places apart. Similarly $e_0$ is rotated by $27$ and $e_1$ is rotated by $20$, the corresponding bits are again $7$ places apart, so there is no repetitions of bits (remember initial condition $e_0 = e_1$). Since the difference between the rotation of related variables is more than $6$, the bit variables in a $6$-slice are also independent.
+So we have $2^{19\cdot 2}= 2^{38}$ possibilities for the bit variables in a $6$-slice. 
+
+We have already noted that the $\theta$-mapping cannot be computed for the first slice of a given $3$-slice. But, when we are merging two consecutive $3$-slices, $\theta$-mapping for the first slice of second $3$-slice can be computed and this will pose an additional restriction (of $7$ bits) for the input space of the $6$-slice.
+As an example consider a group of slices $(0,\,1,\,2)$ and another group of slices $(3,\,4,\,5)$. Note that the $\theta$-mapping, on the slice $3$, depends on the slice $3$ and $2$. So when we are merging these two $3$-slices, we will have to satisfy the bits corresponding to slice $3$, in the State~3. 
+
+So we get a total $2^{19\cdot 2 - 7} = 2^{31}$ solutions. There are $8$ number of $6$-slices.
+The cost of this step is $8 \cdot 2^{31}$ in both time and memory. Note that the merging of two lists is done using the instant matching
+algorithm described in~\cite{naya2011improve} by the method described in the Section~6.4 of the paper~\cite{naya2011practical}. This method will be used in the following steps also, where the time complexity will be bounded by the number of solutions obtained. Thus this step has time and memory complexity of $8 \cdot 2^{31} = 2^{34}$.
+
+\subsubsection{Possible solutions for $12$-slices} 
+For computing the possible solutions for a $12$-slice, we merge two of its constituents $6$-slices, in a manner similar to what we did for a $6$-slice. In this case, the number of repeated bits in merge is $5$, because the corresponding bits in $e_0$ and $e_1$ are set $7$ places apart by the rotation in the State~2. Thus total number of possible solutions for a $12$-slice is $2^{31 \cdot 2 - 5 - 7} = 2^{50}$. There are $4$ groups of $12$ slices, so it has time and memory complexity of $4 \cdot 2^{50} = 2^{52}$.
+
+\subsubsection{Possible solutions for $24$-slices}  
+Similar to the previous cases, we merge each of its two consecutive  
+$12$-slices. 
+In this case, the number of repeated bits is $24-7=17$, out of which $5\cdot 2=10$ has already been considered, during the construction of possible solutions of $12$-slices. So the number of new repeated bit variables are $7$.
+Hence, the total number of possible solutions for this case is $2^{50\cdot 2 - 7 - 7} = 2^{86}$. Note that the removal of addition seven bits is due to merging. There are $2$ groups of $24$ slices, so it has time and memory complexity of $2 \cdot 2^{86} = 2^{87}$.\\
+
+
+\subsubsection{Possible solutions for $48$-slice}
+Finally, we merge the two groups of $24$ slices.
+We have $2$ sets of $24$ slices as
+
+$1^{\rm st}$ group :
+\begin{equation}\label{48_sol_1}
+	\left.
+	\begin{aligned}
+    	a_0 &\rightarrow 0,\, 1,\, 2, \ldots ,\, 23\\
+    	a_1 &\rightarrow 3,\,4, \,5, \ldots ,\, 26\\
+    	a_2 &\rightarrow 36,\,37,\,38, \ldots ,\, 59
+    \end{aligned}
+    \;\;\right\}
+\end{equation}
+
+$2^{\rm nd}$ group :
+\begin{equation}\label{48_sol_2}
+	\left.
+	\begin{aligned}    
+      a_0 & \rightarrow 24,\, 25,\, 26, \ldots , \,47\\
+      a_1 & \rightarrow 27,\, 28, \,29, \ldots , \,50\\
+      a_2 & \rightarrow 60,\, 61,\,62, \ldots , \,19
+    \end{aligned}
+	\;\;\right\}.
+\end{equation}
+
+After Merging these two groups [Equation~(\ref{48_sol_1}) and 
+Equation~(\ref{48_sol_2})] of $24$ slices, we get
+\begin{equation}
+	\left.
+	\begin{aligned}       
+    a_0 &\rightarrow 0,\, 1,\, 2,\ldots ,\, 47\\
+    a_1 & \rightarrow 3,\, 4,\, 5,\ldots ,\, 50\\
+    a_2 & \rightarrow 36,\, 37,\ldots,\, 63,\, 0,\, 1,\ldots ,\, 19
+    \end{aligned}
+	\;\;\right\}.
+\end{equation}
+Here the common variables for $\left< a_0, a_1,a_2\right>$ are the bits with positions
+$36, 37 ,\ldots, 47$ and $ 3, 4,\ldots,19$. They are total $29$ in number. It will impose $29$ conditions on the input space for the $48$-slice.
+Similarly for the lanes $\left< b_0, b_1,b_2\right>$, we get $23$ conditions and for $\left< c_0, c_1,c_2 \right>$, we get $24$ such conditions.
+On the other hand, there are $7$ new repeated bits in the lanes $e_0$ and $e_1$. Thus the total number of solutions turns out to be $2^{86\cdot 2 - (29 + 23 + 24 + 7) - 7 } = 2^{82}$. Since, there is only one $48$-slices, so it has time and memory complexity of $2^{82}$.
+
+\subsubsection{Possible solutions for remaining $16$ slices} 
+For finding solutions for the remaining $16$ slices, we first find solutions for the $12$ rightmost slices, the same way as before, and obtaining $2^{50}$ possible solutions. 
+Next, we obtain the possible solutions for the remaining $4$ slices, we have $44$ variables and none of them are repeated. Since we can get the output of $\theta$-mapping for the last $3$ slices out of the $4$. We have  $2^{44 - 7\cdot 3} = 2^{23}$ possible solutions for this $4$-slice.
+Now, we can merge $12$-slice and $4$-slice to obtain possible solutions for the last $16$ slices. Between $12$-slice and $4$-slice, there are $4$ repetitions (due to $e_0$ and $e_1$) and there are additional $7$ bits of restrictions due to merging. This gives us $2^{50 + 23 - 4 -7} = 2^{62}$ possible solutions.
+\subsubsection{Final Solution(s) and attack complexity}
+Now, we have to merge the solutions for the group of first $48$ slices and the group of last $16$ slices. They have in common $35$ bits from $a_0$, $a_1$ and  $a_2$, $41$ bits from $b_0$, $b_1$ and $b_2$, $40$ bits from $c_0$, $c_1$ and $c_2$ and $14$ bits from $e_0$ and $e_1$. Additionally, in merging, we can compute the $\theta$ mapping of the remaining two slices, in turn get the additional restriction of $2\cdot 7$ bits. Thus the total number of possible solutions, we are left with, is $2^{82 + 62 - (35+ 41 + 40 + 14) - 2 \cdot 7} = 2^{0} = 1$. This step has time complexity $ 2^{82}$.
+
+Total time complexity of the attack is given by $2^{33} + 2^{34} + 2^{52} + 2^{87} + 2^{63} + 2^{82}$, which is of the order $2^{88}$.
+ The total memory required is $2^{87}$. 
+This confirms that there exists a set of values for the variables such that the preimage can be obtained from the hash value for the  \Keccak-$384$.
+
+
+\paragraph{\textbf{Remark:}
+In our attack, we have fixed $d_0, d_1$ lanes to be equal to $0$ as shown in Equation~(\ref{cond_state1}) because otherwise, these variables would have increased the number of solutions, due to shifting by $\rho$. 
+And this would have increased the complexity of the attack. We chose to eliminate their effects by setting them to $0$. For further implementation details, we refer to the Section~6.4 of the paper~\cite{naya2011practical}. Also due to the padding rule on the message, the assignment to the $c_1[63]$ bit should be 1. This happens with probability $\tfrac{1}{2}$. On failure we can repeat the attack by setting any value to $d_0$,$d_1$ which satisfies $d_0[i]=d_1[i]$. \\
+}
+
+In view of the above remark, the overall cost of the attack is $2\cdot 2^{88}$ i.e., $2^{89}$.
+
+\section{Conclusion and Future works}
+In this paper, we have presented a preimage attack on the $2$ rounds of round-reduced \KECCAK-$384$. The attack is not yet practical but it is much better than the existing best-known attack in term of the time complexity. The basic idea of the attack can be used to mount a practical preimage attack on the $\Keccak[r:=400-192,\, c:=192]$ and $\Keccak[r:=800-384,\,c:=384]$. 
+We are working on their implementations. We will make the source code public, once it is ready. 
+Further, in future, we will try to explore a practical attack for the $2$ or more rounds of round-reduced \KECCAK-$384$.
+
+\section*{Acknowledgement} We thank the reviewers of Indocrypt-$2018$ for providing comments which helped in
+improving the work. In particular, we thank an anonymous reviewer for suggesting us to implement the attack on the $\Keccak[r:=400-192,\, c:=192]$ and also providing insights to further improve the attack. We take it as the future work. 
+\nocite{*}
+\bibliographystyle{splncs04}
+
+\bibliography{references}
+
+\end{document}
