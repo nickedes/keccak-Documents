@@ -76,25 +76,11 @@
 
 \begin{document}
 %
-\title{Cryptanalysis of $2$ round \KECCAK-$384$}
+\title{Cryptanalysis of round-reduced \KECCAK}
 %
 %\titlerunning{Abbreviated paper title}
 % If the paper title is too long for the running head, you can set
 % an abbreviated paper title here
-%
-
-\author{Rajendra Kumar\inst{1} \and
-Nikhil Mittal\inst{1} \and
-Shashank Singh\inst{2}}
-
-\authorrunning{Kumar \etal}
-% First names are abbreviated in the running head.
-% If there are more than two authors, 'et al.' is used.
-
-\institute{Center for Cybersecurity, Indian Institute of Technology Kanpur, India
-\email{mnikhil@iitk.ac.in, rjndr@iitk.ac.in}\\ \and
-Indian Institute of Science Education and Research Bhopal\\
-\email{shashank@iiserb.ac.in}}
 %
 
 \maketitle              % typeset the header of the contribution
@@ -102,7 +88,7 @@ Indian Institute of Science Education and Research Bhopal\\
 \begin{abstract}
 In this paper, we present a cryptanalysis of round reduced \KECCAK-$384$ for $2$ rounds. The best known preimage attack for this variant of \KECCAK{} has the time complexity $2^{129}$.  In our analysis, we find a preimage in the time complexity of $2^{89}$ and the same memory is required.
 
-\keywords{\KECCAK \and \SHA-3 \and Cryptanalysis \and Hash Functions \and Preimage Attack.}
+% \keywords{\KECCAK \and \SHA-3 \and Cryptanalysis \and Hash Functions \and Preimage Attack.}
 \end{abstract}
 %
 %
@@ -647,6 +633,20 @@ And this would have increased the complexity of the attack. We chose to eliminat
 }
 
 In view of the above remark, the overall cost of the attack is $2\cdot 2^{88}$ i.e., $2^{89}$.
+
+\subsection{Preimage Attack on 3-round \Keccak-$256$}
+This attack draws motivation from preimage attack on 2 round \Keccak-$384$ by Guo \etal. \Keccak-$256$ structure has capacity $c = 256*2 = 8$ lanes. We increase the no. of variable lanes here as compared to \Keccak-$384$ structure, by keeping the lanes $(0,0), (0,1), (0,2), (0,3)$ and $(2,0), (2,1), (2,2)$ as variables in Column $0, 2$ respectively.
+
+To prevent the spread of $\theta$ in first round we need to add constraints :
+\begin{enumerate}
+\item Keep \[
+        A[0,3] = A[0,0] \oplus A[0,1] \oplus A[0, 2] \oplus \alpha_0
+    \]
+\item \[
+        A[2,2] = A[2,0] \oplus A[2,1] \oplus \alpha_2
+    \]
+\end{enumerate}
+Here, $\alpha_0, \alpha_2$ are random constants.
 
 \section{Conclusion and Future works}
 In this paper, we have presented a preimage attack on the $2$ rounds of round-reduced \KECCAK-$384$. The attack is not yet practical but it is much better than the existing best-known attack in term of the time complexity. The basic idea of the attack can be used to mount a practical preimage attack on the $\Keccak[r:=400-192,\, c:=192]$ and $\Keccak[r:=800-384,\,c:=384]$. 
