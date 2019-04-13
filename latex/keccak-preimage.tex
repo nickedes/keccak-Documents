@@ -499,4 +499,25 @@ In Guo-Liu-Song, Fig. 13 the (allowed) linear pattern after 32 rounds is the sam
     \item We need to try $= 2^{702 - 640} = 2^{62}$ sum values of the linear columns in the state(a) of the 2nd round, to ensure that there is a solution to this system.
     \item Complexity of this stage is $2^{62}$
 \end{enumerate}
+
+\subsection{2R, Keccak-384, Internal diff}
+\begin{enumerate}
+    \item We start with structure of Fig. 9 initial msg in Guo-liu-song paper.
+    \item To increase no. of freedome degrees we take lanes (3,0), (3,1)
+    \item To keep $\theta$ constant, we are left with 5 (2 + 2 + 1) freedom degrees.
+    \item Since we are performing experiment based on rotation index = 32, we assume initial msg symmetry.
+    \item Hence, left with 5*32 bits of freedom degrees.
+    \item We go forward with $\pi \circ \rho \circ \theta$ and get a linear state, where 2 linear lanes are adjacent. (State is still symmetric).
+    \item After, $\chi$ one quadratic lane is produced. Replace this with a new linear variable of 32-bit symmetry. Since we are following rotation index property. So we artificial degree of freedom = 32
+    \item So till now we have 5*32=160 actual degrees of freedom and 32 artificial.
+    \item The hash state has 6 lanes. 5 lanes can be directly inverted by $\Chi$ and $\iota$. But is this symmetric?
+    \item From the characteristic found of i=32, 1.5 Rounds K-384: We observe that only 3 lanes are not completely symmetric and have 3 such bits(1 from each).
+    \item We initially guessed that the msg was symmetric for i=32.
+    \item There are some symmetric hashes for this should work. (With some probability?)
+    \item Complexity increase due to probabilistic 6th lane linear conversion will be $ = (p)^{32}$, $p = 0.75^{-1}$ due to linear for 6th lane.
+    \item Complexity $ = 2^{6*32 - 5*32} * (p)^{32} $
+    \item The above steps is based on what all clarity I have about the method.
+    \item This should work because for lanes of our interest i.e. first 6 lanes there is hardly any difference.
+\end{enumerate}
+
 \end{document}
