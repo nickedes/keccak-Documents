@@ -652,12 +652,26 @@ To prevent the spread of $\theta$ in first round we need to add constraints :
     \]
 \end{enumerate}
 Here, $\alpha_0, \alpha_2$ are random constants.
-Due to the above constraints the state remains linear and the variables will not spread after application of \theta step mapping. So, After applying $\iota \circ \chi \circ \pi \circ \rho \circ \theta $ i.e. a round the state remains linear.
+Due to the above constraints the state remains linear and the variables will not spread after application of $\theta$ step mapping. So, After applying $\iota \circ \chi \circ \pi \circ \rho \circ \theta $ i.e. a round the state remains linear.
 Moving on to the second round, the state is linear even after application of $\pi \circ \rho \circ \theta$, since these step mappings are linear. So, input state to the step $\chi$ of second round is linear.
 
 On the other hand we have hash value of only 4 lanes, assume any random value as value of 5th lane.
 We can directly inverse these 320 bits through $\chi^{-1} \circ \iota^{-1}$ from given modified hash value.
-Then we can apply the same technique as mentioned in section 6.3 \cite{} for this structure also. We linearize the $C[x][y][z]$ term as in $(14)$. We can match $2\floor*{\frac{t - 5}{8}}$ bits of a given hash value if we have $t$ variables.
+Then we can apply the same technique as mentioned in section 6.3 \cite{guo2016linear} for this structure also. 
+
+Of the inverted state, each bit is a sum of 11 bits of the output of the second round. Since $\pi \circ \rho$ just permutate the positions of the bits and $\iota$ just add a constant to the first lane, they do not increase the nonlinear terms, and thus we neglect these steps in the last one and a half rounds. As in section 6.3 per equation $(14)$ the equation of $C[x][y][z]$. Expanding it :
+    \[
+        C[x][y][z] = B[x][y][z] \oplus \oplus_{y' = 0}^{4} B[x-1][y'][z] \oplus \oplus_{y' = 0}^{4} B[x+1][y'][z-1]
+    \]
+    Open all the expressions and separate two terms $B[x][y][z]$ and $B[x-1][y][z]$ and rest 9 terms remain as it is.
+    So, \[ B[x][y][z] \oplus B[x-1][y][z] = (a \oplus c + b) \oplus d
+    \]
+    Where \[
+        a = A[x][y][z], b = A[x + 1][y][z], c = A[x + 2][y][z], d = A[x - 1][y][z]
+    \]
+    So guessing $d$ and other 9 terms would make $C[x][y][z]$ linear. Hence, We linearize $C[x][y][z]$ by guessing 10 bits input to step $\chi$. That is, we obtain 11 = 1 + 10 linear equations and match 1 bit of the hash value.
+We can match $2\floor*{\frac{t - 5}{8}}$ bits of a given hash value if we have $t$ variables \cite{guo2016linear}.
+
 For \Keccak-$256$, we have $t = 5*64 = 320$ variables.
 So the no. of matched bits = $78$, with this we have a complexity gain over bruteforce of $2^{78}$
 Attack complexity $ = 2^{256 - 78} = 2^{178}$.
