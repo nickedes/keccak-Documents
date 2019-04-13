@@ -85,11 +85,11 @@
 
 \maketitle              % typeset the header of the contribution
 %
-\begin{abstract}
-In this paper, we present a cryptanalysis of round reduced \KECCAK-$384$ for $2$ rounds. The best known preimage attack for this variant of \KECCAK{} has the time complexity $2^{129}$.  In our analysis, we find a preimage in the time complexity of $2^{89}$ and the same memory is required.
+% \begin{abstract}
+% In this paper, we present a cryptanalysis of round reduced \KECCAK-$384$ for $2$ rounds. The best known preimage attack for this variant of \KECCAK{} has the time complexity $2^{129}$.  In our analysis, we find a preimage in the time complexity of $2^{89}$ and the same memory is required.
 
-% \keywords{\KECCAK \and \SHA-3 \and Cryptanalysis \and Hash Functions \and Preimage Attack.}
-\end{abstract}
+% % \keywords{\KECCAK \and \SHA-3 \and Cryptanalysis \and Hash Functions \and Preimage Attack.}
+% \end{abstract}
 %
 %
 %
@@ -97,7 +97,12 @@ In this paper, we present a cryptanalysis of round reduced \KECCAK-$384$ for $2$
 
 Cryptographic hash functions are the important component of  modern cryptography. In 2008, U.S. National Institute of Standards and Technology (NIST) announced a competition for the Secure Hash Algorithm-3 (\SHA-3). A total of $64$ proposals were submitted to the competition. In the year $2012$, NIST announced \KECCAK{} as the winner of the competition. The \KECCAK{} hash function was designed by Guido Bertoni, Joan Daemen, Micha\"{e}l Peeters, and Gilles Van Assche~\cite{bertoni2009keccak}. Since $2015$, \KECCAK{} has been standardized as \SHA-$3$ by the NIST.
 
-The \KECCAK{} hash function is based on sponge construction~\cite{bertoni2011cryptographic} which is different from previous \SHA{} standards. Intensive cryptanalysis of \KECCAK{} is done since its inception ~\cite{bernstein2010second}~\cite{naya2011practical}~\cite{dinur2012new}~\cite{dinur2013collision}~\cite{morawiecki2013sat}~\cite{dinur2014improved}~\cite{chang20141st}~\cite{guo2016linear}~\cite{qiao2017new}~\cite{song2017non}~\cite{kumar2018cryptanalysis}. In $2012$, Dinur \etal  gave a practical collision attack for $4$ rounds of \Keccak-$224$ and \Keccak-$256$ using differential and algebraic techniques~\cite{dinur2012new} and also provided attacks for $3$ rounds for \Keccak-$384$ and \Keccak-$512$. They further gave collision attacks in $2013$ for $5$ rounds of \Keccak-$256$ using internal differential techniques~\cite{dinur2013collision}. In $2016$, using linear structures, Guo \etal proposed preimage attacks for $2$ and $3$ rounds of \Keccak-$224$, \Keccak-$256$, \Keccak-$384$, \Keccak-$512$ and for $4$ rounds in case of smaller hash lengths~\cite{guo2016linear}. Recently, in the year $2017$, Kumar \etal gave efficient preimage and collision attacks for $1$ round of \Keccak~\cite{kumar2018cryptanalysis}. There are hardly any attack for the full round \KECCAK{}, but there are many attacks for reduced round \Keccak{}. Some of the important results are shown in the Table~\ref{tab1} and Table~\ref{tab2}.
+The \KECCAK{} hash function is based on sponge construction~\cite{bertoni2011cryptographic} which is different from previous \SHA{} standards. SHA-3 family of hash functions is based on \Keccak{}. The SHA-3 family provides four hash functions and two extendable-output functions. These functions are designed to provide resistence against preimage attacks, collision attacks and second-preimage attacks.
+
+\Keccak{}'s excellent resistence towards cryptanalytic attacks is one of the main reasons for its selection by NIST. The algorithm is a good mixture of linear as well as non-linear operations.
+
+
+Intensive cryptanalysis of \KECCAK{} is done since its inception ~\cite{bernstein2010second}~\cite{naya2011practical}~\cite{dinur2012new}~\cite{dinur2013collision}~\cite{morawiecki2013sat}~\cite{dinur2014improved}~\cite{chang20141st}~\cite{guo2016linear}~\cite{qiao2017new}~\cite{song2017non}~\cite{kumar2018cryptanalysis}. In $2012$, Dinur \etal  gave a practical collision attack for $4$ rounds of \Keccak-$224$ and \Keccak-$256$ using differential and algebraic techniques~\cite{dinur2012new} and also provided attacks for $3$ rounds for \Keccak-$384$ and \Keccak-$512$. They further gave collision attacks in $2013$ for $5$ rounds of \Keccak-$256$ using internal differential techniques~\cite{dinur2013collision}. In $2016$, using linear structures, Guo \etal proposed preimage attacks for $2$ and $3$ rounds of \Keccak-$224$, \Keccak-$256$, \Keccak-$384$, \Keccak-$512$ and for $4$ rounds in case of smaller hash lengths~\cite{guo2016linear}. Recently, in the year $2017$, Kumar \etal gave efficient preimage and collision attacks for $1$ round of \Keccak~\cite{kumar2018cryptanalysis}. There are hardly any attack for the full round \KECCAK{}, but there are many attacks for reduced round \Keccak{}. Some of the important results are shown in the Table~\ref{tab1} and Table~\ref{tab2}.
 \newline
 
 \textbf{Our Contribution:} We propose a preimage attack for $2$ rounds of round-reduced \KECCAK-$384$. The time complexity of attack is $2^{89}$ and the memory complexity is $2^{87}$. The attack is not practical, but it outperforms the previous best-known attack~\cite{guo2016linear}, with a good gap. The proposed attack does not affect the security of full \KECCAK{}.
