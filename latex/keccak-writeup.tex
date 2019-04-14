@@ -173,8 +173,11 @@ The \Keccak{} family of hash functions is based on the sponge construction. The 
 \]
 
 The round function $p$ in \Keccak{} consists of $5$ steps, in each of which the state undergoes transformations specified by the step mapping. These step mappings are called $\theta, \rho, \pi, \chi$ and  $\iota$. A state $S$, which is a $b$-bit string, in \Keccak{} is usually denoted by a $3$-dimensional grid of size $(5 \times 5 \times w)$ as shown in the Figure~\ref{ss}. The value of $w$ depends on the parameters of \Keccak{}. For example in the case of \Keccak-$f\left[1600\right]$, $w$ is equal to $64$. It is usual practice to represent a state in terms of rows, columns, lanes, plane, sheets, slices and width of the $3$-dimensional grid.
+
 Given a bit location $(x,y,z)$ in the grid, the corresponding row is given by $\left( S[x+i \pmod 5,y,z] : \, i \in [0,4] \right)$. Similarly the corresponding column is given by the bits $\left( S[x,y+i \pmod 5,z] : \, i \in [0,4] \right)$ and the corresponding lane is given by $\left( S[x,y,z+i \pmod w] : \, i \in [0,w-1] \right)$. 
+
 Further, the plane corresponding to a location $(x,y,z)$, consists of $\left( S[x+j \pmod 5,y \pmod 5,z + i] : \, i,\,j \in [0,4] \right)$, similarly the sheets consists of $\left( S[x \pmod 5,y+j \pmod 5,z + i] : \, i,\,j \in [0,4] \right)$, and slice consists of $\left( S[x+j \pmod 5,y+i \pmod 5,z] : \, i,\,j \in [0,4] \right)$ bits.
+
 Some of the above are pictorially shown in the Figure~\ref{ss}.
 \begin{figure}
   \begin{tikzpicture}[on grid,scale=0.4]
@@ -214,19 +217,24 @@ Some of the above are pictorially shown in the Figure~\ref{ss}.
 In the following, we provide a brief description of the step mappings.
  Let $A$ and $B$ respectively denote input and output states of a step mapping.
 \begin{enumerate}
-    \item $\theta$ ({\bf theta}): The theta step XORs each bit in the state with the parities of two neighboring columns. For a given bit position $(x, y, z)$, one column is $((x - 1) \bmod 5, z) $ and the other is $((x+1)\bmod 5, (z - 1) \bmod w)$. Thus, we have
+    \item $\theta$ ({\bf theta}): The theta step XORs each bit in the state with the parities of two neighboring columns. For a given bit position $(x, y, z)$, one column is $((x - 1) \bmod 5, z) $ and the other is $((x+1)\bmod 5, (z - 1) \bmod w)$. 
+    
+    Thus, if we have $A$ as the input state to $\theta$ then the output state $B$ is :
+    
     \begin{align}\nonumber
-        B[x, y, z] &= A[x, y, z] \oplus P[ (x - 1) \bmod 5 ,\, z ] \\
-        &\hspace{1.3cm}\oplus P[ (x + 1) \bmod 5 ,\, (z - 1) \bmod w ]
+        B\left[x, y, z\right] &= A\left[x, y, z\right] \oplus P\left[ (x - 1) \bmod 5 ,\, z \right] \\
+        &\hspace{1.3cm}\oplus P\left[ (x + 1) \bmod 5 ,\, (z - 1) \bmod w \right]
     \end{align}
-    where $P[x, z]  = \oplus_{y = 0}^{4} A[x, y, z] $.
+    where $P[x, z]$ represents the parity of the column represented by $(x, z)$ and $P[x, z]  = \oplus_{y = 0}^{4} A[x, y, z] $.
     %%% CHECK: Done
     \vskip5pt
     \item $\rho$ ({\bf rho}): This step rotates each lane by a constant value towards the MSB i.e., 
     \begin{align}
         B[x, \,y,\, z] = A[x, \,y, \,z + \rho(x, y) \bmod w ],
     \end{align}
-    where $\rho(x, y)$ is the constant for lane $(x, y)$. The constant value $\rho(x, y)$ is specified for each lane in the construction of \Keccak{}. 
+    where $\rho(x, y)$ is the constant for lane $(x, y)$. 
+    
+    The constant value $\rho(x, y)$ is specified for each lane in the construction of \Keccak{}. 
     \vskip5pt
     \item $\pi$ ({\bf pi}): It permutes the positions of lanes. The new position of a lane is determined by a matrix, 
     \begin{align}
@@ -235,17 +243,23 @@ In the following, we provide a brief description of the step mappings.
     \end{align}
     where $(x', y')$ is the position of lane $(x, y)$ after $\pi$ step.
     \vskip5pt
-    \item $\chi$ ({\bf chi}): This is a non-linear operation, where each bit in the original state is XOR-ed with a non-linear function of next two bits in the same row i.e.,
+    \item $\chi$ ({\bf chi}): In this operation each bit in the original state is XOR-ed with a non-linear function of next two bits in the same row i.e.,
     \begin{align}\nonumber
         B[x, y, z] &=  A[x, y, z] \;\oplus \\
         & \hspace{0.5cm} \left( \left(A[ (x + 1 )\bmod 5, y, z] \oplus 1\right) \cdot  A[ (x + 2) \bmod 5, y, z] ) \right).
     \end{align}
+    
+    $\chi$ is the only non-linear operation among the $5$ step mappings in \KECCAK{}.
+    
     \vskip5pt
     \item $\iota$ ({\bf iota}): This step mapping only modifies the $(0, 0)$ lane depending on the round number i.e., 
     \begin{align}
        B[0, 0] = A[0, 0] \oplus RC_i,
    \end{align}
     where $RC_i$ is round constant that depends on the round number. The remaining $24$ lanes remain unaffected.
+    
+    All the rounds are identical but this symmetry is destroyed by the step $\iota$ where the round constant is dependent on the round index.
+    All the additions and multiplications in the operations defined above are in $\textbf{GF}(2)$.
 \end{enumerate}
 
 Thus a round in \Keccak{} is given by ${\tt Round}(A, i_r) = \iota( \chi( \pi ( \rho ( \theta ( A ) ) ) ) , i_r)$, where $A$ is the state and $i_r$ is the round index. In the \Keccak-$p[b, n_r]$, $n_r$ iterations of ${\tt Round}(\cdot)$ is applied on the state $A$.
