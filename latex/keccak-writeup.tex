@@ -156,16 +156,18 @@ It is described below.
 \includegraphics[width=\textwidth]{sponge}
 \caption{The sponge construction~\cite{bertoni2011cryptographic}\label{sponge}}
 \end{figure}
-The bit string $N$ is first padded based on the $pad$ rule. The padded string is divided into blocks of length $r$. The function $f$ 
-maps a string of length $b$ to another of same length.
-The capacity, denoted by $c$, is a positive integer such that $r + c = b$. The initial state is a $b$-bit string which is set to all zeros. 
-After a string $N$ is padded, it undergoes two phases of sponge, namely absorbing and squeezing. In the absorbing phase, the padded string $N^\prime$ is split into $r$-bit blocks, say $N_1, N_2, N_3,\ldots,N_m$.
-The first $r$ bits of initial state are XOR-ed with the first block and the remaining $c$ bits are appended to the output of XOR. Then it is given as input to the function $f$ as shown in the diagram given in the Figure~\ref{sponge}. The output of this $f$ becomes the initial state for the next block and the process is repeated for all blocks of the message. After all the blocks are absorbed, let the resulting state be $P$. 
+The input bit string $N$ is first padded based on the padding rule given by $pad$ such that $N$ is a multiple of $r$. The padded string is then divided into blocks of length $r$. The permutation function $f$ maps a string of length $b$ to another of same length. It operates on the $b$-bit string where the first part contains the $r$ bits of the state and the second part contains the remaining $c$ bits of the state.
 
-In the squeezing phase, an string $Z$ is initialized with the first $r$ bits of the state $P$. The function $f$ is applied on the state $P$ and the first $r$ bits of output, say $P^\prime$, is appended to $Z$. The $P^\prime$ is again passed to $f$ and this process is repeated until $|Z| \geq d$. The output of sponge construction is given by the first $d$ bits of $Z$.
+$c$ denotes the capacity which is a positive integer such that $r + c = b$. The initial state is a $b$-bit string which is set to all zeros. 
+
+After a string $N$ is padded, it undergoes two phases of sponge, namely absorbing and squeezing. 
+
+In the absorbing phase, the padded string $N^\prime$ is split into $r$-bit blocks, say $N_1, N_2, N_3,\ldots,N_m$. The first $r$ bits of initial state are XOR-ed with the first block $N_1$ and the remaining $c$ bits are appended to the output of XOR. The XOR-ed state is fed as input to the function $f$ as shown in the diagram given in the Figure~\ref{sponge}. The output of $f$ becomes the initial state for the next block and this process repeats for all blocks of the message. After all the blocks are absorbed, the absorption phase is finished. Let the resulting state after absorption be $P$. 
+
+In the squeezing phase, an string $Z$ is initialized with the first $r$ bits of the state $P$. The function $f$ is applied on the state $P$ and the first $r$ bits of the output state, say $P^\prime$, is appended to $Z$. The state $P^\prime$ is again passed to $f$ and this process is repeated until $|Z| \geq d$. The output of sponge construction is given by the first $d$ bits of $Z$.
 % 
 
-The \Keccak{} family of hash functions is based on the sponge construction. The function $f$, in the sponge construction, is denoted by \Keccak-$f\left[b\right]$, where $b$ is the length of input string. Internally \Keccak-$f\left[b\right]$ consists of a round function $p$ which is recursively applied to a specified number of times, say $n_r$. More precisely \Keccak-$f\left[b\right]$ function is specialization of \Keccak-$p\left[b,\,n_r\right]$ family where $n_r = 12 + 2\,l$ and $l = \log_2 (b/25)$ i.e.,
+The \Keccak{} family of hash functions is based on the sponge construction. The function $f$, in the sponge construction, is denoted by \Keccak-$f\left[b\right]$, where $b$ is the length of input string. Internally \Keccak-$f\left[b\right]$ consists of a round function $p$ which is recursively applied a specified number of times, say $n_r$. More precisely \Keccak-$f\left[b\right]$ function is specialization of \Keccak-$p\left[b,\,n_r\right]$ family where $n_r = 12 + 2\,l$ and $l = \log_2 (b/25)$ i.e.,
 \[
 	\Keccak\text{-}f\left[b\right] = \Keccak\text{-}p\left[b,  12 + 2l\right].
 \]
@@ -307,7 +309,7 @@ a_i^\prime = a_i \oplus \left( a_{i+1} \oplus 1\right) \cdot \left( a_{i+2} \opl
 \begin{center}
 \begin{tikzpicture}[ampersand replacement=\&]
 \matrix (m1) [matrix of nodes,
-nodes={inner sep=5pt,text width=0.5cm,align=center,minimum height=.5cm, draw,text height=1em,text depth=.2em}
+nodes={inner sep=5pt,text width=0.5﻿​_cm,align=center,minimum height=.5cm, draw,text height=1em,text depth=.2em}
 ]{
 	$a_0$ \& $*$ \& $*$ \& $*$ \& $*$\\
 };
