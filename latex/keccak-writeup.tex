@@ -280,9 +280,9 @@ The \SHA-3 hash family supports minimum four different  output length $d \in \{2
 \section{Attacks on Round Reduced Keccak}
 \KECCAK{} observed intense cryptanalysis since its inception, this involved various types of attacks with different techniques. The following are the types of attacks :
 \begin{enumerate}
-	\item \textbf{Preimage Attacks}
-	\item \textbf{Collision Attacks}
-	\item \textbf{Second-Preimage Attacks}
+	\item \textbf{Preimage Attacks} - Describe
+	\item \textbf{Collision Attacks} - Describe
+	\item \textbf{Second-Preimage Attacks} - Describe
 \end{enumerate}
 Now, we will discuss these types of attack in detail.
 \subsection{Preimage Attacks on Round Reduced Keccak}
@@ -292,17 +292,29 @@ So, more the number of free variables the better complexity of attack we can ach
 
 In this type of attack, we set message variables in the rate part in such a way that the state remains a linear structure for the number of required rounds. Here, we go forwards with the message variables for (number of rounds - 1) + half round, considering the state is linear structure and rest of round we go backwards from the hash, and then build a system of linear equations and solve it to get the values of message variables. So, after a message is found from the hash we get the preimage successfully.
 
-\subsection{Preimage Attacks on 2-round Keccak}
+\subsection{Preimage Attacks on 2-round \KECCAK}
 \begin{enumerate}
-	\item \subsection{Preimage Attacks on 2-round Keccak-512}
+	\item \subsection{Preimage Attacks on 2-round \KECCAK-$512$}
+		This attack is for 2 rounds of \KECCAK-$512$, it uses meet in the middle approach where the 1st-round is kept linear by linear structure and the last round i.e. the second round is inverted from the given hash value. From the given hash, they invert $\iota$ as its the simple addition of round constant for the particular round, followed by inverting the $\chi$ operation. This attack is for \KECCAK-$512$, so the hash length is $512$ i.e. $8$ lanes. Since $\chi$ operation is like a Sbox for a $row$, they invert the first row using the ~\ref{ob3}. So till now we have the values of the first row of the state just before last round steps $\iota \circ \chi$. Now, they focus on proceeding one round forward, so they start with empty state where they fix lanes $(0,0), (0,1), (2,0) $ and $(2,1)$ as variables, rest of the part of the $rate$ is assigned random value and the $capacity$ part remains 0. To avoid the spreading of linear variables by $\theta$ they impose the following conditions : 
+		\[
+			A[0, 1] = A[0, 0] \oplus \alpha_{0}
+		\]
+		\[
+			A[2, 1] = A[2, 0] \oplus \alpha_{2}
+		\]
+		with $\alpha_0$ and $\alpha_2$ as random constants.
+		Then they proceed forward with 1-round and the state remains linear, even after 2nd round's $\pi \circ \rho \circ \theta$ the state remains linear, since these are linear operations. They then build a system of linear equations from the equations of first row of the obtained state and the values of these lanes recovered after $\chi^{-1} \circ \iota^{-1}$.
+			
+
+	\item \subsection{Preimage Attacks on 2-round \KECCAK-$384$}
 				Describe here.
-	\item \subsection{Preimage Attacks on 2-round Keccak-384}
+
+	\item \subsection{Preimage Attacks on 2-round \KECCAK-$256$}
 				Describe here.
-	\item \subsection{Preimage Attacks on 2-round Keccak-256}
-				Describe here.
+
 \end{enumerate}
 
-\section{Preimage Attack for $2$ Rounds of Round Reduced \KECCAK-384}
+\section{Preimage Attack for $2$ Rounds of Round Reduced \KECCAK-$384$}
 
 In this section, we present a preimage attack for a round reduced \KECCAK{}. We will show that the preimage can be found in $2^{88}$ time and $2^{87}$ memory for $2$ rounds of round-reduced \Keccak-$384$. Although it is not a practical attack, but it is an improvement over the existing best attack, for $2$ rounds of \Keccak-$384$, which takes $2^{129}$ time~\cite{guo2016linear}.
 
@@ -368,6 +380,7 @@ nodes={inner sep=5pt,text width=0.5cm,align=center,minimum height=.5cm, draw,tex
 \end{figure}
 
 %------------------------------------------------------
+\item \label{ob3}\textbf{Observation 3:} Add CHi Sbox observation for full row inversion
 \end{enumerate}
 
 
