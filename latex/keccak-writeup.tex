@@ -303,8 +303,11 @@ In this type of attack, we set message variables in the rate part in such a way 
 			A[2, 1] = A[2, 0] \oplus \alpha_{2}
 		\]
 		with $\alpha_0$ and $\alpha_2$ as random constants.
-		Then they proceed forward with 1-round and the state remains linear, even after 2nd round's $\pi \circ \rho \circ \theta$ the state remains linear, since these are linear operations. They then build a system of linear equations from the equations of first row of the obtained state and the values of these lanes recovered after $\chi^{-1} \circ \iota^{-1}$.
-			
+		Then they proceed forward with 1-round and the state remains linear, even after 2nd round's $\pi \circ \rho \circ \theta$ the state remains linear, since these are linear operations. They then build a system of linear equations from the equations of first row of the obtained state and the values of these lanes recovered after $\chi^{-1} \circ \iota^{-1}$. After this they move on to solving the system of linear equations and verifying the obtained hash is same as the hash taken for the preimage attack, if correct a preimage is found.
+		
+		In the above method, initially there were 4 variables lanes and after imposing 2 conditions for $\theta$, we are left with 2 free variables each of 64-bit namely $A[0,0]$ and $A[2, 0]$. So we observe a complexity gain over bruteforce by size of the free variables hence the complexity of the attack comes out to be $2^{512 - 64 - 64} = 2^{512 - 128} = 2^{384}$.
+
+		Add degree of freedome calculations.
 
 	\item \subsection{Preimage Attacks on 2-round \KECCAK-$384$}
 				Describe here.
