@@ -234,7 +234,10 @@ In the following, we provide a brief description of the step mappings.
     \end{align}
     where $\rho(x, y)$ is the constant for lane $(x, y)$. 
     
-    The constant value $\rho(x, y)$ is specified for each lane in the construction of \Keccak{}. 
+		The constant value $\rho(x, y)$ is specified for each lane in the construction of \Keccak{}. 
+		
+		Todo : add the rho constant table
+
     \vskip5pt
     \item $\pi$ ({\bf pi}): It permutes the positions of lanes. The new position of a lane is determined by a matrix, 
     \begin{align}
@@ -275,6 +278,19 @@ truncated to $d$ bits.
 The \SHA-3 hash family supports minimum four different  output length $d \in \{224,256,384,512\}$. In the \Keccak-384, the size of $c = 2\cdot d = 768$ and the rate $r = 1600 - c = 1600 - 768 = 832= 13\cdot 64$.
 
 \section{Attacks on Round Reduced Keccak}
+\KECCAK{} observed intense cryptanalysis since its inception, this involved various types of attacks with different techniques. The following are the types of attacks :
+\begin{enumerate}
+	\item \textbf{Preimage Attacks}
+	\item \textbf{Collision Attacks}
+	\item \textbf{Second-Preimage Attacks}
+\end{enumerate}
+Now, we will discuss these types of attack in detail.
+\subsection{Preimage Attacks on Round Reduced Keccak}
+
+In \cite{guo2016linear} Guo \etal describe there techniques for preimage attacks where they use linear structures to linearize variables upto 3 rounds. Linear structure is a Keccak state where we have a certain number of free linear variables, these free variables provide us with degree of freedom.
+So, more the number of free variables the better complexity of attack we can achieve provided the system of equations remains linear.
+
+In this type of attack, we set message variables in the rate part in such a way that the state remains a linear structure for the number of required rounds.
 
 \section{Preimage Attack for $2$ Rounds of Round Reduced \KECCAK-384}
 
