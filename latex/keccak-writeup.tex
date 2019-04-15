@@ -274,6 +274,8 @@ The \Keccak{} team denotes the instances of \Keccak{} by $\Keccak[r,c]$, where $
 truncated to $d$ bits.
 The \SHA-3 hash family supports minimum four different  output length $d \in \{224,256,384,512\}$. In the \Keccak-384, the size of $c = 2\cdot d = 768$ and the rate $r = 1600 - c = 1600 - 768 = 832= 13\cdot 64$.
 
+\section{Attacks on Round Reduced Keccak}
+
 \section{Preimage Attack for $2$ Rounds of Round Reduced \KECCAK-384}
 
 In this section, we present a preimage attack for a round reduced \KECCAK{}. We will show that the preimage can be found in $2^{88}$ time and $2^{87}$ memory for $2$ rounds of round-reduced \Keccak-$384$. Although it is not a practical attack, but it is an improvement over the existing best attack, for $2$ rounds of \Keccak-$384$, which takes $2^{129}$ time~\cite{guo2016linear}.
