@@ -95,7 +95,28 @@
 %
 \section{Introduction}
 
-Cryptographic hash functions are the important component of  modern cryptography. In 2008, U.S. National Institute of Standards and Technology (NIST) announced a competition for the Secure Hash Algorithm-3 (\SHA-3). A total of $64$ proposals were submitted to the competition. In the year $2012$, NIST announced \KECCAK{} as the winner of the competition. The \KECCAK{} hash function was designed by Guido Bertoni, Joan Daemen, Micha\"{e}l Peeters, and Gilles Van Assche~\cite{bertoni2009keccak}. Since $2015$, \KECCAK{} has been standardized as \SHA-$3$ by the NIST.
+Cryptographic hash functions are the important component of  modern cryptography. A hash function is a compression function which transforms an input of arbitrary size to a fixed size output based on its algorithm for compression, this compression should be deterministic i.e. for the same input everytime the hash function should return the same output. 
+
+A hash function $H:\{0,1\}^* \rightarrow \{0,1\}^n $, where $n$ is a fixed value, should have the following properties: 
+\begin{itemize}\setlength\itemindent{20pt}
+    \item Efficient : Given $m$, it is easy to compute $H(m)$.
+        \item Preimage Resistance : Given $H(m)$, it is computationally hard to find $m$. (\textcolor{red}{ })
+        \item Second-preimage Resistance : Given $m$, it is computationally hard to find $m^\prime$ such that $H(m)=H(m^\prime)$.
+        \item Collision Resistance : It is computationally hard to find $m$ and $m^\prime$ such that $H(m)=H(m^\prime)$.
+\end{itemize}
+
+So a hash function maps data of any size to a data of fixed size. Due to the above listed properties hash functions have many applications like data structures like hash-table using good hash functions, for creating a digest from the data etc.
+There are many popular hash functions like MD5, SHA1 and SHA2, these popular hash functions follow the Merkle–Damgard construction []. 
+
+The construction is as follows, the algorithm starts with IV i.e. initialization vector (initial value). The value of IV depends on the algorithm and implementation. Also, the input data message is divided into blocks of some size n.
+This construction uses a compression function $f$, where this function will compress each message block combined the output of previous block and the produce the output for the next block. When $f$ is applied to the first message block then instead of input from the previous block $IV$ is used. The final block is padded as per need and then $f$ is applied on it. The output of the final block is the hash of the data.
+
+Attach a diagram for MD construction.
+
+Hash function is an integral component of cryptography. It is used in many cryptographic applications e.g., Authentication, Non-repudiation and Integrity etc.
+
+% Keccak Intro start
+In 2008, U.S. National Institute of Standards and Technology (NIST) announced a competition for the Secure Hash Algorithm-3 (\SHA-3). A total of $64$ proposals were submitted to the competition. In the year $2012$, NIST announced \KECCAK{} as the winner of the competition. The \KECCAK{} hash function was designed by Guido Bertoni, Joan Daemen, Micha\"{e}l Peeters, and Gilles Van Assche~\cite{bertoni2009keccak}. Since $2015$, \KECCAK{} has been standardized as \SHA-$3$ by the NIST.
 
 The \KECCAK{} hash function is based on sponge construction~\cite{bertoni2011cryptographic} which is different from previous \SHA{} standards. SHA-3 family of hash functions is based on \Keccak{}. The SHA-3 family provides four hash functions and two extendable-output functions. These functions are designed to provide resistence against preimage attacks, collision attacks and second-preimage attacks.
 
