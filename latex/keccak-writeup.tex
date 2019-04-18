@@ -235,6 +235,8 @@ Some of the above are pictorially shown in the Figure~\ref{ss}.
 %
 %
 
+\subsection*{\textsc{\Keccak-$p$ Permutation}}
+$\Rnd$ \;- A round of \KECCAK-$p$ permutation, it consists of five transformations: {$\theta,\rho,\pi,\chi,\iota$}. 
 In the following, we provide a brief description of the step mappings.
  Let $A$ and $B$ respectively denote input and output states of a step mapping.
 \begin{enumerate}
@@ -258,6 +260,26 @@ In the following, we provide a brief description of the step mappings.
 		The constant value $\rho(x, y)$ is specified for each lane in the construction of \Keccak{}. 
 		
 		Todo : add the rho constant table
+		\begin{table}[h!]
+			\begin{center}
+				\label{tab:table1}
+				\begin{tabular}{l|l|S|r|l|l}
+					\tetxbf{.} & \textbf{x = 3} & \textbf{x = 4} & \textbf{x = 0} & \textbf{x = 1} & \textbf{x = 2}\\ % <-- added & and content for each column
+					\hline
+					\textbf{y = 2} & 153 & 231 & 3 & 10 & 171\\ % <--
+					\hline
+					\textbf{y = 1} & 55 & 276 & 36 & 300 & 6\\ % <--
+					\hline
+					\textbf{y = 0} & 28 & 91 & 0 & 1 & 190\\ % <--
+					\hline
+					\textbf{y = 0} & 120 & 78 & 210 & 66 & 253\\ % <--
+					\hline
+					\textbf{y = 4} & 21 & 136 & 105 & 45 & 15\\ % <--
+					\hline
+				\end{tabular}
+			\end{center}
+		\end{table}
+
 
     \vskip5pt
     \item $\pi$ ({\bf pi}): It permutes the positions of lanes. The new position of a lane is determined by a matrix, 
