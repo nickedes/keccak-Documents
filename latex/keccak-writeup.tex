@@ -356,9 +356,47 @@ In this type of attack, we set message variables in the rate part in such a way 
 				Describe here.
 
 	\item \subsection{Preimage Attacks on 2-round \KECCAK-$256$}
-				Describe here.
-
+			The attack for 2 round \KECCAK-$256$ is very similar to the attack for \KECCAK-$384$.
+			The message here is in lanes $(0, 0), (0, 1), (0, 2), (2, 0), (2, 1), (2, 2)$.
+    	We keep the sum of variables in column $0, 2$ constant by choosing the sum of variables in a column to be $\alpha_0 $ and $\alpha_2$ respectively as constants. For \KECCAK-$256$ $d = 256 \rightarrow 4$ lanes and $c = 512 \rightarrow 8$ lanes. We can get 4 linear equations on the input bits of $\chi$ given 4 output bits out of the 5-bits. Therefore, we need 4 variables in our state to build a linear system of 256-bit equation.	We have $h_0, h_1, h_2, h_3$  hash lanes in the output. By using property of $\chi$, we can get 4 linear equations on the input to the $\chi$ when 4 output bits are given. The above is true for each lane in row 0. i.e. we can get $4*64$ linear equations on the input to the $\chi$. So in one slice, we need 4 variables to map them to 4 output bits given. (according to $\chi$) 
+			
+			So we build initial state such that we have $4*64$ free variables. So take the same structure as for 2R, Keccak-384
+    	Take $A[0, 2] = A[0, 0] \oplus A[0, 1] \oplus \alpha_0$
+    	and $A[2, 2] = A[2, 0] \oplus A[2, 1] \oplus \alpha_2$
+  		The state remains linear after 1 $R$ and 1 $L$, initially there were 6 variable lanes and after imposing 2 condiitions for $\theta$, we are left with 4 free variables each of 64-bit namely $A[0,0], A[0,1], A[2, 0], A[2,1]$ i.e. the linear structure.
+			So, we observe a complexity gain over bruteforce by size of linear structure, hence the time complexity of attack $ = 2^{256 - 256} = 2^{0} = 1$
+    	By solving the system of linear equations we get a solution in constant time.
 \end{enumerate}
+
+\subsection{Preimage Attacks on 3-round \KECCAK}
+\begin{enumerate}
+	\item \subsection{Preimage Attacks on 3-round \KECCAK-$384$, \KECCAK-$512$}
+		For 3-round \KECCAK-$512$, they extend the attack mentioned for 2-round \KECCAK-$512$. They start with 4 variable lanes but after frist $\theta$ only 2 variable lanes are left so that the effect of $\theta$ is constant. So, we have $128$ variable bits. The state starts with only 2 variable lanes after first $\theta$, then $\pi \circ \rho$ don't increase the no. of linear lanes, they just change the positions of lanes. After $\chi$ the no. of linear terms are increased such that after $\theta$ of second round the full state becomes linear. Again $\pi \circ \rho$ don't affect the linear terms of the state, they just change the positions of lanes and rotate them. Following this is the $\chi$ of the second round, since the input to $\chi$ is linear terms and as we know $\chi$ is a non-linear operation so the output state after $\chi$ will be quadratic variable state. Dealing with non-linear terms is not easy, so the idea is to linearize the quadratic terms and try to reduce the complexity than the brute-force attack.
+		So, The bits input to step $\chi$ of the second round are all linear. Directly inverse 320 bits through $\chi^{-1}$ from a given hash value (8 lanes). Of the inverted state, each bit is a sum of 11 bits of the output of the second round. 
+    As in section 6.3 ~\cite{guo2016linear} per equation (14) the equation of $C[x][y][z]$
+    Expanding it :
+
+    \[
+        C[x][y][z] = B[x][y][z] \oplus \oplus_{y' = 0}^{4} B[x-1][y'][z] \oplus \oplus_{y' = 0}^{4} B[x+1][y'][z-1]
+    \]
+    
+		Open all the expressions and separate two terms $B[x][y][z]$ and $B[x-1][y][z]$ and rest 9 terms remain as it is.
+    So, 
+		\[ B[x][y][z] \oplus B[x-1][y][z] = (a \oplus c + b) \oplus d
+    \]
+    Where,
+		 \[
+        a = A[x][y][z], b = A[x + 1][y][z], c = A[x + 2][y][z], d = A[x - 1][y][z]
+    \]
+    So guessing $d$ and other 9 terms would make $C[x][y][z]$ linear. Hence, We linearize $C[x][y][z]$ by guessing 10 bits input to step $\chi$. That is, we obtain 1 + 10 linear equations, by these linear equations we can match the hash value bit corresponding to $C[x][y][z]$. So 11 linear equations for 1 bit of hash value. For $\KECCAK$-$512$ we have only 128 variable bits, so we can match $128/11 = 11$ bits of the hash value.
+    Time complexity of preimage attack $= 2^{512 - 11} = 2^{501}$.
+    \textbf{Note:} There is an improvement for the above attack mentioned in 6.3 by which attack complexity is $= 2^{482}$.
+
+		Similarly for $\KECCAK$-$384$, we have 4 variable lanes i.e. $A[0,0], A[0,1], A[2,0], A[2,1]$ left but we need to set last bit of $A[2,2]$ to $1$ to satisfy padding rules. Hence we are left with $4*64 - 1 = 255$ variable bits.
+		No. of matched hash bits $ = 255/11 = 23 $. Time complexity of preimage attack $= 2^{384 - 23} = 2^{361}$.
+\end{enumerate}
+
+\section{Results :}
 
 \section{Preimage Attack for $2$ Rounds of Round Reduced \KECCAK-$384$}
 
