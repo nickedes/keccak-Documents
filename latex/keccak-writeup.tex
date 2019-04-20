@@ -388,13 +388,17 @@ In this type of attack, we set message variables in the rate part in such a way 
 		 \[
         a = A[x][y][z], b = A[x + 1][y][z], c = A[x + 2][y][z], d = A[x - 1][y][z]
     \]
-    So guessing $d$ and other 9 terms would make $C[x][y][z]$ linear. Hence, We linearize $C[x][y][z]$ by guessing 10 bits input to step $\chi$. That is, we obtain 1 + 10 linear equations, by these linear equations we can match the hash value bit corresponding to $C[x][y][z]$. So 11 linear equations for 1 bit of hash value. For $\KECCAK$-$512$ we have only 128 variable bits, so we can match $128/11 = 11$ bits of the hash value.
+    So guessing $b$ and other 9 terms would make $C[x][y][z]$ linear. Hence, We linearize $C[x][y][z]$ by guessing 10 bits input to step $\chi$. That is, we obtain 1 + 10 linear equations, by these linear equations we can match the hash value bit corresponding to $C[x][y][z]$. So 11 linear equations for 1 bit of hash value. For $\KECCAK$-$512$ we have only 128 variable bits, so we can match $128/11 = 11$ bits of the hash value.
     Time complexity of preimage attack $= 2^{512 - 11} = 2^{501}$.
     \textbf{Note:} There is an improvement for the above attack mentioned in 6.3 by which attack complexity is $= 2^{482}$.
 
 		Similarly for $\KECCAK$-$384$, we have 4 variable lanes i.e. $A[0,0], A[0,1], A[2,0], A[2,1]$ left but we need to set last bit of $A[2,2]$ to $1$ to satisfy padding rules. Hence we are left with $4*64 - 1 = 255$ variable bits.
 		No. of matched hash bits $ = 255/11 = 23 $. Time complexity of preimage attack $= 2^{384 - 23} = 2^{361}$.
+
+	\item \subsection{Improvements for Preimage Attacks on 3-round \KECCAK-$384$, \KECCAK-$512$}
+	
 \end{enumerate}
+
 
 \section{Results :}
 
@@ -810,12 +814,14 @@ Of the inverted state, each bit is a sum of 11 bits of the output of the second 
     Where \[
         a = A[x][y][z], b = A[x + 1][y][z], c = A[x + 2][y][z], d = A[x - 1][y][z]
     \]
-    So guessing $d$ and other 9 terms would make $C[x][y][z]$ linear. Hence, We linearize $C[x][y][z]$ by guessing 10 bits input to step $\chi$. That is, we obtain 11 = 1 + 10 linear equations and match 1 bit of the hash value.
+    So guessing $b$ and other 9 terms would make $C[x][y][z]$ linear. Hence, We linearize $C[x][y][z]$ by guessing 10 bits input to step $\chi$. That is, we obtain 11 = 1 + 10 linear equations and match 1 bit of the hash value.
 We can match $2\floor*{\frac{t - 5}{8}}$ bits of a given hash value if we have $t$ variables \cite{guo2016linear}.
 
 For \Keccak-$256$, we have $t = 5*64 = 320$ variables.
 So the no. of matched bits = $78$, with this we have a complexity gain over bruteforce of $2^{78}$
 Attack complexity $ = 2^{256 - 78} = 2^{178}$.
+
+This method observes an improvement of $2^{14}$ compared to the attack mentioned in \cite{guo2016linear}.
 
 \section{Conclusion and Future works}
 In this paper, we have presented a preimage attack on the $2$ rounds of round-reduced \KECCAK-$384$. The attack is not yet practical but it is much better than the existing best-known attack in term of the time complexity. The basic idea of the attack can be used to mount a practical preimage attack on the $\Keccak[r:=400-192,\, c:=192]$ and $\Keccak[r:=800-384,\,c:=384]$. 
