@@ -95,7 +95,28 @@
 %
 \section{Introduction}
 
-Cryptographic hash functions are the important component of  modern cryptography. In 2008, U.S. National Institute of Standards and Technology (NIST) announced a competition for the Secure Hash Algorithm-3 (\SHA-3). A total of $64$ proposals were submitted to the competition. In the year $2012$, NIST announced \KECCAK{} as the winner of the competition. The \KECCAK{} hash function was designed by Guido Bertoni, Joan Daemen, Micha\"{e}l Peeters, and Gilles Van Assche~\cite{bertoni2009keccak}. Since $2015$, \KECCAK{} has been standardized as \SHA-$3$ by the NIST.
+Cryptographic hash functions are the important component of  modern cryptography. A hash function is a compression function which transforms an input of arbitrary size to a fixed size output based on its algorithm for compression, this compression should be deterministic i.e. for the same input everytime the hash function should return the same output. 
+
+A hash function $H:\{0,1\}^* \rightarrow \{0,1\}^n $, where $n$ is a fixed value, should have the following properties: 
+\begin{itemize}\setlength\itemindent{20pt}
+    \item Efficient : Given $m$, it is easy to compute $H(m)$.
+        \item Preimage Resistance : Given $H(m)$, it is computationally hard to find $m$. (\textcolor{red}{ })
+        \item Second-preimage Resistance : Given $m$, it is computationally hard to find $m^\prime$ such that $H(m)=H(m^\prime)$.
+        \item Collision Resistance : It is computationally hard to find $m$ and $m^\prime$ such that $H(m)=H(m^\prime)$.
+\end{itemize}
+
+So a hash function maps data of any size to a data of fixed size. Due to the above listed properties hash functions have many applications like data structures like hash-table using good hash functions, for creating a digest from the data etc.
+There are many popular hash functions like MD5, SHA1 and SHA2, these popular hash functions follow the Merkle–Damgard construction []. 
+
+The construction is as follows, the algorithm starts with IV i.e. initialization vector (initial value). The value of IV depends on the algorithm and implementation. Also, the input data message is divided into blocks of some size n.
+This construction uses a compression function $f$, where this function will compress each message block combined the output of previous block and the produce the output for the next block. When $f$ is applied to the first message block then instead of input from the previous block $IV$ is used. The final block is padded as per need and then $f$ is applied on it. The output of the final block is the hash of the data.
+
+Attach a diagram for MD construction.
+
+Hash function is an integral component of cryptography. It is used in many cryptographic applications e.g., Authentication, Non-repudiation and Integrity etc.
+
+% Keccak Intro start
+In 2008, U.S. National Institute of Standards and Technology (NIST) announced a competition for the Secure Hash Algorithm-3 (\SHA-3). A total of $64$ proposals were submitted to the competition. In the year $2012$, NIST announced \KECCAK{} as the winner of the competition. The \KECCAK{} hash function was designed by Guido Bertoni, Joan Daemen, Micha\"{e}l Peeters, and Gilles Van Assche~\cite{bertoni2009keccak}. Since $2015$, \KECCAK{} has been standardized as \SHA-$3$ by the NIST.
 
 The \KECCAK{} hash function is based on sponge construction~\cite{bertoni2011cryptographic} which is different from previous \SHA{} standards. SHA-3 family of hash functions is based on \Keccak{}. The SHA-3 family provides four hash functions and two extendable-output functions. These functions are designed to provide resistence against preimage attacks, collision attacks and second-preimage attacks.
 
@@ -214,6 +235,8 @@ Some of the above are pictorially shown in the Figure~\ref{ss}.
 %
 %
 
+\subsection*{\textsc{\Keccak-$p$ Permutation}}
+$\Rnd$ \;- A round of \KECCAK-$p$ permutation, it consists of five transformations: {$\theta,\rho,\pi,\chi,\iota$}. 
 In the following, we provide a brief description of the step mappings.
  Let $A$ and $B$ respectively denote input and output states of a step mapping.
 \begin{enumerate}
@@ -237,6 +260,26 @@ In the following, we provide a brief description of the step mappings.
 		The constant value $\rho(x, y)$ is specified for each lane in the construction of \Keccak{}. 
 		
 		Todo : add the rho constant table
+		\begin{table}[h!]
+			\begin{center}
+				\label{tab:table1}
+				\begin{tabular}{l|l|S|r|l|l}
+					\tetxbf{.} & \textbf{x = 3} & \textbf{x = 4} & \textbf{x = 0} & \textbf{x = 1} & \textbf{x = 2}\\ % <-- added & and content for each column
+					\hline
+					\textbf{y = 2} & 153 & 231 & 3 & 10 & 171\\ % <--
+					\hline
+					\textbf{y = 1} & 55 & 276 & 36 & 300 & 6\\ % <--
+					\hline
+					\textbf{y = 0} & 28 & 91 & 0 & 1 & 190\\ % <--
+					\hline
+					\textbf{y = 0} & 120 & 78 & 210 & 66 & 253\\ % <--
+					\hline
+					\textbf{y = 4} & 21 & 136 & 105 & 45 & 15\\ % <--
+					\hline
+				\end{tabular}
+			\end{center}
+		\end{table}
+
 
     \vskip5pt
     \item $\pi$ ({\bf pi}): It permutes the positions of lanes. The new position of a lane is determined by a matrix, 
@@ -314,9 +357,51 @@ In this type of attack, we set message variables in the rate part in such a way 
 				$A[0, 2] = A[0, 0] \oplus A[0, 1] \oplus \alpha_0$ and $A[2, 2] = A[2, 0] \oplus A[2, 1] \oplus \alpha_2$, so that $\theta$ doesn't spread and proceed for the $1.5$ rounds forward and proceed backwards from the hash by applying $\chi^{-1} \circ \iota^{-1}$. Then build a system of linear equations of 256-bit equations and solve for message variables. Then check the hash obtained is correct. So we observe a complexity gain over bruteforce by size of the free variables hence the complexity of the attack comes out to be $2^{384 - 4*64} = 2^{384 - 256} = 2^{128}$. To meet the padding requirements in worst case the complexity will be $2^{129}$.
 
 	\item \subsection{Preimage Attacks on 2-round \KECCAK-$256$}
-				Describe here.
-
+			The attack for 2 round \KECCAK-$256$ is very similar to the attack for \KECCAK-$384$.
+			The message here is in lanes $(0, 0), (0, 1), (0, 2), (2, 0), (2, 1), (2, 2)$.
+    	We keep the sum of variables in column $0, 2$ constant by choosing the sum of variables in a column to be $\alpha_0 $ and $\alpha_2$ respectively as constants. For \KECCAK-$256$ $d = 256 \rightarrow 4$ lanes and $c = 512 \rightarrow 8$ lanes. We can get 4 linear equations on the input bits of $\chi$ given 4 output bits out of the 5-bits. Therefore, we need 4 variables in our state to build a linear system of 256-bit equation.	We have $h_0, h_1, h_2, h_3$  hash lanes in the output. By using property of $\chi$, we can get 4 linear equations on the input to the $\chi$ when 4 output bits are given. The above is true for each lane in row 0. i.e. we can get $4*64$ linear equations on the input to the $\chi$. So in one slice, we need 4 variables to map them to 4 output bits given. (according to $\chi$) 
+			
+			So we build initial state such that we have $4*64$ free variables. So take the same structure as for 2R, Keccak-384
+    	Take $A[0, 2] = A[0, 0] \oplus A[0, 1] \oplus \alpha_0$
+    	and $A[2, 2] = A[2, 0] \oplus A[2, 1] \oplus \alpha_2$
+  		The state remains linear after 1 $R$ and 1 $L$, initially there were 6 variable lanes and after imposing 2 condiitions for $\theta$, we are left with 4 free variables each of 64-bit namely $A[0,0], A[0,1], A[2, 0], A[2,1]$ i.e. the linear structure.
+			So, we observe a complexity gain over bruteforce by size of linear structure, hence the time complexity of attack $ = 2^{256 - 256} = 2^{0} = 1$
+    	By solving the system of linear equations we get a solution in constant time.
 \end{enumerate}
+
+\subsection{Preimage Attacks on 3-round \KECCAK}
+\begin{enumerate}
+	\item \subsection{Preimage Attacks on 3-round \KECCAK-$384$, \KECCAK-$512$}
+		For 3-round \KECCAK-$512$, they extend the attack mentioned for 2-round \KECCAK-$512$. They start with 4 variable lanes but after frist $\theta$ only 2 variable lanes are left so that the effect of $\theta$ is constant. So, we have $128$ variable bits. The state starts with only 2 variable lanes after first $\theta$, then $\pi \circ \rho$ don't increase the no. of linear lanes, they just change the positions of lanes. After $\chi$ the no. of linear terms are increased such that after $\theta$ of second round the full state becomes linear. Again $\pi \circ \rho$ don't affect the linear terms of the state, they just change the positions of lanes and rotate them. Following this is the $\chi$ of the second round, since the input to $\chi$ is linear terms and as we know $\chi$ is a non-linear operation so the output state after $\chi$ will be quadratic variable state. Dealing with non-linear terms is not easy, so the idea is to linearize the quadratic terms and try to reduce the complexity than the brute-force attack.
+		So, The bits input to step $\chi$ of the second round are all linear. Directly inverse 320 bits through $\chi^{-1}$ from a given hash value (8 lanes). Of the inverted state, each bit is a sum of 11 bits of the output of the second round. 
+    As in section 6.3 ~\cite{guo2016linear} per equation (14) the equation of $C[x][y][z]$
+    Expanding it :
+
+    \[
+        C[x][y][z] = B[x][y][z] \oplus \oplus_{y' = 0}^{4} B[x-1][y'][z] \oplus \oplus_{y' = 0}^{4} B[x+1][y'][z-1]
+    \]
+    
+		Open all the expressions and separate two terms $B[x][y][z]$ and $B[x-1][y][z]$ and rest 9 terms remain as it is.
+    So, 
+		\[ B[x][y][z] \oplus B[x-1][y][z] = (a \oplus c + b) \oplus d
+    \]
+    Where,
+		 \[
+        a = A[x][y][z], b = A[x + 1][y][z], c = A[x + 2][y][z], d = A[x - 1][y][z]
+    \]
+    So guessing $b$ and other 9 terms would make $C[x][y][z]$ linear. Hence, We linearize $C[x][y][z]$ by guessing 10 bits input to step $\chi$. That is, we obtain 1 + 10 linear equations, by these linear equations we can match the hash value bit corresponding to $C[x][y][z]$. So 11 linear equations for 1 bit of hash value. For $\KECCAK$-$512$ we have only 128 variable bits, so we can match $128/11 = 11$ bits of the hash value.
+    Time complexity of preimage attack $= 2^{512 - 11} = 2^{501}$.
+    \textbf{Note:} There is an improvement for the above attack mentioned in 6.3 by which attack complexity is $= 2^{482}$.
+
+		Similarly for $\KECCAK$-$384$, we have 4 variable lanes i.e. $A[0,0], A[0,1], A[2,0], A[2,1]$ left but we need to set last bit of $A[2,2]$ to $1$ to satisfy padding rules. Hence we are left with $4*64 - 1 = 255$ variable bits.
+		No. of matched hash bits $ = 255/11 = 23 $. Time complexity of preimage attack $= 2^{384 - 23} = 2^{361}$.
+
+	\item \subsection{Improvements for Preimage Attacks on 3-round \KECCAK-$384$, \KECCAK-$512$}
+	
+\end{enumerate}
+
+
+\section{Results :}
 
 \section{Preimage Attack for $2$ Rounds of Round Reduced \KECCAK-$384$}
 
@@ -730,12 +815,14 @@ Of the inverted state, each bit is a sum of 11 bits of the output of the second 
     Where \[
         a = A[x][y][z], b = A[x + 1][y][z], c = A[x + 2][y][z], d = A[x - 1][y][z]
     \]
-    So guessing $d$ and other 9 terms would make $C[x][y][z]$ linear. Hence, We linearize $C[x][y][z]$ by guessing 10 bits input to step $\chi$. That is, we obtain 11 = 1 + 10 linear equations and match 1 bit of the hash value.
+    So guessing $b$ and other 9 terms would make $C[x][y][z]$ linear. Hence, We linearize $C[x][y][z]$ by guessing 10 bits input to step $\chi$. That is, we obtain 11 = 1 + 10 linear equations and match 1 bit of the hash value.
 We can match $2\floor*{\frac{t - 5}{8}}$ bits of a given hash value if we have $t$ variables \cite{guo2016linear}.
 
 For \Keccak-$256$, we have $t = 5*64 = 320$ variables.
 So the no. of matched bits = $78$, with this we have a complexity gain over bruteforce of $2^{78}$
 Attack complexity $ = 2^{256 - 78} = 2^{178}$.
+
+This method observes an improvement of $2^{14}$ compared to the attack mentioned in \cite{guo2016linear}.
 
 \section{Conclusion and Future works}
 In this paper, we have presented a preimage attack on the $2$ rounds of round-reduced \KECCAK-$384$. The attack is not yet practical but it is much better than the existing best-known attack in term of the time complexity. The basic idea of the attack can be used to mount a practical preimage attack on the $\Keccak[r:=400-192,\, c:=192]$ and $\Keccak[r:=800-384,\,c:=384]$. 

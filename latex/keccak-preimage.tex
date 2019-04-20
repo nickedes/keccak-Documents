@@ -520,4 +520,22 @@ In Guo-Liu-Song, Fig. 13 the (allowed) linear pattern after 32 rounds is the sam
     \item This should work because for lanes of our interest i.e. first 6 lanes there is hardly any difference.
 \end{enumerate}
 
+\subsection{Preimage attack on Keecak-224, Keccak-256}
+\begin{enumerate}
+    \item This is in reference to Guo et al work "Linear Structures: Applications to Cryptanalysis of Round-Reduced Keccak"
+    \item As seen in Fig. $13, 14$ of section 6.2, the attacks for Keccak-256 and Keccak-224 resp.
+    \item For both of them input to the step $\chi$ of the third round are all linear, hence the method for matching a hash bits by linearizing the terms corresponding to these hash bitscan work for this too. As shown in section 6.3.
+    
+    \item In this we linearize the output of $\theta$ of 4th round by guessing bits input to $\theta$. We need 10 guesses to match 1-bit, but 
+    
+    \item As seen in Improved preimage attacks on 3-round Keccak-384 and Keccak-512 by Guo et. al in section 6.3 . It is possible to cut down the time complexity if we elaborately choose linearly dependent ones, since there will be more degrees of freedom for guessing more linear combinations to match more bits of the hash value.
+    \item So, if we apply the same technique to 4 rounds Keecak-224, Keccak-256
+    \item Then we have 127 and 64 variables resp, we can match $2*\frac{t-5}{8}$ bits of a hash value if we have t variables.
+    \item For Keecak-224 : matched bits $= 30$
+    \item Time Complexity : $2^{224 - 30} = 2^{194}$
+    \item And similarly for Keccak-256, Time complexity $=2^{256 - 14} = 2^{242}$
+    \item Another Idea : Maybe some better relations can be drawn between variables and hash values to match more bits. Like for symmetric cases, guesses for $A[x][y][z]$ would also work for $A[x][y][z + i]$. So good possibility for more matched bits from lesser variables. Would give good reductions in time complexities for 4 rounds of Keecak-224,256.
+\end{enumerate}
+
+
 \end{document}
