@@ -6,7 +6,7 @@
 % \documentclass[pss]{wiley2sp}
 \documentclass[runningheads]{llncs}
 %
-
+\usepackage{mathtools}
 \usepackage{amsmath}
 \usepackage{soul}
 
@@ -18,7 +18,7 @@
 \usetikzlibrary{decorations.pathmorphing,matrix,decorations.pathreplacing,arrows,decorations.markings}
 \usetikzlibrary{fit,calc,shapes,arrows,positioning,shadings,backgrounds,patterns,tikzmark,matrix,spy}
 \usetikzlibrary{decorations.markings}
-
+\DeclarePairedDelimiter\floor{\lfloor}{\rfloor}
 \usepackage[T1]{fontenc}
 % Used for displaying a sample figure. If possible, figure files should
 % be included in EPS format.
@@ -370,8 +370,17 @@ In this type of attack, we set message variables in the rate part in such a way 
 
 \subsection{Preimage Attacks on 3-round \KECCAK}
 \subsection{Preimage Attacks on 3-round \KECCAK-$384$, \KECCAK-$512$}
-		For 3-round \KECCAK-$512$, they extend the attack mentioned for 2-round \KECCAK-$512$. They start with 4 variable lanes but after frist $\theta$ only 2 variable lanes are left so that the effect of $\theta$ is constant. So, we have $128$ variable bits. The state starts with only 2 variable lanes after first $\theta$, then $\pi \circ \rho$ don't increase the no. of linear lanes, they just change the positions of lanes. After $\chi$ the no. of linear terms are increased such that after $\theta$ of second round the full state becomes linear. Again $\pi \circ \rho$ don't affect the linear terms of the state, they just change the positions of lanes and rotate them. Following this is the $\chi$ of the second round, since the input to $\chi$ is linear terms and as we know $\chi$ is a non-linear operation so the output state after $\chi$ will be quadratic variable state. Dealing with non-linear terms is not easy, so the idea is to linearize the quadratic terms and try to reduce the complexity than the brute-force attack.
-		So, The bits input to step $\chi$ of the second round are all linear. Directly inverse 320 bits through $\chi^{-1}$ from a given hash value (8 lanes). Of the inverted state, each bit is a sum of 11 bits of the output of the second round. 
+
+		The 3 rounds can be summarized as :
+    
+    $ M \xrightarrow[\text{1.5 rounds}]{ \pi \circ \rho \circ \theta \circ R} A \xrightarrow[]{ \iota \circ \chi } B \xrightarrow[]{ \theta } C \xrightarrow[]{ \pi \circ \rho } | \xleftarrow[]{ \chi^{-1} \circ \iota^{-1} } h  $
+
+		For 3-round \KECCAK-$512$, they extend the attack mentioned for 2-round \KECCAK-$512$. They start with 4 variable lanes but after frist $\theta$ only 2 variable lanes are left so that the effect of $\theta$ is constant. So, we have $128$ variable bits. Then $\pi \circ \rho$ just permutate the varaible lanes and after $\chi$ the no. of linear terms increases. So after first round almost all columns have atleast one variable lane (except the 3rd column as shown in figure [] ). The no. of linear terms are increased such that after $\theta$ of second round the full state becomes linear. So, After $\theta$ of second round the full state becomes linear, and the $\pi \circ \rho$ further don't introduce any non-linear term, they only change the positions of lanes and rotate them, so the state is still linear.  These are first 1.5 rounds of \KECCAK{} where 0.5 round includes only the first three step mappings i.e $\theta, \rho, \pi$. Hence the state after 1.5 rounds i.e. $A$ remains linear.
+		
+		Following this is the $\chi$ of the second round, since the input to $\chi$ is linear terms and as we know $\chi$ is a non-linear operation so the output state after $\chi$ is a non-linear i.e. quadratic state. Dealing with non-linear terms is not easy, so the idea is to linearize the quadratic terms and try to reduce the complexity compared to brute-force attack.
+
+		So, The bits input to step $\chi$ of the second round are all linear. We can directly inverse first 320 bits through $\chi^{-1}$ from a given hash value (8 lanes). Of the inverted state, each bit is a sum of 11 bits of the output of the second round though they will be permutated by $\rho, \pi$.
+
     As in section 6.3 ~\cite{guo2016linear} per equation (14) the equation of $C[x][y][z]$
     Expanding it :
 
@@ -390,6 +399,7 @@ In this type of attack, we set message variables in the rate part in such a way 
     So guessing $b$ and other 9 terms would make $C[x][y][z]$ linear. Hence, We linearize $C[x][y][z]$ by guessing 10 bits input to step $\chi$. That is, we obtain 1 + 10 linear equations, by these linear equations we can match the hash value bit corresponding to $C[x][y][z]$. So 11 linear equations for 1 bit of hash value. For $\KECCAK$-$512$ we have only 128 variable bits, so we can match $128/11 = 11$ bits of the hash value.
     
     Time complexity of preimage attack $= 2^{512 - 11} = 2^{501}$.
+
     \textbf{Note:} There is an improvement for the above attack mentioned in 6.3 by which attack complexity is $= 2^{482}$.
 
     Similarly for $\KECCAK$-$384$, we have 4 variable lanes i.e. $A[0,0], A[0,1], A[2,0], A[2,1]$ left but we need to set last bit of $A[2,2]$ to $1$ to satisfy padding rules. Hence we are left with $4*64 - 1 = 255$ variable bits.
@@ -397,10 +407,28 @@ In this type of attack, we set message variables in the rate part in such a way 
 	No. of matched hash bits $ = 255/11 = 23 $. Time complexity of preimage attack $= 2^{384 - 23} = 2^{361}$.
 
 \subsection{Improvements for Preimage Attacks on 3-round \KECCAK-$384$, \KECCAK-$512$}
-    
-    The 3 rounds can be summarized as :
-    
-    $ M \xrightarrow[\text{1.5 rounds}]{ \pi \circ \rho \circ \theta \circ R} A \xrightarrow[]{ \iota \circ \chi } B \xrightarrow[]{ \theta } C \xrightarrow[]{ \pi \circ \rho } | \xleftarrow[]{ \chi^{-1} \circ \iota^{-1} } h  $
+    The idea for improvements of these attacks is an extension for the method described in previous section. As the variable bit $C[x][y][z]$ is linearized by guessing 10 bits. They assumed there that the guessing was independent, which can be dependent too if choosen properly. So the idea is to guess for those bits which would help in reducing the number of guesses for some other bit(s). So it will be possible to reduce the complexity further by choosing linearly dependent bits, so that there can be more matched bits of the hash value.
+
+		We start with following two eqautions, $B$ represents the state after $\Chi$ as shown in the flow diagram for 3 rounds.
+		\[
+			B[x][y][z] = A[x][y][z] \oplus (A[x+1][y][z] \oplus 1) \cdot A[x+2][y][z]
+		\] and
+		\[
+			B[x-1][y][z] = A[x-1][y][z] \oplus (A[x][y][z] \oplus 1) \cdot A[x+1][y][z]
+		\]
+
+		By gueesing $A[x+1][y][z]$ we make both of the above equations linear. Hence we guess for $0 \leq y \leq 4$ $A[x+1][y][z]$. Similarly for $B[x+1][y][z-1], B[x+2][y][z-1]$ we guess $0 \leq y \leq 4$ $A[x+3][y][z-1]$. 
+		
+		\[
+        C[x][y][z] = B[x][y][z] \oplus \oplus_{y' = 0}^{4} B[x-1][y'][z] \oplus \oplus_{y' = 0}^{4} B[x+1][y'][z-1]
+    \] and 
+		\[
+        C[x+1][y+1][z] = B[x+1][y+1][z] \oplus \oplus_{y' = 0}^{4} B[x][y'][z] \oplus \oplus_{y' = 0}^{4} B[x+2][y'][z-1]
+    \]
+
+		These 10 bits are guessed not only make $C[x][y][z]$ linear, but $C[x+1][y+1][z]$ has only one quadratic term $B[x+1][y+1][z]$ and after guessing that $C[x+1][y+1][z]$ is also linear. We can match 2 bits by setting up 13 (10 + 1 + 2) linear equations. Similarly they set up 8 more linear eqautions and by guessing 6 more bits they match 2 more bits of hash value. So in general if there are $t$ variables then we can match $ 2\floor*{\frac{t-5}{8}}$.
+
+		Hence for \KECCAK-$384$ and \KECCAK-$512$ the number of variables are 255 and 128 respectively, which gives 62 and 30 matched bits.Therefore the complexities of the improved attacks are $2^{384 - 62} = 2^{322}$ and $2^{512 - 30} = 2^{482}$ respectively.
 
 \section{Results :}
 
