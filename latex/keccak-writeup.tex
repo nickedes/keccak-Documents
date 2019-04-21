@@ -350,10 +350,11 @@ In this type of attack, we set message variables in the rate part in such a way 
 		
 		In the above method, initially there were 4 variables lanes and after imposing 2 conditions for $\theta$, we are left with 2 free variables each of 64-bit namely $A[0,0]$ and $A[2, 0]$. So we observe a complexity gain over bruteforce by size of the free variables hence the complexity of the attack comes out to be $2^{512 - 64 - 64} = 2^{512 - 128} = 2^{384}$.
 
-		Add degree of freedome calculations.
+		For an attack to be possible, the degrees of freedom should be greater than $512$. We have 5 random white lanes, 2 variable lanes and 2 random constants, here all of them are of lanesize. So the total degree of freedome comes out to be $= 9 * 64$ which is greater than $512$. 
 
 	\item \subsection{Preimage Attacks on 2-round \KECCAK-$384$}
-				Describe here.
+				This attack is very similar to the above attack for \KECCAK-$512$. We start with 6 variable lanes such that :
+				$A[0, 2] = A[0, 0] \oplus A[0, 1] \oplus \alpha_0$ and $A[2, 2] = A[2, 0] \oplus A[2, 1] \oplus \alpha_2$, so that $\theta$ doesn't spread and proceed for the $1.5$ rounds forward and proceed backwards from the hash by applying $\chi^{-1} \circ \iota^{-1}$. Then build a system of linear equations of 256-bit equations and solve for message variables. Then check the hash obtained is correct. So we observe a complexity gain over bruteforce by size of the free variables hence the complexity of the attack comes out to be $2^{384 - 4*64} = 2^{384 - 256} = 2^{128}$. To meet the padding requirements in worst case the complexity will be $2^{129}$.
 
 	\item \subsection{Preimage Attacks on 2-round \KECCAK-$256$}
 			The attack for 2 round \KECCAK-$256$ is very similar to the attack for \KECCAK-$384$.
