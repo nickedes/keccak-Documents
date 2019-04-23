@@ -36,11 +36,11 @@
 
 \draw [->,very thick] (4.5,2) -- node [above] {$\theta$} (5.5,2);
 
-\node[box,fill=orange ] at (6,4){};
-\node[box,fill=orange ] at (6,3){};
+\foreach \y in {1,2,3,4}
+   \node[box,fill=orange ] at (6,\y){};
 
-\node[box,fill=orange ] at (8,4){};
-\node[box,fill=orange ] at (8,3){};
+\foreach \y in {2,3,4}
+   \node[box,fill=orange ] at (8,\y){};
 
 \foreach \x in {12,...,16}{
     \foreach \y in {0,1,...,4}
@@ -55,22 +55,29 @@
 \node[box,fill=orange ] at (13,1){};
 \node[box,fill=orange ] at (13,2){};
 
+\node[box,fill=orange ] at (14,3){};
+\node[box,fill=orange ] at (15,0){};
+\node[box,fill=orange ] at (14,4){};
 \foreach \x in {18,...,22}{
     \foreach \y in {0,1,...,4}
         \node[box] at (\x,\y){};
 }
 
 \node[box,fill=orange ] at (18,4){};
+\node[box,fill=orange ] at (18,3){};
 \node[box,fill=orange ] at (18,2){};
 \node[box,fill=orange ] at (18,1){};
 \node[box,fill=orange ] at (18,0){};
 
-\node[box,fill=orange ] at (18,2){};
-\node[box,fill=orange ] at (18,1){};
-\node[box,fill=orange ] at (18,0){};
-
+\node[box,fill=orange ] at (19,4){};
+\node[box,fill=orange ] at (19,3){};
 \node[box,fill=orange ] at (19,2){};
 \node[box,fill=orange ] at (19,1){};
+\node[box,fill=orange ] at (19,0){};
+
+\node[box,fill=orange ] at (20,4){};
+\node[box,fill=orange ] at (20,3){};
+\node[box,fill=orange ] at (20,0){};
 
 \node[box,fill=orange ] at (21,4){};
 \node[box,fill=orange ] at (21,0){};
