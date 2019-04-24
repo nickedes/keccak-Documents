@@ -13,7 +13,7 @@
 \DeclarePairedDelimiter\floor{\lfloor}{\rfloor}
 \usepackage[T1]{fontenc}
 \begin{document}
-
+	
 \maketitle
 
 \section{Introduction}
@@ -446,7 +446,7 @@ of Round-Reduced Keccak.
         \]
         \item If the values of pair $(p_{0,3}, p_{0,4})$ are enumerated then both Equation (5) and (6) are linearized in each slice.
         \item Out of the $449$ equations only $128$ are linear due to $\theta$
-        \item Get $256$ linear equations from equation 5 & 6 by enumeration for 64 slices.
+        \item Get $256$ linear equations from equation 5 and 6 by enumeration for 64 slices.
         \item So no. of linear equations and unknowns match, so we can expect a solution.
         \item Actuall complexity $= 2^{449 - 384} = 2^{65}$
     \end{enumerate}
@@ -511,7 +511,7 @@ In Guo-Liu-Song, Fig. 13 the (allowed) linear pattern after 32 rounds is the sam
     \item We go forward with $\pi \circ \rho \circ \theta$ and get a linear state, where 2 linear lanes are adjacent. (State is still symmetric).
     \item After, $\chi$ one quadratic lane is produced. Replace this with a new linear variable of 32-bit symmetry. Since we are following rotation index property. So we artificial degree of freedom = 32
     \item So till now we have 5*32=160 actual degrees of freedom and 32 artificial.
-    \item The hash state has 6 lanes. 5 lanes can be directly inverted by $\Chi$ and $\iota$. But is this symmetric?
+    \item The hash state has 6 lanes. 5 lanes can be directly inverted by $\chi$ and $\iota$. But is this symmetric?
     \item From the characteristic found of i=32, 1.5 Rounds K-384: We observe that only 3 lanes are not completely symmetric and have 3 such bits(1 from each).
     \item We initially guessed that the msg was symmetric for i=32.
     \item There are some symmetric hashes for this should work. (With some probability?)
@@ -527,7 +527,7 @@ In Guo-Liu-Song, Fig. 13 the (allowed) linear pattern after 32 rounds is the sam
     \item As seen in Fig. $13, 14$ of section 6.2, the attacks for Keccak-256 and Keccak-224 resp.
     \item Lets see Keccak-224 in more detail, so the attack mentioned in section 6.2 has the following structure as shown in Figure $14$.
     \begin{figure}
-        \includegraphics[width=\linewidth]{keccak224.png}
+%        \includegraphics[width=\linewidth]{keccak224.png}
         \label{fig:boat1}
     \end{figure}
     \item Here the input to the step $\chi$ of the third round are all linear.
@@ -612,10 +612,5 @@ In Guo-Liu-Song, Fig. 13 the (allowed) linear pattern after 32 rounds is the sam
     \item Another Idea : Maybe some better relations can be drawn between variables and hash values to match more bits. Like for symmetric cases, guesses for $A[x][y][z]$ would also work for $A[x][y][z + i]$. So good possibility for more matched bits from lesser variables. Would give good reductions in time complexities for 4 rounds of Keecak-224,256.
 \end{enumerate}
 
-% \newpage
-% \begin{tikzpicture}
-%     \draw [step=1.0,black, very thick] (0,0) grid (5,5);
 
-%     \draw [step=1.0,black, very thick] (7,0) grid (12,5);
-% \end{tikzpicture}
 \end{document}

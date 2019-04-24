@@ -197,7 +197,9 @@ The round function $p$ in \Keccak{} consists of $5$ steps, in each of which the 
 
 Given a bit location $(x,y,z)$ in the grid, the corresponding row is given by $\left( S[x+i \pmod 5,y,z] : \, i \in [0,4] \right)$. Similarly the corresponding column is given by the bits $\left( S[x,y+i \pmod 5,z] : \, i \in [0,4] \right)$ and the corresponding lane is given by $\left( S[x,y,z+i \pmod w] : \, i \in [0,w-1] \right)$. 
 
-Further, the plane corresponding to a location $(x,y,z)$, consists of $\left( S[x+j \pmod 5,y \pmod 5,z + i] : \, i,\,j \in [0,4] \right)$, similarly the sheets consists of $\left( S[x \pmod 5,y+j \pmod 5,z + i] : \, i,\,j \in [0,4] \right)$, and slice consists of $\left( S[x+j \pmod 5,y+i \pmod 5,z] : \, i,\,j \in [0,4] \right)$ bits.
+Further, the plane corresponding to a location $(x,y,z)$, consists of
+
+$\left( S[x+j \pmod 5,y \pmod 5,z + i] : \, i,\,j \in [0,4] \right)$, similarly the sheets consists of $\left( S[x \pmod 5,y+j \pmod 5,z + i] : \, i,\,j \in [0,4] \right)$, and slice consists of $\left( S[x+j \pmod 5,y+i \pmod 5,z] : \, i,\,j \in [0,4] \right)$ bits.
 
 Some of the above are pictorially shown in the Figure~\ref{ss}.
 \begin{figure}
@@ -257,9 +259,8 @@ In the following, we provide a brief description of the step mappings.
     \end{align}
     where $\rho(x, y)$ is the constant for lane $(x, y)$. 
     
-		The constant value $\rho(x, y)$ is specified for each lane in the construction of \Keccak{}. 
+		The constant value $\rho(x, y)$ is specified for each lane in the construction of \Keccak{} as shown in Table : ~\ref{tab:table1} 
 		
-		Todo : add the rho constant table
 		\begin{table}[h!]
 			\begin{center}
 				\label{tab:table1}
@@ -338,7 +339,7 @@ In this type of attack, we set message variables in the rate part in such a way 
 \subsection{Preimage Attacks on 2-round \KECCAK}
 \begin{enumerate}
 	\item \subsection{Preimage Attacks on 2-round \KECCAK-$512$}
-		This attack is for 2 rounds of \KECCAK-$512$, it uses meet in the middle approach where the 1st-round is kept linear by linear structure and the last round i.e. the second round is inverted from the given hash value. From the given hash, they invert $\iota$ as its the simple addition of round constant for the particular round, followed by inverting the $\chi$ operation. This attack is for \KECCAK-$512$, so the hash length is $512$ i.e. $8$ lanes. Since $\chi$ operation is like a Sbox for a $row$, they invert the first row using the ~\ref{ob3}. So till now we have the values of the first row of the state just before last round steps $\iota \circ \chi$. Now, they focus on proceeding one round forward, so they start with empty state where they fix lanes $(0,0), (0,1), (2,0) $ and $(2,1)$ as variables, rest of the part of the $rate$ is assigned random value and the $capacity$ part remains 0. To avoid the spreading of linear variables by $\theta$ they impose the following conditions : 
+		This attack is for 2 rounds of \KECCAK-$512$, it uses meet in the middle approach where the 1st-round is kept linear by linear structure and the last round i.e. the second round is inverted from the given hash value. From the given hash, they invert $\iota$ as its the simple addition of round constant for the particular round, followed by inverting the $\chi$ operation. This attack is for \KECCAK-$512$, so the hash length is $512$ i.e. $8$ lanes. Since $\chi$ operation is like a Sbox for a $row$, they invert the first row using the ~\ref{ob1}. So till now we have the values of the first row of the state just before last round steps $\iota \circ \chi$. Now, they focus on proceeding one round forward, so they start with empty state where they fix lanes $(0,0), (0,1), (2,0) $ and $(2,1)$ as variables, rest of the part of the $rate$ is assigned random value and the $capacity$ part remains 0. To avoid the spreading of linear variables by $\theta$ they impose the following conditions : 
 		\[
 			A[0, 1] = A[0, 0] \oplus \alpha_{0}
 		\]
@@ -408,6 +409,7 @@ In this type of attack, we set message variables in the rate part in such a way 
 	No. of matched hash bits $ = 255/11 = 23 $. Time complexity of preimage attack $= 2^{384 - 23} = 2^{361}$.
 
 \subsection{Improvements for Preimage Attacks on 3-round \KECCAK-$384$, \KECCAK-$512$}
+
     The idea for improvements of these attacks is an extension for the method described in previous section. As the variable bit $C[x][y][z]$ is linearized by guessing 10 bits. They assumed there that the guessing was independent, which can be dependent too if choosen properly. So the idea is to guess for those bits which would help in reducing the number of guesses for some other bit(s). So it will be possible to reduce the complexity further by choosing linearly dependent bits, so that there can be more matched bits of the hash value.
 
 		We start with following two eqautions, $B$ represents the state after $\Chi$ as shown in the flow diagram for 3 rounds.
@@ -431,6 +433,26 @@ In this type of attack, we set message variables in the rate part in such a way 
 
 		Hence for \KECCAK-$384$ and \KECCAK-$512$ the number of variables are 255 and 128 respectively, which gives 62 and 30 matched bits.Therefore the complexities of the improved attacks are $2^{384 - 62} = 2^{322}$ and $2^{512 - 30} = 2^{482}$ respectively.
 
+\subsection{Practical Preimage For Keccak-256}
+
+Earlier in 2011, Marı́a Naya-Plasencia \etal gave various attacks in ~\cite{naya2011practical}. One of them was a practical preimage attack on 2 rounds of \KECCAK-$256$ with attack complexity of $2^{33}$. This attack uses meet in the middle approach, so they start with $10$ message variables where each column contains $2$ variables. To avoid any effect of $\theta$, they keep $\theta$ constant by adding constraints such that the parity of each column is $0$ which means one of the variable in column is same as the other. Then they move forward with $\pi \circ \rho$ and now this state (say $state2$) is used to build solutions in such a way that it matches the hash value. Now, there are $4$ lanes of hash value and to invert complete row by $\chi^{-1}$, they assume the fifth lane in the hash state and then apply $\chi^{-1} \circ \iota^{-1}$ in the full row. Computing further backwards apply $\rho^{-1} \circ \pi^{-1}$ to get the state (say $state3$) where only 5 lanes are completely known. Now using the information of these 5 lanes they find the values of the 5 variable lanes of the message.
+
+After applying $\theta$ on the message state, left with actually only $5$ variable lanes i.e. $5*64$ degrees of freedom which is same as the number of lanes after inverting from hash value. So it is expected to find a solution.
+
+So, $state2$ on applying $\theta \circ \iota \circ \chi$ gives $state3$, in this method instead of directly computing the values of all message variables corresponding to the hash value they build solutions for smaller groups. 
+
+So \KECCAK-$256$ we consider lane size $w = 64$, they start to build all possible solutions for some groups of 3 slices of $state2$ with keeping constraints that match the values inverted from the hash values i.e. values of $state3$. This required generating all possible solutions for the message variables in these 3 slices and then discarding which satisfy the constraints.
+Further, the solutions of the 3-slices are merged to give solutions for groups of 6-slices in this process we get the value of the 1st slice of the second because it depends on the last slice of the previous group in $\theta$ step. Further pruning of the solutions is done based on constraints due to the repeatitions of variables between amongst these 6-slices.
+
+Similarly solutions of 12-slices are built from 6-slices, then in the next step for 24-slices and last for 48-slices. 
+So we have all possible solutions for the first 48-slices by this method and rest 16-slices are still left.
+
+The solutions for the remaining 16-slices are found in a similar way where these 16 slices are divided in groups of 4 and 12 slices. The solutions for 4 slices are found in the same way as for 3 slices and the solutions for the 12 slices are built in the same way as done previously. Then these are merged to get all possible for the last 16 slices.
+
+Moving further we merge the solutions of 48 and 16 slices groups and after matching the values from the $state3$ and the repeated variables we get the solution for 64 slices and the values of 5 message variables is found. 
+
+This attack has time as well as space complexity, due to the size of the solution list for group of slices. None of the steps described above exceed $2^{31}$ time complexity. To match the padding condiitions for the message further $2^2$ iterations are required in worst case. So a preimage for 2 rounds of \KECCAK-$256$ is practically found in $2^{33}$ time complexity and $2^{29}$ memory complexity.
+
 \section{Results :}
 
 \section{Preimage Attack for $2$ Rounds of Round Reduced \KECCAK-$384$}
@@ -439,8 +461,7 @@ In this section, we present a preimage attack for a round reduced \KECCAK{}. We 
 
 
 \subsection{Notations and Observations}
-In the analysis, we will represent a state by the lanes. There are in total $5\times 5$ lanes. Each lane in a state will be represented by a
- variable which is a $64$-bit array. 
+In the analysis, we will represent a state by the lanes. There are in total $5\times 5$ lanes. Each lane in a state will be represented by a variable which is a $64$-bit array. 
 A variable with a number in round bracket $``( . )"$ represents the shift of the bits in array towards MSB. A variable with a number in square bracket $``[ . ]"$ represents the bit value of the variable at that index. If there are multiple numbers in the square bracket then it represents the corresponding bit values.
 
 %% More details
