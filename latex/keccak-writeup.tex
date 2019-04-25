@@ -106,23 +106,23 @@ A hash function $H:\{0,1\}^* \rightarrow \{0,1\}^n $, where $n$ is a fixed value
         \item Collision Resistance : It is computationally hard to find $m$ and $m^\prime$ such that $H(m)=H(m^\prime)$.
 \end{itemize}
 
-So a hash function maps data of any size to a data of fixed size. Due to the above listed properties hash functions have found many applications in the filed of computer science. Few applications of hash functions are :
+So a hash function maps data of any size to a data of fixed size. Due to the above listed properties hash functions have found many applications in the field of computer science. Few applications of hash functions are :
 \begin{enumerate}
-	\item Creating a digest from the message and then using the digest later to ensure that there are no changes to the message. This property is called message integrity. Secure Hash functions are widely used to ensure the verification of message integrity.
-	\item Hash functions are also used for storing passwords. Secure applications don't actually store the passwords in the database but the hash of the password is stored by using a secure hash function. This hash in future is compared by the hash of the password entered by the user and then appropriate action is taken on a successfull match.
+	\item Creating a digest from the message and then using the digest later to ensure that there are no changes to the message. This property is called message integrity. Secure Hash functions are widely used for the verification of message integrity.
+	\item Hash functions are also used for storing passwords. Secure applications don't actually store the passwords directly in the database but the hash of the password is stored in the database by using a secure hash function for calculating hash. The hash stored in the database is used in future for comparing with the hash of the password entered by the user and then appropriate action is taken on a successfull match. In case of a securiy breach the attacker knows only the hashes stored in the database not the actual passwords. Deriving password (Preimage) from the hash is again a computationally hard problem.
 \end{enumerate}
 
 There are many popular family of hash functions like MD (Message Digest) and SHA(Secure Hash Algorithm). MD family of hash functions comprises of MD4, MD5 etc. Similarly SHA family of hash functions comprises of SHA-0, SHA-1, SHA-2, and SHA-3.
 Though SHA-3 belongs to the same family as SHA-2, yet it has a different structure and construction.
 
-Most of these popular hash functions follow the Merkle–Damgard construction []. 
-
-The construction is as follows, the algorithm starts with IV i.e. initialization vector (initial value). The value of IV depends on the algorithm and implementation. Also, the input data message is divided into blocks of some size n.
-This construction uses a compression function $f$, where this function will compress each message block combined the output of previous block and the produce the output for the next block. When $f$ is applied to the first message block then instead of input from the previous block $IV$ is used. The final block is padded as per need and then $f$ is applied on it. The output of the final block is the hash of the data.
+Most of these popular hash functions like MD5, SHA-2 follow the Merkle–Damgard construction []. 
 
 Attach a diagram for MD construction.
 
-Hash function is an integral component of cryptography. It is used in many cryptographic applications e.g., Authentication, Non-repudiation and Integrity etc.
+The construction is as follows, the algorithm starts with IV i.e. initialization vector (initial value). The value of IV depends on the algorithm and implementation. Also, the input data message is divided into blocks of fixed size n.
+This construction uses a compression function $f$, where this function will compress each message block combined with the output of previous block and then produce the output for the next block. When $f$ is applied to the first message block then instead of input from the previous block $IV$ is used. The final block is padded so that its size is same as block size and then $f$ is applied on it. The output of the final block is the hash of the complete data.
+
+Hash function is an integral component of cryptography. It is used in many cryptographic applications e.g., Authentication, Non-repudiation, Digital Signatures and Integrity etc.
 
 % Keccak Intro start
 In 2008, U.S. National Institute of Standards and Technology (NIST) announced a competition for the Secure Hash Algorithm-3 (\SHA-3). A total of $64$ proposals were submitted to the competition. In the year $2012$, NIST announced \KECCAK{} as the winner of the competition. The \KECCAK{} hash function was designed by Guido Bertoni, Joan Daemen, Micha\"{e}l Peeters, and Gilles Van Assche~\cite{bertoni2009keccak}. Since $2015$, \KECCAK{} has been standardized as \SHA-$3$ by the NIST.
