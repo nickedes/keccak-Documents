@@ -131,8 +131,9 @@ The \KECCAK{} hash function is based on sponge construction~\cite{bertoni2011cry
 
 \Keccak{}'s excellent resistence towards cryptanalytic attacks is one of the main reasons for its selection by NIST. The algorithm is a good mixture of linear as well as non-linear operations.
 
+Intensive cryptanalysis of \KECCAK{} is done since its inception ~\cite{bernstein2010second}~\cite{naya2011practical}~\cite{dinur2012new}~\cite{dinur2013collision}~\cite{morawiecki2013sat}~\cite{dinur2014improved}~\cite{chang20141st}~\cite{guo2016linear}~\cite{qiao2017new}~\cite{song2017non}~\cite{kumar2018cryptanalysis}. In $2011$ Naya Plasencia \etal gave various attacks for \KECCAK{}, one of them was a practical (second) preimage attack on 2 rounds of \KECCAK-$256$ and other was . In $2012$, Dinur \etal gave a practical collision attack for $4$ rounds of \KECCAK-$224$ and \KECCAK-$256$ using differential and algebraic techniques~\cite{dinur2012new} and also provided attacks for $3$ rounds for \KECCAK-$384$ and \KECCAK-$512$. They further gave collision attacks in $2013$ for $5$ rounds of \KECCAK-$256$ using internal differential techniques~\cite{dinur2013collision}. In $2016$, using linear structures, Guo \etal proposed preimage attacks for $2$ and $3$ rounds of \KECCAK-$224$, \KECCAK-$256$, \KECCAK-$384$, \KECCAK-$512$ and for $4$ rounds in case of smaller hash lengths~\cite{guo2016linear}. Recently, in the year $2017$, Kumar \etal gave efficient preimage and collision attacks for $1$ round of \KECCAK~\cite{kumar2018cryptanalysis}. In $2019$, Ting Li and Yao Sun proposed practical preimage attack for $3$ rounds of \KECCAK-$224$ with complexity $2^{39.39}$ and improved theoretical preimage attacks for $4$ rounds \KECCAK-$224$, \KECCAK-$256$ ~\cite{todo}. They used two blocks of message to improve over theoretical attacks for $3$ rounds \KECCAK-$224$. There are hardly any attack for the full round \KECCAK{}, but there are many attacks for reduced round \Keccak{}. Some of the important results are shown in the Table~\ref{tab1} and Table~\ref{tab2}.
 
-Intensive cryptanalysis of \KECCAK{} is done since its inception ~\cite{bernstein2010second}~\cite{naya2011practical}~\cite{dinur2012new}~\cite{dinur2013collision}~\cite{morawiecki2013sat}~\cite{dinur2014improved}~\cite{chang20141st}~\cite{guo2016linear}~\cite{qiao2017new}~\cite{song2017non}~\cite{kumar2018cryptanalysis}. In $2012$, Dinur \etal  gave a practical collision attack for $4$ rounds of \Keccak-$224$ and \Keccak-$256$ using differential and algebraic techniques~\cite{dinur2012new} and also provided attacks for $3$ rounds for \Keccak-$384$ and \Keccak-$512$. They further gave collision attacks in $2013$ for $5$ rounds of \Keccak-$256$ using internal differential techniques~\cite{dinur2013collision}. In $2016$, using linear structures, Guo \etal proposed preimage attacks for $2$ and $3$ rounds of \Keccak-$224$, \Keccak-$256$, \Keccak-$384$, \Keccak-$512$ and for $4$ rounds in case of smaller hash lengths~\cite{guo2016linear}. Recently, in the year $2017$, Kumar \etal gave efficient preimage and collision attacks for $1$ round of \Keccak~\cite{kumar2018cryptanalysis}. There are hardly any attack for the full round \KECCAK{}, but there are many attacks for reduced round \Keccak{}. Some of the important results are shown in the Table~\ref{tab1} and Table~\ref{tab2}.
+To further promote cryptanalysis of round reduced versions of \KECCAK{}, Keccak team launched some preimage and collision challenges named \textbf{Keccak Crunchy Crypto Collision and Preimage Contest}. Cash prizes are provided after solving open challenges. To make the challenges beyond the Computation capability of a computer they have set output size as 160 and 80 bits for collision and preimage challenges respectively, so bruteforce complexity for solving these challenges is $2^{80}$ which is practically not possible.
 \newline
 
 \textbf{Our Contribution:} We propose a preimage attack for $2$ rounds of round-reduced \KECCAK-$384$. The time complexity of attack is $2^{89}$ and the memory complexity is $2^{87}$. The attack is not practical, but it outperforms the previous best-known attack~\cite{guo2016linear}, with a good gap. The proposed attack does not affect the security of full \KECCAK{}.
@@ -172,6 +173,29 @@ No. of rounds & Hash length & Time Complexity & Reference\\
 5 & \Keccak - $224$ & $2^{101}$ & ~\cite{qiao2017new}\\
 5 & \Keccak - $224$ & Practical & ~\cite{song2017non}\\
 5 & \Keccak - $256$ & $2^{115}$ & ~\cite{dinur2013collision}\\
+\hline
+\end{tabular}
+\end{center}
+\end{table}
+
+\begin{table}
+\begin{center}
+\caption{Parameters and Symbols}\label{tab3}
+\begin{tabular}{|c|l|}
+\hline
+Symbol & Description\\
+\hline
+$b$ & The width of \KECCAK{} state in bits \\
+$r$ & rate of a sponge function \\
+$c$ & capacity of a sponge function\\
+$d$ & Length of the hash of a hash function\\
+$f$ & The function used for sponge construction \\
+$i_r$ & Round index for a \KECCAK-$p$ permutation\\
+$n_r$ & Number of rounds for \KECCAK-$p$ permutation\\
+$pad$ & padding rule for the sponge construction\\
+$w$ & Number of bits in a lane in \KECCAK{} state\\
+$\theta,\rho,\pi,\chi,\iota$ & A round is comprised of these five step mappings \\
+$SPONGE[f, pad, r]$ & Sponge function in which the underlying function is $f$, padding is $pad$ and rate is $r$ \\
 \hline
 \end{tabular}
 \end{center}
