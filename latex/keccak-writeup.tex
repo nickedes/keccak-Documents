@@ -101,7 +101,7 @@ A hash function $H:\{0,1\}^* \rightarrow \{0,1\}^n $, where $n$ is a fixed value
 \begin{itemize}\setlength\itemindent{20pt}
 		\item Deterministic
     \item Efficient : Given $m$, it is easy to compute $H(m)$.
-        \item Preimage Resistance : Given $H(m)$, it is computationally hard to find $m$. (\textcolor{red}{ })
+        \item Preimage Resistance : Given $H(m)$, it is computationally hard to find $m$.
         \item Second-preimage Resistance : Given $m$, it is computationally hard to find $m^\prime$ such that $H(m)=H(m^\prime)$.
         \item Collision Resistance : It is computationally hard to find $m$ and $m^\prime$ such that $H(m)=H(m^\prime)$.
 \end{itemize}
@@ -115,7 +115,7 @@ So a hash function maps data of any size to a data of fixed size. Due to the abo
 There are many popular family of hash functions like MD (Message Digest) and SHA(Secure Hash Algorithm). MD family of hash functions comprises of MD4, MD5 etc. Similarly SHA family of hash functions comprises of SHA-0, SHA-1, SHA-2, and SHA-3.
 Though SHA-3 belongs to the same family as SHA-2, yet it has a different structure and construction.
 
-Most of these popular hash functions like MD5, SHA-2 follow the Merkle–Damgard construction []. 
+Most of these popular hash functions like MD5, SHA-2 follow the Merkle-Damgard construction ~\cite{merkle}. 
 
 Attach a diagram for MD construction.
 
@@ -136,7 +136,7 @@ Intensive cryptanalysis of \KECCAK{} is done since its inception ~\cite{bernstei
 To further promote cryptanalysis of round reduced versions of \KECCAK{}, Keccak team launched some preimage and collision challenges named \textbf{Keccak Crunchy Crypto Collision and Preimage Contest}. Cash prizes are provided after solving open challenges. To make the challenges beyond the Computation capability of a computer they have set output size as 160 and 80 bits for collision and preimage challenges respectively, so bruteforce complexity for solving these challenges is $2^{80}$ which is practically not possible.
 \newline
 
-\textbf{Our Contribution:} We propose a preimage attack for $2$ rounds of round-reduced \KECCAK-$384$. The time complexity of attack is $2^{89}$ and the memory complexity is $2^{87}$. The attack is not practical, but it outperforms the previous best-known attack~\cite{guo2016linear}, with a good gap. The proposed attack does not affect the security of full \KECCAK{}.
+\textbf{Our Contribution:} We propose a preimage attack for $2$ rounds of round-reduced \KECCAK-$384$. The time complexity of attack is $2^{89}$ and the memory complexity is $2^{87}$. The attack is not practical, but it outperforms the previous best-known attack~\cite{guo2016linear}, with a good gap. The proposed attack does not affect the security of full \KECCAK{}. We also propose a preimage attack for $3$ rounds of round-reduced \KECCAK-$256$. The time complexity of attack is $2^{178}$. This attack is also not practical, but it is better than the attack provided by~\cite{guo2016linear}, though recently this year a better attack has been published in ~\cite{cryptoeprint:2019:248}
 
 \begin{table}
 \begin{center}
@@ -366,7 +366,7 @@ The \Keccak{} team denotes the instances of \Keccak{} by $\Keccak[r,c]$, where $
 truncated to $d$ bits.
 The \SHA-3 hash family supports minimum four different output length $d \in \{224,256,384,512\}$. In the \Keccak-384, the size of $c = 2\cdot d = 768$ and the rate $r = 1600 - c = 1600 - 768 = 832= 13\cdot 64$.
 
-Table ~\ref{} shows various parameters and other variables related to \KECCAK{}
+Table~\ref{tab3} shows various parameters and other variables related to \KECCAK{}
 
 \section{Attacks on Round Reduced Keccak}
 \KECCAK{} observed intense cryptanalysis since its inception, this involved various types of attacks with different techniques. The following are the types of attacks :
@@ -523,6 +523,8 @@ The solutions for the remaining 16-slices are found in a similar way where these
 Moving further we merge the solutions of 48 and 16 slices groups and after matching the values from the $state3$ and the repeated variables we get the solution for 64 slices and the values of 5 message variables is found. 
 
 This attack has time as well as space complexity, due to the size of the solution list for group of slices. None of the steps described above exceed $2^{31}$ time complexity. To match the padding condiitions for the message further $2^2$ iterations are required in worst case. So a preimage for 2 rounds of \KECCAK-$256$ is practically found in $2^{33}$ time complexity and $2^{29}$ memory complexity.
+
+\subsection{Collision Attacks on \KECCAK{}}
 
 \section{Results :}
 
@@ -932,9 +934,16 @@ Also, we can find second preimages also by setting $d_0$,$d_1$ to a constant suc
 In view of the above remark, the overall cost of the attack is $2\cdot 2^{88}$ i.e., $2^{89}$.
 
 \subsection{Preimage Attack on 3-round \Keccak-$256$}
-In this section we discuss a preimage attack for 3 rounds of \KECCAK-$256$. This attack draws motivation from preimage attack on 2 round \Keccak-$384$ by Guo \etal using the idea of linear structure. 
+In this section we discuss a preimage attack for 3 rounds of \KECCAK-$256$. This attack draws motivation from preimage attack on 2 round \Keccak-$256$ using the idea of linear structure as explained in section 3.5. 
 
-\Keccak-$256$ structure has capacity $c = 256*2 = 8$ lanes. We increase the no. of variable lanes here as compared to \Keccak-$384$ structure, by keeping the lanes $(0,0), (0,1), (0,2), (0,3)$ and $(2,0), (2,1), (2,2)$ as variables in Column $0, 2$ respectively as seen in Figure : (Todo). The orange lanes in the first state represents the variables in rate part of the state and the gray lanes are the $0$ lanes in the capacity part of the state.
+\begin{figure}
+        \centering
+        \includegraphics[scale=0.6]{3Rkeccak256.pdf}
+        \caption{Preimage Attack on 2-round \KECCAK-$256$}
+        \label{fig:3rkeccak256}
+\end{figure}
+
+\Keccak-$256$ structure has capacity $c = 256*2 = 8$ lanes. We increase the no. of variable lanes here as compared to \Keccak-$384$ structure, by keeping the lanes $(0,0), (0,1), (0,2), (0,3)$ and $(2,0), (2,1), (2,2)$ as variables in Column $0, 2$ respectively as seen in Figure :~\ref{fig:3rkeccak256}. The yellow colored lanes in the first state represents the variables in rate part of the state and the gray lanes are the $0$ lanes in the capacity part of the state.
 
 To prevent the spread of $\theta$ in first round we need to add constraints :
 \begin{enumerate}
@@ -967,7 +976,7 @@ On Expanding it :
         a = A[x][y][z], b = A[x + 1][y][z], c = A[x + 2][y][z], d = A[x - 1][y][z]
     \]
     So guessing $b$ and other 9 terms would make $C[x][y][z]$ linear. Hence, We linearize $C[x][y][z]$ by guessing these 10 bits input to step $\chi$. That is, we obtain 11 = 1 + 10 linear equations and match 1 bit of the hash value.
-We can match $2\floor*{\frac{t - 5}{8}}$ bits of a given hash value if we have $t$ variables \cite{guo2016linear} and as explained in the section : (Todo).
+We can match $2\floor*{\frac{t - 5}{8}}$ bits of a given hash value if we have $t$ variables \cite{guo2016linear} and as explained in the preimage attacks section.
 
 For \Keccak-$256$, we started with $7$ lanes variable states in the initial state. After applying conditions to keep $\theta$ as constant we are left with $7 - 2 = 5$ lane variables. Hence $t = 5*64 = 320$ variables.
 So the no. of matched bits = $78$, with this we have a complexity gain over bruteforce of $2^{78}$
