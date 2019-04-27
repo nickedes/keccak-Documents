@@ -987,10 +987,10 @@ This method observes an improvement of $2^{14}$ compared to the attack mentioned
 \subsection{Preimage attack on 4-round \KECCAK-$224$}
 
     This is in reference to Guo \etal work "Linear Structures: Applications to Cryptanalysis of Round-Reduced Keccak" ~\cite{guo2016linear}. Lets see \KECCAK-$224$ in more detail, so the attack mentioned in section 6.2 has the structure as shown in Figure $14$.
-    As seen in Fig. $13, 14$ of section 6.2, the attacks for \KECCAK-$256$ and \KECCAK-$224$ resp. These are preimage attacks for 3 rounds where by the method of linear structure the are able to keep the state linear even after the $L$ i.e. $\pi \circ \rho \circ \theta$ part of the third round. So the key point to note here is that the input to the $\chi$ of the third round is linear and this information is being used in the attack described below.
+    As seen in Fig. $13, 14$ of section 6.2 of~\cite{guo2016linear}, the attacks for \KECCAK-$256$ and \KECCAK-$224$ resp. These are preimage attacks for 3 rounds where by the method of linear structure the are able to keep the state linear even after the $L$ i.e. $\pi \circ \rho \circ \theta$ part of the third round. So the key point to note here is that the input to the $\chi$ of the third round is linear and this information is being used in the attack described below.
     \begin{figure}
-%        \includegraphics[width=\linewidth]{keccak224.png}
-        \label{fig:boat1}
+        \includegraphics[width=\linewidth]{keccak224.png}
+        \label{fig:keccak224}
     \end{figure}
     Here the input to the step $\chi$ of the third round are all linear variables and its output will be a quadratic state as $\chi$ is a non-linear operation.
     So, if we consider the state input to $\chi$ of third round be $A$, output of $\chi$ be $B$ and output of fourth round $\theta$ be $C$.
@@ -1066,12 +1066,12 @@ This method observes an improvement of $2^{14}$ compared to the attack mentioned
     And similarly for Keccak-256, Time complexity $=2^{256 - 14} = 2^{242}$
 
 \section{Conclusion and Future works}
-In this paper, we have presented a preimage attack on the $2$ rounds of round-reduced \KECCAK-$384$. The attack is not yet practical but it is much better than the existing best-known attack in term of the time complexity. The basic idea of the attack can be used to mount a practical preimage attack on the $\Keccak[r:=400-192,\, c:=192]$ and $\Keccak[r:=800-384,\,c:=384]$. 
-We are working on their implementations. We will make the source code public, once it is ready. 
-Further, in future, we will try to explore a practical attack for the $2$ or more rounds of round-reduced \KECCAK-$384$.
+In this thesis, I have presented a preimage attack on the $2$ rounds of round-reduced \KECCAK-$384$. The attack is not yet practical but it is much better than the existing best-known attack in term of the time complexity. The basic idea of the attack can be used to mount a practical preimage attack on the $\Keccak[r:=400-192,\, c:=192]$ and $\Keccak[r:=800-384,\,c:=384]$. 
+I have also presented a preiamge attack on $3$ rounds of roundm-reduced \KECCAK-$256$, again this attack is also not practical.
+Further, in future, we will try to explore a practical attack for the $2$ or more rounds of round-reduced \KECCAK-$384$, \KECCAK-$512$.
 
 \section*{Acknowledgement} We thank the reviewers of Indocrypt-$2018$ for providing comments which helped in
-improving the work. In particular, we thank an anonymous reviewer for suggesting us to implement the attack on the $\Keccak[r:=400-192,\, c:=192]$ and also providing insights to further improve the attack. We take it as the future work. 
+improving the work. In particular, we thank an anonymous reviewer for suggesting us to implement the attack on the $\Keccak[r:=400-192,\, c:=192]$ and also providing insights to further improve the attack. I also thank my thesis advisor \textbf{Dr. Shashank Singh} for his guidance.
 \nocite{*}
 \bibliographystyle{splncs04}
 
