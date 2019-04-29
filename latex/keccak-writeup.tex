@@ -112,17 +112,23 @@ So a hash function maps data of any size to a data of fixed size. Due to the abo
 	\item Hash functions are also used for storing passwords. Secure applications don't actually store the passwords directly in the database but the hash of the password is stored in the database by using a secure hash function for calculating hash. The hash stored in the database is used in future for comparing with the hash of the password entered by the user and then appropriate action is taken on a successfull match. In case of a securiy breach the attacker knows only the hashes stored in the database not the actual passwords. Deriving password (Preimage) from the hash is again a computationally hard problem.
 \end{enumerate}
 
-There are many popular family of hash functions like MD (Message Digest) and SHA(Secure Hash Algorithm). MD family of hash functions comprises of MD4, MD5 etc. Similarly SHA family of hash functions comprises of SHA-0, SHA-1, SHA-2, and SHA-3.
-Though SHA-3 belongs to the same family as SHA-2, yet it has a different structure and construction.
-
-Most of these popular hash functions like MD5, SHA-2 follow the Merkle-Damgard construction ~\cite{merkle}. 
-
-Attach a diagram for MD construction.
-
-The construction is as follows, the algorithm starts with IV i.e. initialization vector (initial value). The value of IV depends on the algorithm and implementation. Also, the input data message is divided into blocks of fixed size n.
-This construction uses a compression function $f$, where this function will compress each message block combined with the output of previous block and then produce the output for the next block. When $f$ is applied to the first message block then instead of input from the previous block $IV$ is used. The final block is padded so that its size is same as block size and then $f$ is applied on it. The output of the final block is the hash of the complete data.
-
 Hash function is an integral component of cryptography. It is used in many cryptographic applications e.g., Authentication, Non-repudiation, Digital Signatures and Integrity etc.
+
+There are many popular families of hash functions like MD (Message Digest) and \SHA(Secure Hash Algorithm). MD family of hash functions comprises of MD4, MD5 etc. Similarly \SHA family of hash functions comprises of \SHA-0, \SHA-1, \SHA-2, and \SHA-3.
+Though \SHA-3 belongs to the same family as \SHA-2, yet it has a different structure and construction.
+
+Most of these popular hash functions like MD5, SHA-2 follow the Merkle-Damgard construction~\cite{merkle}. As seen in figure:~\ref{fig:MDConstruction}.
+
+\begin{figure}
+    \centering
+    \includegraphics[scale=0.5]{MDConstruction.png}
+    \caption{Merkle Damgard Construction~\cite{MDamgard}}
+    \label{fig:MDConstruction}
+\end{figure}
+
+
+The construction is as follows, the algorithm starts with $IV$ i.e. initialization vector (initial value). The value of $IV$ depends on the algorithm and implementation. Also, the input data message is divided into blocks of fixed size n.
+This construction uses a compression function \textbf{f}, where this function will compress each message block combined with the output of previous block and then produce the output for the next block. When \textbf{f} is applied to the first message block then instead of input from the previous block $IV$ is used. The final block is padded so that its size is same as block size and then \textbf{f} is applied on it. The output of the final block is the hash of the complete data. Many popular hash functions use this construction as the main design.
 
 % Keccak Intro start
 In 2008, U.S. National Institute of Standards and Technology (NIST) announced a competition for the Secure Hash Algorithm-3 (\SHA-3). A total of $64$ proposals were submitted to the competition. In the year $2012$, NIST announced \KECCAK{} as the winner of the competition. The \KECCAK{} hash function was designed by Guido Bertoni, Joan Daemen, Micha\"{e}l Peeters, and Gilles Van Assche~\cite{bertoni2009keccak}. Since $2015$, \KECCAK{} has been standardized as \SHA-$3$ by the NIST.
@@ -131,12 +137,8 @@ The \KECCAK{} hash function is based on sponge construction~\cite{bertoni2011cry
 
 \Keccak{}'s excellent resistence towards cryptanalytic attacks is one of the main reasons for its selection by NIST. The algorithm is a good mixture of linear as well as non-linear operations.
 
-Intensive cryptanalysis of \KECCAK{} is done since its inception ~\cite{bernstein2010second}~\cite{naya2011practical}~\cite{dinur2012new}~\cite{dinur2013collision}~\cite{morawiecki2013sat}~\cite{dinur2014improved}~\cite{chang20141st}~\cite{guo2016linear}~\cite{qiao2017new}~\cite{song2017non}~\cite{kumar2018cryptanalysis}. In $2011$ Naya Plasencia \etal gave various attacks for \KECCAK{}, one of them was a practical (second) preimage attack on 2 rounds of \KECCAK-$256$ and other was . In $2012$, Dinur \etal gave a practical collision attack for $4$ rounds of \KECCAK-$224$ and \KECCAK-$256$ using differential and algebraic techniques~\cite{dinur2012new} and also provided attacks for $3$ rounds for \KECCAK-$384$ and \KECCAK-$512$. They further gave collision attacks in $2013$ for $5$ rounds of \KECCAK-$256$ using internal differential techniques~\cite{dinur2013collision}. In $2016$, using linear structures, Guo \etal proposed preimage attacks for $2$ and $3$ rounds of \KECCAK-$224$, \KECCAK-$256$, \KECCAK-$384$, \KECCAK-$512$ and for $4$ rounds in case of smaller hash lengths~\cite{guo2016linear}. Recently, in the year $2017$, Kumar \etal gave efficient preimage and collision attacks for $1$ round of \KECCAK~\cite{kumar2018cryptanalysis}. In $2019$, Ting Li and Yao Sun proposed practical preimage attack for $3$ rounds of \KECCAK-$224$ with complexity $2^{39.39}$ and improved theoretical preimage attacks for $4$ rounds \KECCAK-$224$, \KECCAK-$256$ ~\cite{todo}. They used two blocks of message to improve over theoretical attacks for $3$ rounds \KECCAK-$224$. There are hardly any attack for the full round \KECCAK{}, but there are many attacks for reduced round \Keccak{}. Some of the important results are shown in the Table~\ref{tab1} and Table~\ref{tab2}.
-
-To further promote cryptanalysis of round reduced versions of \KECCAK{}, Keccak team launched some preimage and collision challenges named \textbf{Keccak Crunchy Crypto Collision and Preimage Contest}. Cash prizes are provided after solving open challenges. To make the challenges beyond the Computation capability of a computer they have set output size as 160 and 80 bits for collision and preimage challenges respectively, so bruteforce complexity for solving these challenges is $2^{80}$ which is practically not possible.
-\newline
-
-\textbf{Our Contribution:} We propose a preimage attack for $2$ rounds of round-reduced \KECCAK-$384$. The time complexity of attack is $2^{89}$ and the memory complexity is $2^{87}$. The attack is not practical, but it outperforms the previous best-known attack~\cite{guo2016linear}, with a good gap. The proposed attack does not affect the security of full \KECCAK{}. We also propose a preimage attack for $3$ rounds of round-reduced \KECCAK-$256$. The time complexity of attack is $2^{178}$. This attack is also not practical, but it is better than the attack provided by~\cite{guo2016linear}, though recently this year a better attack has been published in ~\cite{cryptoeprint:2019:248}
+Intensive cryptanalysis of \KECCAK{} is done since its inception ~\cite{bernstein2010second}~\cite{naya2011practical}~\cite{dinur2012new}~\cite{dinur2013collision}~\cite{morawiecki2013sat}
+~\cite{dinur2014improved}~\cite{chang20141st}~\cite{guo2016linear}~\cite{qiao2017new}~\cite{song2017non}~\cite{kumar2018cryptanalysis}. In $2011$, Naya Plasencia \etal gave various attacks for \KECCAK{}, one of them was a practical (second) preimage attack on 2 rounds of \KECCAK-$256$ and other was . In $2012$, Dinur \etal gave a practical collision attack for $4$ rounds of \KECCAK-$224$ and \KECCAK-$256$ using differential and algebraic techniques~\cite{dinur2012new} and also provided attacks for $3$ rounds for \KECCAK-$384$ and \KECCAK-$512$. They further gave collision attacks in $2013$ for $5$ rounds of \KECCAK-$256$ using internal differential techniques~\cite{dinur2013collision}. In $2016$, using linear structures, Guo \etal proposed preimage attacks for $2$ and $3$ rounds of \KECCAK-$224$, \KECCAK-$256$, \KECCAK-$384$, \KECCAK-$512$ and for $4$ rounds in case of smaller hash lengths~\cite{guo2016linear}. Recently, in the year $2017$, Kumar \etal gave efficient preimage and collision attacks for $1$ round of \KECCAK~\cite{kumar2018cryptanalysis}. In $2019$, Ting Li and Yao Sun proposed practical preimage attack for $3$ rounds of \KECCAK-$224$ with complexity $2^{39.39}$ and improved theoretical preimage attacks for $4$ rounds \KECCAK-$224$, \KECCAK-$256$~\cite{lipreimage}. They used two blocks of message to improve over theoretical attacks for $3$ rounds \KECCAK-$224$. There are hardly any attack for the full round \KECCAK{}, but there are many attacks for reduced round \Keccak{}. These attacks on round reduced versions of \KECCAK{} are still far from affecting the security of full 24 rounds \KECCAK{}. Some of the important results are shown in the Table~\ref{tab1} and Table~\ref{tab2}.
 
 \begin{table}
 \begin{center}
@@ -525,6 +527,8 @@ Moving further we merge the solutions of 48 and 16 slices groups and after match
 This attack has time as well as space complexity, due to the size of the solution list for group of slices. None of the steps described above exceed $2^{31}$ time complexity. To match the padding condiitions for the message further $2^2$ iterations are required in worst case. So a preimage for 2 rounds of \KECCAK-$256$ is practically found in $2^{33}$ time complexity and $2^{29}$ memory complexity.
 
 \subsection{Collision Attacks on \KECCAK{}}
+
+
 
 \section{Results :}
 
