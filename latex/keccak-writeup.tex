@@ -180,6 +180,12 @@ No. of rounds & Hash length & Time Complexity & Reference\\
 \end{center}
 \end{table}
 
+To further promote cryptanalysis of round reduced versions of \KECCAK{}, Keccak team launched some preimage and collision challenges named \textbf{Keccak Crunchy Crypto Collision and Preimage Contest}. Cash prizes are provided after solving open challenges. To make the challenges beyond the Computation capability of a computer they have set output size as 160 and 80 bits for collision and preimage challenges respectively, so bruteforce complexity for solving these challenges is $2^{80}$ which is practically not possible.
+\newline
+
+\textbf{Our Contribution:} We propose a preimage attack for $2$ rounds of round-reduced \KECCAK-$384$. The time complexity of attack is $2^{89}$ and the memory complexity is $2^{87}$. The attack is not practical, but it outperforms the previous best-known attack~\cite{guo2016linear}, with a good gap. The proposed attack does not affect the security of full \KECCAK{}. We also propose a preimage attack for $3$ rounds of round-reduced \KECCAK-$256$. The time complexity of attack is $2^{178}$. This attack is also not practical, but it is better than the attack provided by~\cite{guo2016linear}, though recently this year a better attack has been published in ~\cite{cryptoeprint:2019:248}
+
+
 \begin{table}
 \begin{center}
 \caption{Parameters and Symbols}\label{tab3}
@@ -372,6 +378,7 @@ Table~\ref{tab3} shows various parameters and other variables related to \KECCAK
 
 \section{Attacks on Round Reduced Keccak}
 \KECCAK{} observed intense cryptanalysis since its inception, this involved various types of attacks with different techniques. The following are the types of attacks :
+
 \begin{enumerate}
 	\item \textbf{Preimage Attacks}
 	\item \textbf{Collision Attacks}
@@ -528,11 +535,48 @@ This attack has time as well as space complexity, due to the size of the solutio
 
 \subsection{Collision Attacks on \KECCAK{}}
 
+A collision attack on a cryptographic hash function means that the attack is able to generate two different input messages $M_1, M_2$ to the hash function $h(.)$ such that, hash of both the messages is same i.e. $h(M_1) = h(M_2)$.
+
+In general we can obtain a collision attack by generating random messages and obtaining there hashes and storing this hash in a table. While storing the hash in the table if same hash already exists then we have found a collision, otherwise we store it in the table. This is also known as birthday attack. If the output of hash function is a $n$-bit hash, then birthday attack yields a collision in $2^{n/2}$ computations of the hash function.
+
+There are 4 different \SHA-$3$ functions namely \SHA3-$224$, \SHA3-$256$, \SHA3-$384$ and \SHA3-$512$. \SHA3-$d$ hash function is in general outputs a $d$-bit hash, so the generic complexity for collision attack for \SHA3-$d$ is $2^{d/2}$.
+
+But for \KECCAK{}, there is also another kind of bruteforce attack possible. In the \KECCAK{} even if there is a collision in the capacity part of the hash state then also it is possible to yield a collision attack. Lets assume we have two messages $a, b$ such that they produce the following output and $f$ is our hash-function:
+\[
+	f(a) \rightarrow \left[ \alpha || c \right]
+\]
+\[
+	f(b) \rightarrow \left[ \beta || c \right]
+\]
+Note that the two inputs above are such that they have a collision in $capacity$ part, next we see how we can generate a actual collision from this.
+
+Here, $M_1 = a || 0$, where the first message block consists of $a$ and second block is $0$, then
+
+\[
+	f(M_1) \rightarrow f\left( \left[ \alpha \oplus 0 || c \right] \right) \rightarrow f\left( \left[ \alpha || c \right] \right) \rightarrow S_1
+\]
+
+Let $M_2 = b || \beta \oplus \alpha$, where the first message block consists of $b$ and second block is $\beta \oplus \alpha$, 
+
+\[
+	f(M_2) \rightarrow f\left( f(b) \oplus \beta \oplus \alpha \right) \rightarrow f\left( \beta \oplus \beta \oplus \alpha || c \right) \rightarrow f\left( \left[\alpha || c\right] \right) \rightarrow S_1
+\]
+Both $M_1, M_2$ yield same state $S_1$ after applying hash function $f$, so a collision is found. But this depends on the collision in the $capacity$ part of the state which requires $2^{c/2}$ computations of the hash function by birthday attack. So the actual complexity for the collision attack of \KECCAK{} hash function with $d$-size hash and $c$ capacity is $min\left( 2^{c/2}, 2^{d/2}\right)$.
+
+\KECCAK{} didn't saw much collision attacks before the year 2011. It was first in year 2011 that a practical collision attack on 2 rounds of round reduced \KECCAK-$256$ was proposed by~\cite{naya2011practical}. They use a low weight differential trail to find a collision for 2 rounds of \KECCAK-$256$ with a time complexity of $2^{33}$. Further in 2011 Dinur \etal extended this attack to 4 rounds by using round connectors and target difference algorithm. Also, near-collisions for 5 rounds of \KECCAK-$224$ and \KECCAK-$256$ in~\cite{dinur2012new}. Later in year 2012, Dinur \etal further extend there collision attack to 5 rounds of \KECCAK-$256$ and gave practical collision attacks for 3 rounds of \KECCAK-$384$, \KECCAK-$512$ using the technique of internal differential cryptanalysis which was based on subset cryptanalysis in~\cite{dinur2013collision}. In year 2017, Song \etal gave practical collision attacks for 5 round \KECCAK-$224$ and for 6 rounds of \KECCAK$[1440, 160, 160]$ using the technique of non-full linearization for the \KECCAK\ sbox in~\cite{song2017non}.
 
 
-\section{Results :}
 
-\section{Preimage Attack for $2$ Rounds of Round Reduced \KECCAK-$384$}
+
+
+
+
+
+
+
+\section{Results}
+
+\subsection{Preimage Attack for $2$ Rounds of Round Reduced \KECCAK-$384$}
 
 In this section, we present a preimage attack for a round reduced \KECCAK{}. We will show that the preimage can be found in $2^{88}$ time and $2^{87}$ memory for $2$ rounds of round-reduced \Keccak-$384$. Although it is not a practical attack, but it is an improvement over the existing best attack, for $2$ rounds of \Keccak-$384$, which takes $2^{129}$ time~\cite{guo2016linear}.
 
