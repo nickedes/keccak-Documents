@@ -1,0 +1,192 @@
+\chapter{\KECCAK{}}
+\label{chap:design-impl}
+
+\section{\Keccak{} Description and Notations}
+\Keccak{} is a family of sponge hash functions with arbitrary output length. A sponge construction consists of a permutation function, denoted by $f$, a parameter ``rate'', denoted by $r$, and a padding rule ${pad}$. The construction 
+produces a sponge function which takes as input a bit string $N$ and output length $d$. 
+It is described below.
+
+\begin{figure}
+\includegraphics[width=\textwidth]{sponge.png}
+\caption{The sponge construction~\cite{bertoni2011cryptographic}\label{sponge}}
+\end{figure}
+
+The input bit string $N$ is first padded based on the padding rule given by $pad$ such that after padding $N$ is a multiple of $r$. The padded string is then divided into blocks of length $r$, $r$ is the rate of \KECCAK{}. The permutation function $f$ maps a string of length $b$ to another of same length. It operates on the $b$-bit string where the first part contains the $r$ bits of the state and the second part contains the remaining $c$ bits of the state, where $c$ is the capacity of \KECCAK{}. 
+
+$c$ denotes the capacity which is a positive integer such that $r + c = b$. The initial state is a $b$-bit string which is set to all zeros. After the string $N$ is padded, it undergoes two phases of sponge, namely absorbing and squeezing. 
+
+In the absorbing phase, the padded string $N^\prime$ is split into $r$-bit blocks, say $N_1, N_2, N_3,\ldots,N_m$. The first $r$ bits of initial state are XOR-ed with the first block $N_1$ and the remaining $c$ bits are appended to the output of XOR. The XOR-ed state is fed as input to the function $f$ as shown in the diagram given in the Figure~\ref{sponge}. The output of $f$ becomes the initial state for the next block and this process repeats for all blocks of the message. After all the blocks are absorbed, the absorption phase is finished. Let the resulting state after absorption be $P$. 
+
+In the squeezing phase, an string $Z$ is initialized with the first $r$ bits of the state $P$. The function $f$ is applied on the state $P$ and the first $r$ bits of the output state, say $P^\prime$, is appended to $Z$. The state $P^\prime$ is again passed to $f$ and this process is repeated until $|Z| \geq d$. The output of sponge construction is given by the first $d$ bits of $Z$.
+% 
+
+The \Keccak{} family of hash functions is based on the sponge construction. The function $f$, in the sponge construction, is denoted by \Keccak-$f\left[b\right]$, where $b$ is the length of input string. Internally \Keccak-$f\left[b\right]$ consists of a round function $p$ which is recursively applied a specified number of times, say $n_r$. More precisely \Keccak-$f\left[b\right]$ function is specialization of \Keccak-$p\left[b,\,n_r\right]$ family where $n_r = 12 + 2\,l$ and $l = \log_2 (b/25)$.
+
+The \KECCAK-$p$ permutation is defined with two parameters :
+\begin{enumerate}
+	\item The width of the permutation, $b$
+	\item Number of rounds, $n_r$. The internal round function $rnd$ is called $n_r$ number of times.
+\end{enumerate}
+
+So,
+\[
+	\Keccak\text{-}f\left[b\right] = \Keccak\text{-}p\left[b,  12 + 2l\right].
+\]
+
+The state \KECCAK-$f$[$b$] consists of $b$ bits, the state is divided into slices. Here, the size of each slice is always fixed i.e. 25 bits and the number of slices depends on size $b$ bits. For \KECCAK-$f$[$1600$] state consists of $1600$ bits, where each slice contains $25$ bits and there are $1600/25 = 64$ slices. A bit position in state \KECCAK-$f$[$1600$] is determined by $x, y, $ and $z$ coordinates. $z$ coordinate determines the slice number i.e. $0 \leq z \leq 63$ for $b = 1600$ and $x, y$ determines the position of the bit in that particular slice $z$.
+
+The round function $p$ in \Keccak{} comprises of $5$ steps, in each of which the state undergoes transformations specified by the step mapping. These step mappings are called $\theta, \rho, \pi, \chi$ and  $\iota$. These transformations are applied in sequence. A state $S$, which is a $b$-bit string, in \Keccak{} is usually denoted by a $3$-dimensional grid of size $(5 \times 5 \times w)$ as shown in the Figure~\ref{ss}. The value of $w$ depends on the parameters of \Keccak{}. For example in the case of \Keccak-$f\left[1600\right]$, $w$ is equal to $64$. It is usual practice to represent a state in terms of rows, columns, lanes, plane, sheets, slices and width of the $3$-dimensional grid.
+
+Given a bit location $(x,y,z)$ in the grid, the corresponding row is given by $\left( S[x+i \pmod 5,y,z] : \, i \in [0,4] \right)$. Similarly the corresponding column is given by the bits $\left( S[x,y+i \pmod 5,z] : \, i \in [0,4] \right)$ and the corresponding lane is given by $\left( S[x,y,z+i \pmod w] : \, i \in [0,w-1] \right)$. 
+
+Further, the plane corresponding to a location $(x,y,z)$, consists of
+
+$\left( S[x+j \pmod 5,y \pmod 5,z + i] : \, i,\,j \in [0,4] \right)$, similarly the sheets consists of $\left( S[x \pmod 5,y+j \pmod 5,z + i] : \, i,\,j \in [0,4] \right)$, and slice consists of $\left( S[x+j \pmod 5,y+i \pmod 5,z] : \, i,\,j \in [0,4] \right)$ bits.
+
+Some of the above are pictorially shown in the Figure~\ref{ss}.
+\begin{figure}
+  \begin{tikzpicture}[on grid,scale=0.7]
+  \shade[yslant=-0.5,right color=gray!10, left color=black!40] (0,2) rectangle +(5,1) node[xshift=-1.2cm, yshift=0.2cm] at (0,2){ a row($5$-bits)};
+%lane 1x1
+  \shade[yslant=-0.5,left color=black!40,  color=black!10] (4,4) rectangle +(1,1);
+%column
+  \draw[yslant=-0.5,pattern=north east hatch,  pattern color=black!70, hatch distance=3pt, hatch thickness=0.5pt] (2,0) rectangle +(1,5)
+  node[xshift=-0.8cm, yshift=-0.2cm] at (2,0){ a column($5$-bits)};
+  
+  \draw[yslant=-0.5, dashed] (0,0) grid (5,5);
+  \shade[yslant=0.5,right color=black!60,left color=black!40](5,-1) rectangle +(8,1);
+  \draw[yslant=0.5] (5,-5) grid (13,0);
+  \node at (15.9,6.5){a lane($w$-bits)};
+%slice front
+  \draw[yslant=0.5,pattern=north east hatch,  pattern color=black!70, hatch distance=3pt, hatch thickness=0.5pt](7,-5) rectangle +(1,5)
+   node[xshift=1.5cm, yshift=-0.1cm] at (7,-5){ a slice($5\times 5$-bits)};
+%row front
+ \shade[yslant=0.5,left color=black!20,right color=black!70] (5,-3) rectangle +(1,1);
+%top shade
+  \shade[yslant=0.5,xslant=-1,bottom color=gray!5,top color=gray!60] (5,0) rectangle +(8,5);
+  \shade[yslant=0.5,xslant=-1, bottom color=black!40,top color=black!60](5,0) 
+  rectangle +(8,1); 
+ %slice top 
+  \draw[yslant=0.5,xslant=-1,pattern=north east hatch,  pattern color=black, hatch distance=3pt, hatch thickness=0.5pt] (7,0) rectangle +(1,5);
+%column top
+  \draw[yslant=0.5,xslant=-1,pattern=north east hatch,  pattern color=black, hatch distance=3pt, hatch thickness=0.5pt] (5,2) rectangle +(1,1);
+  
+  \draw[yslant=0.5,xslant=-1] (5,0) grid (13,5);
+  \end{tikzpicture}
+\caption{The \KECCAK{} State \label{ss}}
+\end{figure}
+%
+
+\section{\textsc{\Keccak-$p$ Permutation}}
+$\Rnd$\;- A round of \KECCAK-$p$ permutation, it consists of five transformations: {$\theta,\rho,\pi,\chi,\iota$}. 
+In the following, we provide a brief description of the step mappings.
+ Let $A$ and $B$ respectively denote input and output states of a step mapping.
+\begin{enumerate}
+    \item $\theta$ ({\bf theta}): The theta step XORs each bit in the state with the parities of two neighboring columns. 
+		Parity of a column is defined as the $XOR$ of all the bits present in that column, i.e. $\oplus_{y = 0}^{4} A[x, y, z]$. For a given bit position $(x, y, z)$, one column is $((x - 1) \bmod 5, z) $ and the other is $((x+1)\bmod 5, (z - 1) \bmod w)$.
+    
+    Thus, if we have $A$ as the input state to $\theta$ then the output state $B$ is :
+    \begin{align}\nonumber
+        B\left[x, y, z\right] &= A\left[x, y, z\right] \oplus P\left[ (x - 1) \bmod 5 ,\, z \right] \\
+        &\hspace{1.3cm}\oplus P\left[ (x + 1) \bmod 5 ,\, (z - 1) \bmod w \right]
+    \end{align}
+    where $P[x, z]$ represents the parity of the column represented by $(x, z)$ and 
+    \[
+        P[x, z]  = \oplus_{y = 0}^{4} A[x, y, z]
+    \]
+    $\theta$ is a linear transformation, therefore it doesn't introduce any non-linear terms if the state is linear.
+    %%% CHECK: Done
+    \vskip5pt
+    \item $\rho$ ({\bf rho}): This step rotates each lane by a constant value towards the MSB i.e., 
+    \begin{align}
+        B[x, \,y,\, z] = A[x, \,y, \,z + \rho(x, y) \bmod w ],
+    \end{align}
+    where $\rho(x, y)$ is the constant for lane $(x, y)$. 
+    
+		The constant value $\rho(x, y)$ is specified for each lane in the construction of \Keccak{} as shown in Table : ~\ref{tab4} 
+		
+		\begin{table}[h!]
+			\begin{center}
+				\begin{tabular}{c|c|c|c|c|c}
+					\tetxbf{.} & \textbf{x = 3} & \textbf{x = 4} & \textbf{x = 0} & \textbf{x = 1} & \textbf{x = 2}\\ % <-- added & and content for each column
+					\hline
+					\textbf{y = 2} & 153 & 231 & 3 & 10 & 171\\ % <--
+					\hline
+					\textbf{y = 1} & 55 & 276 & 36 & 300 & 6\\ % <--
+					\hline
+					\textbf{y = 0} & 28 & 91 & 0 & 1 & 190\\ % <--
+					\hline
+					\textbf{y = 0} & 120 & 78 & 210 & 66 & 253\\ % <--
+					\hline
+					\textbf{y = 4} & 21 & 136 & 105 & 45 & 15\\ % <--
+					\hline
+				\end{tabular}
+				\caption{Values of $\rho$ constants for all lanes}\label{tab4}
+			\end{center}
+		\end{table}                                                                 
+		$\rho$ is also a linear step mapping.
+
+    \vskip5pt
+    \item $\pi$ ({\bf pi}): It permutes the positions of lanes. The new position of a lane is determined by a matrix, 
+    \begin{align}
+    \begin{bmatrix} x'\\ y'\end{bmatrix} = 
+    \begin{bmatrix} 0 & 1 \\ 2 &  3 \end{bmatrix} \cdot \begin{bmatrix} x\\ y\end{bmatrix},
+    \end{align}
+    where $(x', y')$ is the position of lane $(x, y)$ after $\pi$ step.
+		$\pi$ is also a linear step mapping.
+    \vskip5pt
+    \item $\chi$ ({\bf chi}): In this operation each bit in the original state is XOR-ed with a non-linear function of next two bits in the same row i.e.,
+    \begin{align}\nonumber
+        B[x, y, z] &=  A[x, y, z] \;\oplus \\
+        & \hspace{0.5cm} \left( \left(A[ (x + 1 )\bmod 5, y, z] \oplus 1\right) \cdot  A[ (x + 2) \bmod 5, y, z] ) \right).
+    \end{align}
+    
+    $\chi$ is the only non-linear operation among the $5$ step mappings in \KECCAK{}.
+    
+    \vskip5pt
+    \item $\iota$ ({\bf iota}): This step mapping only modifies the $(0, 0)$ lane depending on the round number i.e., 
+    \begin{align}
+       B[0, 0] = A[0, 0] \oplus RC_i,
+   \end{align}
+    where $RC_i$ is round constant that depends on the round number. The remaining $24$ lanes remain unaffected.
+    
+    All the rounds are identical but the symmetry is destroyed by the step $\iota$ by the addition of round constant to a particular lane, where the round constant is dependent on the round index.
+    All the additions and multiplications in the operations defined above are in $\textbf{GF}(2)$.
+\end{enumerate}
+
+Thus a round in \Keccak{} is given by ${\tt Round}(A, i_r) = \iota( \chi( \pi ( \rho ( \theta ( A ) ) ) ) , i_r)$, where $A$ is the state and $i_r$ is the round index. In the \Keccak-$p[b, n_r]$, $n_r$ iterations of ${\tt Round}(\cdot)$ is applied on the state $A$.
+
+%% Check
+The \SHA-3 hash function is \Keccak-$p[b, 12 + 2\,l]$, where $w = b/25$ and $l = \log_{2}(w)$. The value of $b$ is $1600$, so we have $l = 6$. Thus the $f$ function in \SHA-3 is \Keccak-$p[1600, 24]$.
+
+The \Keccak{} team denotes the instances of \Keccak{} by $\Keccak[r,c]$, where $r=1600-c$ and the capacity $c$ is chosen to be twice the size of hash output $d$, to avoid generic attacks with expected cost below $2^d$. Thus the hash function with output length $d$ is denoted by 
+\begin{eqnarray}
+\mbox{\Keccak-$d$}  &=& \Keccak[r:=1600-2d,\;c:=2d],
+\end{eqnarray}
+
+The \SHA-3 hash family supports minimum four different output length $d \in \{224,256,384,512\}$. In the \Keccak-384, the size of $c = 2\cdot d = 768$ and the rate $r = 1600 - c = 1600 - 768 = 832= 13\cdot 64$.
+
+\begin{table}
+\begin{center}
+\caption{Parameters and Symbols used in \KECCAK{}}\label{tab3}
+\begin{tabular}{|c|l|}
+\hline
+Symbol & Description\\
+\hline
+$b$ & The width of \KECCAK{} state in bits \\
+$r$ & rate of a sponge function \\
+$c$ & capacity of a sponge function\\
+$d$ & Length of the hash of a hash function\\
+$f$ & The function used for sponge construction \\
+$i_r$ & Round index for a \KECCAK-$p$ permutation\\
+$n_r$ & Number of rounds for \KECCAK-$p$ permutation\\
+$pad$ & padding rule for the sponge construction\\
+$w$ & Number of bits in a lane in \KECCAK{} state\\
+$\theta,\rho,\pi,\chi,\iota$ & A round is comprised of these five step mappings \\
+$SPONGE[f, pad, r]$ & Sponge function in which the underlying function is $f$,\\ & padding is $pad$ and rate is $r$ \\
+\hline
+\end{tabular}
+\end{center}
+\end{table}
+
+Table~\ref{tab3} shows various parameters and other variables related to \KECCAK{}

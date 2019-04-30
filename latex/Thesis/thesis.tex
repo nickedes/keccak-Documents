@@ -1,0 +1,200 @@
+% thesis.tex
+%
+% This file is root file for an example thesis written using the
+% IIT Bombay LaTeX Style file.
+% Created by Amey Karkare (21 June 2007)
+%
+% It is provided without warranty on an AS IS basis.
+
+%=====================================================================
+% Read: http://www.cse.iitb.ac.in/karkare/iitbthesis/
+%    FAQ.txt     for frequently asked quetions
+%    Changes.txt for changes
+%    README      for more information
+%=====================================================================
+
+%=====================================================================
+% DOCUMENT STYLE
+%=====================================================================
+% IITB PhD Thesis format default settings are:
+%   12pt, one-sided printing on a4 size paper
+\documentclass[openright,twoside]{iitkthesis}
+% For two-sided printing, with Chapter starting on odd-numbered pages,
+% use the following line instead:  
+%%\documentclass[openright,twoside]{iitbthesis}
+
+%=====================================================================
+% OPTIONAL PACKAGES
+%=====================================================================
+% To include optional packages, use the \usepackage command.
+% For e.g., The package epsfig is used to bring in the Encapsulated
+%    PostScript figures into the document.
+%    The package times is used to change the fonts to Times Roman;
+%=====================================================================
+
+%=====================================================================
+%  Single counter for theorems and theorem-like environments:
+%=====================================================================
+
+\usepackage{mathtools}
+\usepackage{amsmath}
+\usepackage{soul}
+
+
+\usepackage{graphicx}
+\usepackage{tikz}
+\usepackage{tikz,graphicx}
+\usepackage[absolute,overlay]{textpos} 
+\usetikzlibrary{decorations.pathmorphing,matrix,decorations.pathreplacing,arrows,decorations.markings}
+\usetikzlibrary{fit,calc,shapes,arrows,positioning,shadings,backgrounds,patterns,tikzmark,matrix,spy}
+\usetikzlibrary{decorations.markings}
+\DeclarePairedDelimiter\floor{\lfloor}{\rfloor}
+\usepackage[T1]{fontenc}
+% Used for displaying a sample figure. If possible, figure files should
+% be included in EPS format.
+%
+% If you use the hyperref package, please uncomment the following line
+% to display URLs in blue roman font according to Springer's eBook style:
+% \renewcommand\UrlFont{\color{blue}\rmfamily}
+
+\newcommand{\KECCAK}{\mbox{\textsc{Keccak}}}
+\newcommand{\Keccak}{\mbox{\textsc{Keccak}}}
+\newcommand{\SHA}{\textsc{Sha}}
+\newcommand{\Rnd}{\textsc{Round}}
+\newcommand{\etal}{\textit{et al. }}
+\newcommand{\grd}{
+	\begin{tikzpicture}[on grid,scale=0.8]
+		\draw[xslant=0.5,step=0.5cm] (0,0) grid (2.5,2.5);
+	\end{tikzpicture}
+}
+
+\tikzset{myrow/.style args = {(#1,#2)}{%
+		row #1/.style={nodes={fill=#2}}}}
+
+\tikzset{mycolumn/.style args = {(#1,#2)}{%
+		column #1/.style={nodes={fill=#2}}}}
+
+\tikzset{mycell/.style args = {(#1,#2,#3)}{%
+		row #1 column #2/.style={nodes={fill=#3}}}}
+
+\makeatletter
+\usetikzlibrary{chains,patterns,shadows}
+\tikzset{% customization of pattern
+	% based on <m.wibrow@gm...> - 2013-03-24 07:20: 
+	hatch distance/.store in=\hatchdistance,
+	hatch distance=5pt,
+	hatch thickness/.store in=\hatchthickness,
+	hatch thickness=5pt
+}
+\pgfdeclarepatternformonly[\hatchdistance,\hatchthickness]{north east hatch}% name
+{\pgfqpoint{0pt}{0pt}}% below left
+{\pgfqpoint{\hatchdistance}{\hatchdistance}}% above right
+{\pgfpoint{\hatchdistance-1pt}{\hatchdistance-1pt}}%
+{
+	\pgfsetcolor{\tikz@pattern@color}
+	\pgfsetlinewidth{\hatchthickness}
+	\pgfpathmoveto{\pgfqpoint{0pt}{0pt}}
+	\pgfpathlineto{\pgfqpoint{\hatchdistance}{\hatchdistance}}
+	\pgfusepath{stroke}
+}
+\makeatother
+
+
+\newtheorem{theorem}{Theorem}[chapter]
+\newtheorem{assertion}[theorem]{Assertion}
+\newtheorem{claim}[theorem]{Claim}
+\newtheorem{conjecture}[theorem]{Conjecture}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{figger}[theorem]{Figure}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{prop}[theorem]{Proposition}
+\newtheorem{remark}[theorem]{Remark}
+
+\usepackage{minted}
+\usemintedstyle{bw}
+
+\usepackage{fontspec}
+\setmonofont[Scale=0.85]{DejaVu Sans Mono}
+
+\usepackage[backend=biber, sorting=none]{biblatex}
+\bibliography{citations}
+\usepackage{amsmath}
+\usepackage{lipsum}
+\usepackage{float}
+\usepackage[hidelinks]{hyperref}
+\usepackage{microtype}
+\usepackage[font=small,labelfont=bf]{caption}
+\usepackage{fancyref}
+\usepackage{color,soul} % for highlights
+\usepackage{enumerate}
+\usepackage{tabularx}
+
+\setlength{\headheight}{15pt}
+
+\expandafter\def\csname PY@tok@err\endcsname{}
+
+\floatstyle{ruled}
+\newfloat{program}{thp}{lop}
+\floatname{program}{Figure}
+
+\numberwithin{program}{chapter}
+%%begin novalidate
+\BeforeBeginEnvironment{program}{\begin{singlespace}}
+\AfterEndEnvironment{program}{\end{singlespace}}
+%%end novalidate
+
+
+%=====================================================================
+% End of Preamble, start of document
+%
+
+\begin{document}
+
+%=====================================================================
+% Include the prelude for Title page, abstract, table of contents, etc
+% You need to modify it to contain your details
+\include{prelude}
+
+%=====================================================================
+% Include the technical part of the report
+%% \include{chap_intro}             % Chapter 1: Introduction
+%% \include{chap_others}            % Other chapters as required
+%% \include{chap_conclusions}       % Finally the summary & conclusions
+
+%=====================================================================
+% APPENDIX
+%  Appendices, if any, must precede the cited literatures.
+%  Appendices shall be numbered in Roman Capitals (e.g. Appendix IV)
+
+%% \appendix
+%% \include{appendix_something}          
+
+%=====================================================================
+% PUBLICATIONS
+%  publications if any may be listed after the literature cited.
+%% \include{mypubs}
+
+%=====================================================================
+% ACKNOWLEDGMENTS
+%   This is the last item in the thesis. It should be signed by
+%   author, with date.
+
+
+\input{intro}
+\input{technical}
+\input{applications}
+\input{related}
+\input{conclusions}
+
+\begin{singlespace}
+\cleardoublepage
+\phantomsection \label{listoffig}
+\addcontentsline{toc}{chapter}{References}
+\renewcommand\bibname{References}
+\printbibliography
+\nocite{*}
+\end{singlespace}
+
+\end{document}

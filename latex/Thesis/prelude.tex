@@ -1,0 +1,91 @@
+% prelude.tex
+%   - titlepage
+%   - dedication (optional)
+%   - approval sheet
+%   - course certificate
+%   - table of contents, list of tables and list of figures
+%   - nomenclature
+%   - abstract
+%============================================================================
+
+
+\clearpage\pagenumbering{roman}  % This makes the page numbers Roman (i, ii, etc)
+
+
+
+% TITLE PAGE
+%   - define \title{} \author{} \date{}
+\title{Cryptanalysis of round-reduced \KECCAK{}}
+\author{Nikhil Mittal}
+\date{June, 2019}
+
+%  - Roll number, required for title page, approval sheet, and
+%    certificate of course work 
+\rollnum{17111056} 
+
+%   - The default degree is ``Doctor of Philosophy''
+%     (unless the document style msthesis is specified
+%      and then the default degree is ``Master of Science'')
+%     Degree can be changed using the command \iitbdegree{}
+\iitbdegree{Master of Technology}
+
+%   - The default report type is preliminary report.
+%      * for a PhD thesis, specify \thesis
+\thesis
+%      * for a M.Tech./M.Phil./M.Des./M.S. dissertation, specify \dissertation
+%\dissertation
+%      * for a DIIT/B.Tech./M.Sc.project report, specify \project
+%\project
+%      * for any other type, use  \reporttype{}
+%\reporttype{ReportType}
+
+%   - The default department is ``Unknown Department''
+%     The department can be changed using the command \department{}
+\department{Computer Science \& Engineering}
+
+%    - Set the guide's name
+\setguide{Prof Shashank Singh}
+\setguidedept{Department of Computer Science \& Engineering}
+
+%   - once the above are defined, use \maketitle to generate the titlepage
+\maketitle
+
+%--------------------------------------------------------------------%
+% CERTIFICATE
+%     The first page after the title page.
+\makecertificate
+
+%--------------------------------------------------------------------%
+% COPYRIGHT PAGE
+%   - To include a copyright page use \copyrightpage
+% \copyrightpage
+
+%--------------------------------------------------------------------%
+% ABSTRACT
+\begin{abstract}
+In this thesis, we present a cryptanalysis of round reduced \KECCAK-$384$ for $2$ rounds. The best known preimage attack for this variant of \KECCAK{} has the time complexity $2^{129}$. Based on the work done by Naya Plasencia \etal~\cite{naya2011practical} in our analysis, we find a preimage in the time complexity of $2^{89}$ and the same memory is required by adopting similar technique. We further try to adopt the techniques provided by Guo \etal~\cite{guo2016linear} to give better preimage attacks for round-reduced versions of \KECCAK{} and we only succeed by improving the preimage attack complexity for 3 rounds of \KECCAK-$256$ by $2^{14}$.
+\end{abstract}
+
+%--------------------------------------------------------------------%
+% DEDICATION
+%   Dedications, if any.
+\begin{dedication}
+To my family
+\end{dedication}
+
+% Acknowledgements
+\begin{acknowledgments}
+
+I would like to thank all the people who helped me during my thesis. I also thank my thesis advisor \textbf{Dr. Shashank Singh} for his guidance and the reviewers of Indocrypt-$2018$ for providing comments which helped in improving the work. In particular, we thank an anonymous reviewer for suggesting us to implement the attack on the $\Keccak[r:=400-192,\, c:=192]$ and also providing insights to further improve the attack. 
+\end{acknowledgments}
+
+%--------------------------------------------------------------------%
+% CONTENTS, TABLES, FIGURES
+\tableofcontents
+\listoftables
+
+\cleardoublepage
+\phantomsection \label{listoffig}
+\listoffigures
+
+\cleardoublepage\pagenumbering{arabic} % Make the page numbers Arabic (1, 2, etc)
