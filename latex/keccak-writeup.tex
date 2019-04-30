@@ -151,8 +151,10 @@ No. of rounds & Hash length & Time Complexity & Reference\\
 2 & \Keccak - $224/256$ & $2^{33}$ & ~\cite{naya2011practical} \\
 2 & \Keccak - $224/256$ & 1 & ~\cite{guo2016linear} \\
 2 & \Keccak - $384/512$ & $2^{129} / 2^{384}$ & ~\cite{guo2016linear}\\
-3 & \Keccak - $224/256/384/512$ & $2^{97} / 2^{192} / 2^{322} / 2^{484}$ & ~\cite{guo2016linear}\\
-4 & \Keccak - $224/256$ & $2^{213} / 2^{251}$ & ~\cite{guo2016linear}\\
+2 & \Keccak - $384$ & $2^{89}$ & 4.4\\
+3 & \Keccak - $224/256$ & $2^{41} / 2^{84} $ & ~\cite{lipreimage}\\
+3 & \Keccak - $384/512$ & $2^{322} / 2^{484}$ & ~\cite{guo2016linear}\\
+4 & \Keccak - $224/256$ & $2^{207} / 2^{239}$ & ~\cite{lipreimage}\\
 4 & \Keccak - $384/512$ & $2^{378} / 2^{506}$ & ~\cite{morawiecki2013rotational}\\
 \hline
 \end{tabular}
@@ -180,35 +182,13 @@ No. of rounds & Hash length & Time Complexity & Reference\\
 \end{center}
 \end{table}
 
-To further promote cryptanalysis of round reduced versions of \KECCAK{}, Keccak team launched some preimage and collision challenges named \textbf{Keccak Crunchy Crypto Collision and Preimage Contest}. Cash prizes are provided after solving open challenges. To make the challenges beyond the Computation capability of a computer they have set output size as 160 and 80 bits for collision and preimage challenges respectively, so bruteforce complexity for solving these challenges is $2^{80}$ which is practically not possible.
+\newpage
+To further promote cryptanalysis of round reduced versions of \KECCAK{}, Keccak team has launched some Preimage and Collision challenges named \textbf{Keccak Crunchy Crypto Collision and Preimage Contest}. To promote solving of these cash prizes are provided after the solving open challenges. To make the challenges beyond the computation capability of a computer they have set output size as 160 and 80 bits for collision and preimage challenges respectively, so that even the bruteforce complexity for solving these challenges would require $2^{80}$ computations which is practically not possible.
 \newline
 
-\textbf{Our Contribution:} We propose a preimage attack for $2$ rounds of round-reduced \KECCAK-$384$. The time complexity of attack is $2^{89}$ and the memory complexity is $2^{87}$. The attack is not practical, but it outperforms the previous best-known attack~\cite{guo2016linear}, with a good gap. The proposed attack does not affect the security of full \KECCAK{}. We also propose a preimage attack for $3$ rounds of round-reduced \KECCAK-$256$. The time complexity of attack is $2^{178}$. This attack is also not practical, but it is better than the attack provided by~\cite{guo2016linear}, though recently this year a better attack has been published in ~\cite{cryptoeprint:2019:248}
+\textbf{Our Contribution:} We propose a preimage attack for $2$ rounds of round-reduced \KECCAK-$384$. The time complexity of attack is $2^{89}$ and the memory complexity is $2^{87}$. The attack is not practical, but it outperforms the previous best-known attack in~\cite{guo2016linear} of $2^{129}$, with a good gap of $2^{40}$. The proposed attack does not affect the security of full \KECCAK{}. We also propose a preimage attack for $3$ rounds of round-reduced \KECCAK-$256$. The time complexity of attack is $2^{178}$. This attack is also not practical, but it is better than the attack provided by~\cite{guo2016linear}, though recently this year a better attack has been published in~\cite{lipreimage}.
 
-
-\begin{table}
-\begin{center}
-\caption{Parameters and Symbols}\label{tab3}
-\begin{tabular}{|c|l|}
-\hline
-Symbol & Description\\
-\hline
-$b$ & The width of \KECCAK{} state in bits \\
-$r$ & rate of a sponge function \\
-$c$ & capacity of a sponge function\\
-$d$ & Length of the hash of a hash function\\
-$f$ & The function used for sponge construction \\
-$i_r$ & Round index for a \KECCAK-$p$ permutation\\
-$n_r$ & Number of rounds for \KECCAK-$p$ permutation\\
-$pad$ & padding rule for the sponge construction\\
-$w$ & Number of bits in a lane in \KECCAK{} state\\
-$\theta,\rho,\pi,\chi,\iota$ & A round is comprised of these five step mappings \\
-$SPONGE[f, pad, r]$ & Sponge function in which the underlying function is $f$, padding is $pad$ and rate is $r$ \\
-\hline
-\end{tabular}
-\end{center}
-\end{table}
-
+\newpage
 \section{\Keccak{} Description and Notations}
 \Keccak{} is a family of sponge hash functions with arbitrary output length. A sponge construction consists of a permutation function, denoted by $f$, a parameter ``rate'', denoted by $r$, and a padding rule ${pad}$. The construction 
 produces a sponge function which takes as input a bit string $N$ and output length $d$. 
@@ -218,11 +198,10 @@ It is described below.
 \includegraphics[width=\textwidth]{sponge}
 \caption{The sponge construction~\cite{bertoni2011cryptographic}\label{sponge}}
 \end{figure}
+
 The input bit string $N$ is first padded based on the padding rule given by $pad$ such that after padding $N$ is a multiple of $r$. The padded string is then divided into blocks of length $r$, $r$ is the rate of \KECCAK{}. The permutation function $f$ maps a string of length $b$ to another of same length. It operates on the $b$-bit string where the first part contains the $r$ bits of the state and the second part contains the remaining $c$ bits of the state, where $c$ is the capacity of \KECCAK{}. 
 
-$c$ denotes the capacity which is a positive integer such that $r + c = b$. The initial state is a $b$-bit string which is set to all zeros.
-
-After the string $N$ is padded, it undergoes two phases of sponge, namely absorbing and squeezing. 
+$c$ denotes the capacity which is a positive integer such that $r + c = b$. The initial state is a $b$-bit string which is set to all zeros. After the string $N$ is padded, it undergoes two phases of sponge, namely absorbing and squeezing. 
 
 In the absorbing phase, the padded string $N^\prime$ is split into $r$-bit blocks, say $N_1, N_2, N_3,\ldots,N_m$. The first $r$ bits of initial state are XOR-ed with the first block $N_1$ and the remaining $c$ bits are appended to the output of XOR. The XOR-ed state is fed as input to the function $f$ as shown in the diagram given in the Figure~\ref{sponge}. The output of $f$ becomes the initial state for the next block and this process repeats for all blocks of the message. After all the blocks are absorbed, the absorption phase is finished. Let the resulting state after absorption be $P$. 
 
@@ -231,7 +210,7 @@ In the squeezing phase, an string $Z$ is initialized with the first $r$ bits of 
 
 The \Keccak{} family of hash functions is based on the sponge construction. The function $f$, in the sponge construction, is denoted by \Keccak-$f\left[b\right]$, where $b$ is the length of input string. Internally \Keccak-$f\left[b\right]$ consists of a round function $p$ which is recursively applied a specified number of times, say $n_r$. More precisely \Keccak-$f\left[b\right]$ function is specialization of \Keccak-$p\left[b,\,n_r\right]$ family where $n_r = 12 + 2\,l$ and $l = \log_2 (b/25)$.
 
-The \KECCAK-$p$ permutation is defined with two parameters : 
+The \KECCAK-$p$ permutation is defined with two parameters :
 \begin{enumerate}
 	\item The width of the permutation, $b$
 	\item Number of rounds, $n_r$. The internal round function $rnd$ is called $n_r$ number of times.
@@ -242,7 +221,7 @@ So,
 	\Keccak\text{-}f\left[b\right] = \Keccak\text{-}p\left[b,  12 + 2l\right].
 \]
 
-The state \KECCAK-$f$[$b$] consists of $b$ bits, the state is divided into slices. Here, the size of slice is always fixed i.e. 25 bits and the number of slices depends on size $b$ bits. For \KECCAK-$f$[$1600$] state consists of $1600$ bits, where each slice contains $25$ bits and there are $1600/25 = 64$ slices. A bit position in state \KECCAK-$f$[$1600$] is determined by $x, y, $ and $z$ coordinates. $z$ coordinate determines the slice number i.e. $0 \leq z \leq 63$ for $b = 1600$ and $x, y$ determines the position of the bit in that particular slice.
+The state \KECCAK-$f$[$b$] consists of $b$ bits, the state is divided into slices. Here, the size of each slice is always fixed i.e. 25 bits and the number of slices depends on size $b$ bits. For \KECCAK-$f$[$1600$] state consists of $1600$ bits, where each slice contains $25$ bits and there are $1600/25 = 64$ slices. A bit position in state \KECCAK-$f$[$1600$] is determined by $x, y, $ and $z$ coordinates. $z$ coordinate determines the slice number i.e. $0 \leq z \leq 63$ for $b = 1600$ and $x, y$ determines the position of the bit in that particular slice $z$.
 
 The round function $p$ in \Keccak{} comprises of $5$ steps, in each of which the state undergoes transformations specified by the step mapping. These step mappings are called $\theta, \rho, \pi, \chi$ and  $\iota$. These transformations are applied in sequence. A state $S$, which is a $b$-bit string, in \Keccak{} is usually denoted by a $3$-dimensional grid of size $(5 \times 5 \times w)$ as shown in the Figure~\ref{ss}. The value of $w$ depends on the parameters of \Keccak{}. For example in the case of \Keccak-$f\left[1600\right]$, $w$ is equal to $64$. It is usual practice to represent a state in terms of rows, columns, lanes, plane, sheets, slices and width of the $3$-dimensional grid.
 
@@ -301,7 +280,8 @@ In the following, we provide a brief description of the step mappings.
         &\hspace{1.3cm}\oplus P\left[ (x + 1) \bmod 5 ,\, (z - 1) \bmod w \right]
     \end{align}
     where $P[x, z]$ represents the parity of the column represented by $(x, z)$ and $P[x, z]  = \oplus_{y = 0}^{4} A[x, y, z] $.
-		$\theta$ is a linear transformation, therefore it doesn't introduce any non-linear terms if the state is linear.
+    
+    $\theta$ is a linear transformation, therefore it doesn't introduce any non-linear terms if the state is linear.
     %%% CHECK: Done
     \vskip5pt
     \item $\rho$ ({\bf rho}): This step rotates each lane by a constant value towards the MSB i.e., 
@@ -330,8 +310,7 @@ In the following, we provide a brief description of the step mappings.
 					\hline
 				\end{tabular}
 			\end{center}
-		\end{table}
-
+		\end{table}                                                                 
 		$\rho$ is also a linear step mapping.
 
     \vskip5pt
@@ -371,8 +350,31 @@ The \Keccak{} team denotes the instances of \Keccak{} by $\Keccak[r,c]$, where $
 \begin{eqnarray}
 \mbox{\Keccak-$d$}  &=& \Keccak[r:=1600-2d,\;c:=2d],
 \end{eqnarray}
-truncated to $d$ bits.
+
 The \SHA-3 hash family supports minimum four different output length $d \in \{224,256,384,512\}$. In the \Keccak-384, the size of $c = 2\cdot d = 768$ and the rate $r = 1600 - c = 1600 - 768 = 832= 13\cdot 64$.
+
+\begin{table}
+\begin{center}
+\caption{Parameters and Symbols}\label{tab3}
+\begin{tabular}{|c|l|}
+\hline
+Symbol & Description\\
+\hline
+$b$ & The width of \KECCAK{} state in bits \\
+$r$ & rate of a sponge function \\
+$c$ & capacity of a sponge function\\
+$d$ & Length of the hash of a hash function\\
+$f$ & The function used for sponge construction \\
+$i_r$ & Round index for a \KECCAK-$p$ permutation\\
+$n_r$ & Number of rounds for \KECCAK-$p$ permutation\\
+$pad$ & padding rule for the sponge construction\\
+$w$ & Number of bits in a lane in \KECCAK{} state\\
+$\theta,\rho,\pi,\chi,\iota$ & A round is comprised of these five step mappings \\
+$SPONGE[f, pad, r]$ & Sponge function in which the underlying function is $f$,\\ & padding is $pad$ and rate is $r$ \\
+\hline
+\end{tabular}
+\end{center}
+\end{table}
 
 Table~\ref{tab3} shows various parameters and other variables related to \KECCAK{}
 
@@ -424,6 +426,7 @@ In this type of attack, we set message variables in the rate part in such a way 
 
 		For an attack to be possible, the degrees of freedom should be greater than $512$. We have 5 random white lanes, 2 variable lanes and 2 random constants, and all of these are of size $w$ which is $64$ in our discussion. So total degree of freedom comes out to be $= 9 * 64 = 576$ which is greater than $512$ which implies that a solution is possible.
 
+\newpage
 \subsection{Preimage Attacks on 2-round \KECCAK-$384$}
 	This attack is very similar to the above attack for \KECCAK-$512$. We start with 6 variable lanes such that :
 	$A[0, 2] = A[0, 0] \oplus A[0, 1] \oplus \alpha_0$ and $A[2, 2] = A[2, 0] \oplus A[2, 1] \oplus \alpha_2$, so that $\theta$ doesn't spread and proceed for the $1.5$ rounds forward and proceed backwards from the hash by applying $\chi^{-1} \circ \iota^{-1}$. Then build a system of linear equations of 256-bit equations and solve for message variables. Then check the hash obtained is correct. So we observe a complexity gain over bruteforce by size of the free variables hence the complexity of the attack comes out to be $2^{384 - 4*64} = 2^{384 - 256} = 2^{128}$. To meet the padding requirements in worst case the complexity will be $2^{129}$.
@@ -1109,14 +1112,12 @@ This method observes an improvement of $2^{14}$ compared to the attack mentioned
     
     So, if we apply the same technique to 4 rounds of \KECCAK-$224$, \KECCAK-$256$
     Then we have 127 and 64 variables respectively, we can match $2\floor*{\frac{t-5}{8}}$ bits of a hash value if we have $t$ variables.
-    For Keecak-224 : matched bits $= 30$ for $t = 127$
-    Time Complexity : $2^{224 - 30} = 2^{194}$
-    And similarly for Keccak-256, Time complexity $=2^{256 - 14} = 2^{242}$
+    For Keecak-224 : matched bits $= 30$ for $t = 127$.
+    
+    Time Complexity : $2^{224 - 30} = 2^{194}$ and similarly for \KECCAK-$256$, Time complexity $=2^{256 - 14} = 2^{242}$
 
 \section{Conclusion and Future works}
-In this thesis, I have presented a preimage attack on the $2$ rounds of round-reduced \KECCAK-$384$. The attack is not yet practical but it is much better than the existing best-known attack in term of the time complexity. The basic idea of the attack can be used to mount a practical preimage attack on the $\Keccak[r:=400-192,\, c:=192]$ and $\Keccak[r:=800-384,\,c:=384]$. 
-I have also presented a preiamge attack on $3$ rounds of roundm-reduced \KECCAK-$256$, again this attack is also not practical.
-Further, in future, we will try to explore a practical attack for the $2$ or more rounds of round-reduced \KECCAK-$384$, \KECCAK-$512$.
+In my thesis, I have presented a preimage attack on the $2$ rounds of round-reduced \KECCAK-$384$. The attack is not practical but it is much better than the existing best-known attacks in term of the time complexity. The basic idea of the attack can be used to mount a practical preimage attack on a smaller variant i.e. $\Keccak[r:=400-192,\, c:=192]$ and $\Keccak[r:=800-384,\,c:=384]$. I have also presented a preimage attack on $3$ rounds of round-reduced \KECCAK-$256$, again this attack is also not practical. Further, in future, we will try to explore a practical attack for the $2$ or more rounds of round-reduced \KECCAK-$384$, \KECCAK-$512$.
 
 \section*{Acknowledgement} We thank the reviewers of Indocrypt-$2018$ for providing comments which helped in
 improving the work. In particular, we thank an anonymous reviewer for suggesting us to implement the attack on the $\Keccak[r:=400-192,\, c:=192]$ and also providing insights to further improve the attack. I also thank my thesis advisor \textbf{Dr. Shashank Singh} for his guidance.
