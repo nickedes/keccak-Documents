@@ -3,26 +3,30 @@
 
 \section{Hash Functions}
 
-A hash function is a compression function which transforms an input of arbitrary size to a fixed size output based on its algorithm for compression, this compression should be deterministic i.e. for the same input every time the hash function should return the same output. Cryptographic hash functions are an important component of modern cryptography. These are one way functions with a mathematical function which is computationally hard to invert. The input of such a function is generally called a message and the output is called by hash or message digest.
+A hash function $H:\{0,1\}^* \rightarrow \{0,1\}^n $ is a deterministic function which compresses an input of arbitrary size to a fixed size output. The cryptographic applications of a hash function further require it to satisfy the following conditions.
 
-A hash function $H:\{0,1\}^* \rightarrow \{0,1\}^n $, where $n$ is a fixed value, should have the following properties: 
 \begin{itemize}\setlength\itemindent{20pt}
-		\item Deterministic
     \item Efficient : Given $m$, it is easy to compute $H(m)$.
-        \item Preimage Resistance : Given $H(m)$, it is computationally hard to find $m$.
-        \item Second-preimage Resistance : Given $m$, it is computationally hard to find $m^\prime$ such that $H(m)=H(m^\prime)$.
-        \item Collision Resistance : It is computationally hard to find $m$ and $m^\prime$ such that $H(m)=H(m^\prime)$.
+    \item Preimage Resistance : Given $H(m)$, it is computationally hard to find $m$.
+    \item Second-preimage Resistance : Given $m$, it is computationally hard to find $m^\prime$ such that $H(m)=H(m^\prime)$.
+    \item Collision Resistance : It is computationally hard to find $m$ and $m^\prime$ such that $H(m)=H(m^\prime)$.
 \end{itemize}
 
-So a hash function maps data of any size to a data of fixed size. Due to the above listed properties hash functions have found many applications in the field of computer science. Few applications of hash functions are :
+The hash function having the above properties are referred as cryptographic hash functions. Cryptographic hash functions are an important component of modern cryptography. These are one way functions with a mathematical function which is computationally hard to invert. The input of such a function is generally called a message i.e. $m$ and the output i.e. $H(m)$ is often referred as digest or fingerprint of the message $m$.
+
+\section{Some Applications of Hash functions}
+
+So a hash function maps data of any size to a data of fixed size. Due to the above listed properties hash functions have found many applications in the field of computer science. A few very basic applications of hash functions are :
 \begin{enumerate}
-	\item Creating a digest from the message and then using the digest later to ensure that there are no changes to the message. This property is called message integrity. Secure Hash functions are widely used for the verification of message integrity.
+	\item Creating a digest from the message and then using the digest later to ensure that there are no changes to the message. This property is called message integrity. Hash functions are widely used for the verification of message integrity.
 	\item Hash functions are also used for storing passwords. Secure applications don't actually store the passwords directly in the database but the hash of the password is stored in the database by using a secure hash function for calculating hash. The hash stored in the database is used in future for comparing with the hash of the password entered by the user and then appropriate action is taken on a successful match. In case of a security breach the attacker knows only the hashes stored in the database not the actual passwords. Deriving password (Preimage) from the hash is again a computationally hard problem.
 \end{enumerate}
 
-Hash function is an integral component of cryptography. It is used in many cryptographic applications e.g., Authentication, Non-repudiation, Digital Signatures and Integrity etc.
+Hash function is an integral component of cryptography. It is used in many cryptographic applications e.g., Authentication, Non-repudiation, Digital Signatures and Integrity etc..
 
-There are many popular families of hash functions like MD (Message Digest) and \SHA(Secure Hash Algorithm). MD family of hash functions comprises of MD4, MD5 etc. Similarly \SHA family of hash functions comprises of \SHA-0, \SHA-1, \SHA-2, and \SHA-3.
+\section{History of Hash functions}
+
+There are many popular families of hash functions like MD (Message Digest) and \SHA(Secure Hash Algorithm). The MD family of hash functions comprises of MD4, MD5 etc.. Similarly \SHA{} family of hash functions comprises of \SHA-0, \SHA-1, \SHA-2, and \SHA-3.
 Though \SHA-3 belongs to the same family as \SHA-2, yet it has a different structure and construction.
 
 Most of these popular hash functions like MD5, \SHA-2 follow the Merkle-Damgard construction~\cite{merkle}. As seen in figure:~\ref{MDConstruction}.
@@ -34,13 +38,15 @@ Most of these popular hash functions like MD5, \SHA-2 follow the Merkle-Damgard 
     \label{MDConstruction}
 \end{figure}
 
+So, how does a Hash function compress data of arbitrary any size to a fixed length output. In this construction it uses a compression function \textbf{f} which takes as input a fixed-length data and generates a data of fixed-length $n$ which is shorter than length of input data. If the input size $b$ is greater than $n$, then the function \textbf{f} accepts two inputs such that it is of the form $\big\{0,1\big\}^n \times \big\{0,1\big\}^{b - n} \rightarrow \big\{0,1\big\}^n$. To hash a message $M$ of size $N$ bits, it is divided into message blocks of size $b-n$ i.e. block size and then each block is processed by \textbf{f} one by one in the order the message is broken into blocks. So a hash function $H$ just iterates a compression function \textbf{f}. The construction is as follows, the algorithm starts with $IV$ i.e. initialization vector (initial value) of size $n$. The value of $IV$ depends on the algorithm and implementation. Also, the input data message is divided into blocks of fixed size $b-n$.
+The compression function \textbf{f} will compress each message block combined with the output of previous block and then produce the output for the next block. When \textbf{f} is applied to the first message block then instead of input from the previous block $IV$ is used. The final block is padded based on $pad$ function so that its size is same as block size after padding and then \textbf{f} is applied on it. The output of the final block is the hash of the complete data. Many popular hash functions use this construction as the main design. 
 
-The construction is as follows, the algorithm starts with $IV$ i.e. initialization vector (initial value). The value of $IV$ depends on the algorithm and implementation. Also, the input data message is divided into blocks of fixed size n.
-This construction uses a compression function \textbf{f}, where this function will compress each message block combined with the output of previous block and then produce the output for the next block. When \textbf{f} is applied to the first message block then instead of input from the previous block $IV$ is used. The final block is padded so that its size is same as block size and then \textbf{f} is applied on it. The output of the final block is the hash of the complete data. Many popular hash functions use this construction as the main design.
+MD5, \SHA-1, \SHA-2 are very popular hash functions and are widely used. The cryptanalysis results on these hash functions namely MD4, MD5, \SHA-1 was a shock for the National Institute of Standards and Technology (NIST). In year 2005, the first collision attack on MD5 was published by Xiaoyun Wang and Hongbo Yu~\cite{wang2005break}. They could find a collision for MD5 within an hour by applying a differential attack, the same attack could also be applied to other hash functions like MD4 and obtain a collision. The attack starts with a zero initial difference between two messages and proceeds further by applying the round function to it for every round. To get a final difference between messages as zero, they add certain conditions which the messages should satisfy at those particular steps. On satisfying those conditions and proceeding with the rounds it leads to a zero output difference with a overall probability of $2^{-38}$. So the overall time complexity of finding $(M_0, M^\prime_0)$ such that MD5$(M_0) = $MD5$(M^\prime_0)$ doesn't exceed the running time $2^{39}$ MD5 operations. Further in the same year a practical collision attack on \SHA-0 was published in~\cite{wang2005efficient}, and the first collision attack on \SHA-1 was also published~\cite{wang2005finding}. An interesting observation is that Xiaoyun Wang's involvement in all these attacks. Due to all these cryptanalysis, NIST was worried about the security of hash functions, though by that time NIST had started using \SHA-2 family of hash functions. But since \SHA-2 was also based on Merkle-Damgard construction, there was possibility that it could also be attacked in a similar way like those attacks published in year 2005. Due to all these concerns in 2006 NIST held a Cryptographic Hash Workshop where it decided to hold a competition for the next secure hash function.
+
+% Keccak Intro start
+In 2008, U.S. NIST announced a competition for the Secure Hash Algorithm-3 (\SHA-3). A total of $64$ proposals were submitted to the competition. In the year $2012$, NIST announced \KECCAK{} as the winner of the competition among BLAKE~\cite{aumasson2008sha}, Grstl~\cite{gauravaram2011s}, JH~\cite{wu2011hash}, \KECCAK{}~\cite{bertonikeccak}, Skein~\cite{fergusonskein}. The \KECCAK{} hash function was designed by Guido Bertoni, Joan Daemen, Micha\"{e}l Peeters, and Gilles Van Assche~\cite{bertoni2009keccak}. Since $2015$, \KECCAK{} has been standardized as \SHA-$3$ by the NIST.
 
 \section{\KECCAK{}}
-% Keccak Intro start
-In 2008, U.S. National Institute of Standards and Technology (NIST) announced a competition for the Secure Hash Algorithm-3 (\SHA-3). A total of $64$ proposals were submitted to the competition. In the year $2012$, NIST announced \KECCAK{} as the winner of the competition. The \KECCAK{} hash function was designed by Guido Bertoni, Joan Daemen, Micha\"{e}l Peeters, and Gilles Van Assche~\cite{bertoni2009keccak}. Since $2015$, \KECCAK{} has been standardized as \SHA-$3$ by the NIST.
 
 The \KECCAK{} hash function is based on sponge construction~\cite{bertoni2011cryptographic} which is different from previous \SHA{} standards. \SHA-3 family of hash functions is based on \Keccak{}. The \SHA-3 family provides four hash functions and two extendable-output functions. These functions are designed to provide resistance against preimage attacks, collision attacks and second-preimage attacks.
 

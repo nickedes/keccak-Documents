@@ -117,8 +117,8 @@
       \mbox{}\\
       {\bf\expandafter\uppercase\expandafter{\Large\@title}} \\[\@thesistitlebigskip]
       {\large \textit{A \@doctype\ submitted}} \\
-      {\large in Partial Fulfillment of the Requirements} \\
-      {\large for the Degree of}\\[\@thesistitlemedskip]
+      {\large in partial fulfillment of the requirements} \\
+      {\large for the degree of}\\[\@thesistitlemedskip]
       {\large \@iitbdegree} \\[\@thesistitlemedskip]
       {\large by} \\[\@thesistitlemedskip]
       {\large \bf \@author} \\[\@thesistitlebigskip]
