@@ -1,16 +1,7 @@
-\chapter{Conclusions}
-
-Our implementation is open source and freely available at github.
-\begin{enumerate}
-    \item \url{https://github.com/nickedes/keccak}
-    \item \url{https://github.com/nickedes/SHA3}
-\end{enumerate}
-
-In the long term, we hope the community will find this work useful and this will contribute to solving further rounds of \KECCAK{} practically for both collision and preimage challenges.
-
+\chapter{Conclusion}
 
 \section{Conclusion and Future works}
-In my thesis, I have presented a preimage attack on the $2$ rounds of round-reduced \KECCAK-$384$. The attack is not yet practical but it is much better than the existing best-known attack in term of the time complexity. The basic idea of the attack can be used to mount a practical preimage attack on the $\Keccak[r:=400-192,\, c:=192]$ and $\Keccak[r:=800-384,\,c:=384]$. 
-I have also presented a preimage attack on $3$ rounds of round-reduced \KECCAK-$256$, again this attack is also not practical.
+This thesis proposes a preimage attack on the $2$ rounds of round-reduced \KECCAK-$384$. The attack is not yet practical but it is much better than the existing best-known attack in term of the time complexity. The basic idea of the attack can be used to mount a practical preimage attack on the $\Keccak[r:=400-192,\, c:=192]$ and $\Keccak[r:=800-384,\,c:=384]$. 
+We have used a similar idea to mount a preimage attack on $3$ rounds of round-reduced \KECCAK-$256$, this attack though not practical is still better than the attack mentioned in~\cite{guo2016linear}.
 Further, in future, we will try to explore a practical attack for the $2$ or more rounds of round-reduced \KECCAK-$384$, \KECCAK-$512$.
 
