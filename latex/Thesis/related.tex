@@ -1,95 +1,8 @@
-\chapter{Proposed Attacks}
+\chapter{A New Preimage Attack on 2-Rounds of \KECCAK{}-384}
 
-\section{Preimage Attack for $2$ Rounds of Round Reduced \KECCAK-$384$}
+In this chapter we present a new preimage attack on 2 rounds of \KECCAK{}-$384$. We will show that the preimage can be found in $2^{88}$ time and $2^{87}$ memory for $2$ rounds of round-reduced \Keccak-$384$. Although it is not a practical attack, but it is an improvement over the existing best attack, for $2$ rounds of \Keccak-$384$, which takes $2^{129}$ time~\cite{guo2016linear}.
 
-In this section, we present a preimage attack for a round reduced \KECCAK{}. We will show that the preimage can be found in $2^{88}$ time and $2^{87}$ memory for $2$ rounds of round-reduced \Keccak-$384$. Although it is not a practical attack, but it is an improvement over the existing best attack, for $2$ rounds of \Keccak-$384$, which takes $2^{129}$ time~\cite{guo2016linear}.
-
-
-\subsection{Notations and Observations}
-In the analysis, we will represent a state by the lanes. There are in total $5\times 5$ lanes. Each lane in a state will be represented by a variable which is a $64$-bit array. 
-A variable with a number in round bracket $``( . )"$ represents the shift of the bits in array towards MSB. A variable with a number in square bracket $``[ . ]"$ represents the bit value of the variable at that index. If there are multiple numbers in the square bracket then it represents the corresponding bit values.
-
-%% More details
-
-We are going to use the following observations in our analysis.
-\begin{enumerate}
-\item \label{ob1}\textbf{Observation 1:} The $\chi$ is a row-dependent operation. Guo \etal in~\cite{guo2016linear}, observed that if we know all the bits of a row then we can invert $\chi$ for that row. It is depicted in the Figure~\ref{chi_inv}.
-%------------------------------------------------------
-\begin{figure}
-\begin{center}
-\begin{tikzpicture}[ampersand replacement=\&]
-\matrix (m1) [matrix of nodes,
-nodes={inner sep=5pt,text width=0.5cm,align=center,minimum height=.5cm, draw,text height=1em,text depth=.2em}
-]{
-	$a_0$ \& $a_1$\& $a_2$ \& $a_3$ \& $a_4$\\
-};
-
-\matrix (m2) [right = 1.2cm of m1, matrix of nodes,
-nodes={inner sep=5pt,text width=0.5cm,align=center,minimum height=.5cm, draw,text height=1em,text depth=.2em}
-]{
-	$a_0^\prime$ \& $a_1^\prime$\& $a_2^\prime$ \& $a_3^\prime$ \& $a_4^\prime$\\
-};
-\draw[->, very thick] (m1)-- node[above, pos=0.5] {$\chi^{-1}$} (m2);
-\end{tikzpicture}
-\end{center}
-\caption{Computation of $\chi^{-1}$ for full row \label{chi_inv}}
-\end{figure}
-%------------------------------------------------------
-% check it for correctness
-\begin{align}
-a_i^\prime = a_i \oplus \left( a_{i+1} \oplus 1\right) \cdot \left( a_{i+2} \oplus \left( a_{i+3} \oplus 1 \right) \cdot a_{i+4}\right)
-\end{align}
-
-
-\item \label{ob2}\textbf{Observation 2:} When only one output bit is known after $\chi$ step, then the corresponding input bits have $2^4$ possibilities. Kumar \etal\cite{kumar2018cryptanalysis} gave a way to fix the first output bit to be the same as input bit and the second bit as $1$. It is shown in the Figure~\ref{chi_inv2}.
-
-%------------------------------------------------------
-\begin{figure}[ht]
-\begin{center}
-\begin{tikzpicture}[ampersand replacement=\&]
-\matrix (m1) [matrix of nodes,
-nodes={inner sep=5pt,text width=0.5cm,align=center,minimum height=.5cm, draw,text height=1em,text depth=.2em}
-]{
-	$a_0$ \& $*$ \& $*$ \& $*$ \& $*$\\
-};
-
-\matrix (m2) [right = 1.2cm of m1, matrix of nodes,
-nodes={inner sep=5pt,text width=0.5cm,align=center,minimum height=.5cm, draw,text height=1em,text depth=.2em}
-]{
-	$a_0$ \& $1$ \& $*$ \& $*$ \& $*$\\
-};
-\draw[->, very thick] (m1)-- node[above, pos=0.5] {$\chi^{-1}$} (m2);
-\end{tikzpicture}
-\end{center}
-\caption{Computation of $\chi^{-1}$ when only 1-bit is known in row \label{chi_inv2}}
-\end{figure}
-
-\item \label{ob3}\textbf{Observation 3:} Guo \etal in~\cite{guo2016linear} observed that when $4$ out of $5$ output bits are known after $\chi$ step then we can establish $4$ linear equations on the input bits of $\chi$.
-
-$a_0, a_1, a_2, a_3, a_4$ are the output bits of $\chi$ and $a_0^\prime, a_1^\prime, a_2^\prime, a_3^\prime, a_4^\prime$ are the input bits.
-\begin{align}
-a_0^\prime = a_0 \oplus \left( a_{1} \oplus 1\right) \cdot \left( a_{2} \oplus \left( a_{3} \oplus 1 \right) \cdot a_{4}\right)
-\end{align}
-\begin{align}
-a_1^\prime = a_1 \oplus \left( a_{2} \oplus 1\right) \cdot \left( a_{3} \oplus \left( a_{4} \oplus 1 \right) \cdot a_{0}\right)
-\end{align}
-\begin{align}
-a_2^\prime = a_2 \oplus \left( a_{3} \oplus 1\right) \cdot \left( a_{4} \oplus \left( a_{0} \oplus 1 \right) \cdot a_{1}\right)
-\end{align}
-\begin{align}
-a_3^\prime = a_3 \oplus \left( a_{4} \oplus 1\right) \cdot \left( a_{0} \oplus \left( a_{1} \oplus 1 \right) \cdot a_{2}\right)
-\end{align}
-\begin{align}
-a_4^\prime = a_4 \oplus \left( a_{0} \oplus 1\right) \cdot \left( a_{1} \oplus \left( a_{2} \oplus 1 \right) \cdot a_{3}\right)
-\end{align}
-
-If we have values of $a_0, a_1, a_2, a_3$, then we have above $5$ equations in terms of the unknown output bit i.e. $a_4$. Then we can establish $4$ linear equations by eliminating $a_4$ from the above $5$ equations.
-
-%------------------------------------------------------
-\end{enumerate}
-
-
-\subsection{Description of the Attack}
+\section{Description of the Attack}
 The \Keccak-{384} outputs $384$ bits hash value, which is represented by the first $6$ lanes in the state obtained at the end of the squeezing phase. The diagram in the Figure~\ref{initial_sq} represents this state. The values of remaining lanes are represented by $\star$ and we do not care these values. We are interested in finding a preimage for which $6$ lanes of corresponding state matches. We will call this state as \emph{final state}.
 %------------------------------------------------
 \begin{figure}[ht]
@@ -256,7 +169,7 @@ This will impose a total of $7\times 64$ conditions on the variables we have set
 
  We aim to find the assignment of bits to the initial state which leads to a target hash value. We proceed as follows. We start with all possible assignments in the groups successive $3$ slices. Using the constraints (transformation from State~2 to State~3 [Figure~\ref{atk}]), we discard some of the assignments, and store the remaining ones, out of which atleast one would be a part of the solution. This is done for every $3$-slice from the first $48$ slices. Next step is to merge the two successive $3$-slices. Again we do discard certain choices of assignments and keep the remaining ones. This process is continued to fix a set of good assignments to the $6$-slices, $12$-slices, $16$-slices, $24$-slices and $48$-slices groups. In the last, after combining all the assignments we are left with a unique assignment, which is the required preimage. We explain the details in the Section~\ref{sec:partial_sol} below. 
 
-\subsection{Finding Partial Solutions\label{sec:partial_sol}}
+\section{Finding Partial Solutions\label{sec:partial_sol}}
 We focus on the two intermediate states of the attack i.e., the State~2 and the State~3 (see the Figure~\ref{atk_partial} below). Note that, since $d_0$ and $d_1$ are set to $0$ in the beginning, we are now left with $11$ lane variables $a_0, a_1, a_2$, $b_0, b_1, b_2$, $c_0, c_1, c_2$, $e_0$ and $e_1$ only.
 \begin{figure}
 	\begin{center}
@@ -405,6 +318,17 @@ Also, we can find second preimages also by setting $d_0$,$d_1$ to a constant suc
 
 In view of the above remark, the overall cost of the attack is $2\cdot 2^{88}$ i.e., $2^{89}$.
 
+Our implementation of the attack and for the hash function and other related work is open source and freely available on GitHub.
+
+\begin{enumerate}
+    \item \url{https://github.com/nickedes/keccak}
+    \item \url{https://github.com/nickedes/SHA3}
+\end{enumerate}
+
+In the long term, we hope the community will find this work useful and this will contribute to solving further rounds of \KECCAK{} practically for both collision and preimage challenges.
+
+\chapter{Preimage Attacks on 3,4 rounds of \KECCAK{}}
+
 \section{Preimage Attack on 3-round \Keccak-$256$}
 In this section we discuss a preimage attack for 3 rounds of \KECCAK-$256$. This attack draws motivation from preimage attack on 2 round \Keccak-$256$ using the idea of linear structure as explained in section~\ref{section2RKeccak256}. 
 
@@ -415,7 +339,7 @@ In this section we discuss a preimage attack for 3 rounds of \KECCAK-$256$. This
         \label{fig:3rkeccak256}
 \end{figure}
 
-\Keccak-$256$ structure has capacity $c = 256*2 = 8$ lanes and rate$ =  25 - 8 = 17$ lanes. We increase the no. of variable lanes here as compared to \Keccak-$384$ structure, by keeping the lanes $(0,0), (0,1), (0,2), (0,3)$ and $(2,0), (2,1), (2,2)$ as variables in Column $0, 2$ respectively as seen in Figure :~\ref{fig:3rkeccak256}. The yellow colored lanes in the first state represents the variables in rate part of the state and the gray lanes are the $0$ lanes in the capacity part of the state.
+\Keccak-$256$ structure has capacity $c = 256\cdot2 = = 512 = 8$ lanes and rate$ =  25 - 8 = 17$ lanes. We increase the no. of variable lanes here as compared to \Keccak-$384$ structure, by keeping the lanes $(0,0), (0,1), (0,2), (0,3)$ and $(2,0), (2,1), (2,2)$ as variables in Column $0, 2$ respectively as seen in Figure :~\ref{fig:3rkeccak256}. The yellow colored lanes in the first state represents the variables in rate part of the state and the gray lanes are the $0$ lanes in the capacity part of the state.
 
 To prevent the spread of $\theta$ in first round we need to add constraints :
 \begin{enumerate}
@@ -432,11 +356,9 @@ Due to the above constraints the state remains linear and the variables will not
 Moving on to the second round, the state is linear even after application of $\pi \circ \rho \circ \theta$, since these step mappings are linear and they don't introduce any non-linear terms. So, input state to $\chi$ step of second round is linear.
 
 On the other hand, for \KECCAK-$256$ we have $d = 256 = 64*4$ i.e. hash value of only 4 lanes. To make it easier to invert the $\chi$ step we assume any random value as value of 5th lane in the hash state. but this will further add more conditions to satisfy those assumed 64 bits for the 5-th lane.
-We can directly invert $\iota^{-1}$ from the given hash and then we have $4$ hash lanes then we can apply ~\ref{ob3} to obtain $4$ linear equations on the bits input to $\chi$ for that row. By this we obtain the relations for the input state to the $\chi$ step.
+We can directly invert $\iota^{-1}$ from the given hash and then we have $4$ hash lanes then we can apply observation~\ref{ob3} to obtain $4$ linear equations on the bits input to $\chi$ for that row. By this we obtain the relations for the input state to the $\chi$ step.
 
-Then we can apply the same technique as mentioned in section 6.3 \cite{guo2016linear} for this structure also. 
-
-If we observe carefully then, each bit of the inverted state is a sum of 11 bits of the output of the second round. Since $\pi \circ \rho$ just permutate the positions of these bits and $\iota$ just add a constant to the first lane, they do not increase the nonlinear terms, and thus we can ignore these step mappings in the last one and a half rounds. As in section 6.3 per equation $(14)$ for $C[x][y][z]$. 
+Then we can apply the same technique as mentioned in section 6.3 of\cite{guo2016linear} for this structure also. If we observe carefully then, each bit of the inverted state is a sum of 11 bits of the output of the second round. Since $\pi \circ \rho$ just permutate the positions of these bits and $\iota$ just add a constant to the first lane, they do not increase the nonlinear terms, and thus we can ignore these step mappings in the last one and a half rounds. As in section 6.3 per equation $(14)$ for $C[x][y][z]$. 
 
 On Expanding it :
     \[
