@@ -111,7 +111,7 @@ In the following, we provide a brief description of the step mappings.
 		\begin{table}[h!]
 			\begin{center}
 				\begin{tabular}{c|c|c|c|c|c}
-					\tetxbf{.} & \textbf{x = 3} & \textbf{x = 4} & \textbf{x = 0} & \textbf{x = 1} & \textbf{x = 2}\\ % <-- added & and content for each column
+					\textbf{.} & \textbf{x = 3} & \textbf{x = 4} & \textbf{x = 0} & \textbf{x = 1} & \textbf{x = 2}\\ % <-- added & and content for each column
 					\hline
 					\textbf{y = 2} & 153 & 231 & 3 & 10 & 171\\ % <--
 					\hline
@@ -203,7 +203,7 @@ The function produced from this construction is known as the sponge function whi
 \subsection{Padding Rule Specification}
 \label{padding}
 
-The padding rule followed by \KECCAK{} is \textbf{pad10*1}. The asterisk in the padding rule indicates that $0$ bit is either not present or is repeated as required, so that the length of output string after padding is a multiple of $r$. So, the padding rule is that the input string is padded with a $1$ followed by some number of $0$ and again $1$.
+The padding rule followed by \KECCAK{} is \textbf{pad10*1}. The asterisk in the padding rule indicates that $0$ bit is either not present or is repeated as required, so that the length of output string after padding is a multiple of block length (i.e. $r$). So, the padding rule is that the input string is appended with a $1$ bit followed by some number of $0$ bits and followed by $1$ bit.
 
 \subsection{\KECCAK{}$[c]$ Specification}
 \label{keccakc}
@@ -223,14 +223,14 @@ The \SHA-3 hash family supports minimum four different output length $d \in \{22
 There are $4$ \SHA-3 hash functions, which are defined from \KECCAK{}[$c$] specified in ~\ref{keccakc}. These functions specify the input message along with the length of the digest $d$.
 
 \[
-   \text{ SHA3-}d\;(M) = \KECCAK{}[c]\;(M||01 , d), \text{ where } c = 2*d
+   \text{ \SHA3-}d\;(M) = \KECCAK{}[c]\;(M||01 , d), \text{ where } c = 2*d
 \]
 
-Since there are two types of functions for \SHA-3 i.e. hash functions and Extendable-output functions. So, in order to differentiate the inputs to $\KECCAK{}[c]$ the message is appended with a suffix $01$ i.e. $M||01$.For each of four hash functions the capacity $c = 2*d$. The four hash functions are \SHA3-224, \SHA3-256, \SHA3-384 and \SHA3-512
+Since there are two types of functions for \SHA-3 i.e. hash functions and Extendable-output functions. So, in order to differentiate the inputs to $\KECCAK{}[c]$ the message is appended with a suffix $01$ i.e. $M||01$.For each of four hash functions the capacity $c = 2\cdot d$. The four hash functions are \SHA3-224, \SHA3-256, \SHA3-384 and \SHA3-512
 
-\subsection{SHA-3 Extendable-Output Functions}
+\subsection{\SHA-3 Extendable-Output Functions}
 
-The two SHA-3 XOFs are SHAKE128, SHAKE256 which are defined from the \KECCAK{}[$c$] function.
+The two \SHA-3 XOFs are \textsc{Shake}128, \textsc{Shake}256 which are defined from the \KECCAK{}[$c$] function.
 
 \[
     \text{SHAKE}128\;(M,d) = \KECCAK{}[256]\;(M||1111 , d)
@@ -249,7 +249,7 @@ A variable with a number in round bracket $"( . )"$ represents the shift of the 
 
 We are going to use the following observations in our analysis.
 \begin{enumerate}
-\item \label{ob1}\textbf{Observation 1:} The $\chi$ is a row-dependent operation. Guo \etal in~\cite{guo2016linear}, observed that if we know all the bits of a row then we can invert $\chi$ for that row. It is depicted in the Figure~\ref{chi_inv}.
+\item \label{ob1}\textbf{Observation 1:} $\chi$ is a row-dependent operation. Guo \etal in~\cite{guo2016linear}, observed that if we know all the bits of a row then we can invert $\chi$ for that row. It is depicted in the Figure~\ref{chi_inv}.
 %------------------------------------------------------
 \begin{figure}
 \begin{center}
@@ -303,23 +303,39 @@ nodes={inner sep=5pt,text width=0.5cm,align=center,minimum height=.5cm, draw,tex
 \item \label{ob3}\textbf{Observation 3:} Guo \etal in~\cite{guo2016linear} observed that when $4$ out of $5$ output bits are known after $\chi$ step then we can establish $4$ linear equations on the input bits of $\chi$.
 
 $a_0, a_1, a_2, a_3, a_4$ are the output bits of $\chi$ and $a_0^\prime, a_1^\prime, a_2^\prime, a_3^\prime, a_4^\prime$ are the input bits.
-\begin{align}
+\begin{align}\label{eq:a0}
 a_0^\prime = a_0 \oplus \left( a_{1} \oplus 1\right) \cdot \left( a_{2} \oplus \left( a_{3} \oplus 1 \right) \cdot a_{4}\right)
 \end{align}
-\begin{align}
+\begin{align}\label{eq:a1}
 a_1^\prime = a_1 \oplus \left( a_{2} \oplus 1\right) \cdot \left( a_{3} \oplus \left( a_{4} \oplus 1 \right) \cdot a_{0}\right)
 \end{align}
-\begin{align}
+\begin{align}\label{eq:a2}
 a_2^\prime = a_2 \oplus \left( a_{3} \oplus 1\right) \cdot \left( a_{4} \oplus \left( a_{0} \oplus 1 \right) \cdot a_{1}\right)
 \end{align}
-\begin{align}
+\begin{align}\label{eq:a3}
 a_3^\prime = a_3 \oplus \left( a_{4} \oplus 1\right) \cdot \left( a_{0} \oplus \left( a_{1} \oplus 1 \right) \cdot a_{2}\right)
 \end{align}
-\begin{align}
+\begin{align}\label{eq:a4}
 a_4^\prime = a_4 \oplus \left( a_{0} \oplus 1\right) \cdot \left( a_{1} \oplus \left( a_{2} \oplus 1 \right) \cdot a_{3}\right)
 \end{align}
 
-If we have values of $a_0, a_1, a_2, a_3$, then we have above $5$ equations in terms of the unknown output bit i.e. $a_4$. Then we can establish $4$ linear equations by eliminating $a_4$ from the above $5$ equations.
+If know the values of $a_0, a_1, a_2, a_3$ and with the above $5$ equations in terms of the unknown output bit i.e. $a_4$. Then we can establish $4$ linear equations by eliminating $a_4$ from the above $5$ equations.
 
+So, from equation \ref{eq:a4} we get,
+\begin{align}\label{eq:a4_2}
+ a_4 = a_4^\prime \oplus \left( a_{0} \oplus 1\right) \cdot \left( a_{1} \oplus \left( a_{2} \oplus 1 \right) \cdot a_{3}\right)
+\end{align}
+
+As the values of $a_0,a_1,a_2,a_3$ are known, from equation \ref{eq:a4_2} we get
+\begin{align}\label{eq:a4_3}
+a_4 = a_4^\prime \oplus c
+\end{align}
+where $c = \left( a_{0} \oplus 1\right) \cdot \left( a_{1} \oplus \left( a_{2} \oplus 1 \right) \cdot a_{3}\right) $
+
+Substituting value of $a_4$ from equation \ref{eq:a4_3} in \ref{eq:a0}. We get, 
+\begin{align}\label{eq:a0_2}
+a_0^\prime = a_0 \oplus \left( a_{1} \oplus 1\right) \cdot \left( a_{2} \oplus \left( a_{3} \oplus 1 \right) \cdot \left( a_4^\prime \oplus c \right)  \right)
+\end{align}
+Similarly, we can substitute the values of $a_4$ in equations \ref{eq:a1}, \ref{eq:a2}, \ref{eq:a3}.
 %------------------------------------------------------
 \end{enumerate}
