@@ -123,7 +123,13 @@
       {\large by} \\[\@thesistitlemedskip]
       {\large \bf \@author} \\[\@thesistitlebigskip]
       \vfill
-      {\large \textit{to the}} \\
+    %   {\large \textit{to the}} \\
+    \begin{figure}[H]
+        \centering
+        \includegraphics[scale=0.2]{IITKlogo.png}
+        % \caption{Caption}
+        \label{fig:my_label}
+\end{figure}
       {\large \MakeUppercase{Department of \@department}} \\%[\@thesistitlemedskip]
       {\large INDIAN INSTITUTE OF TECHNOLOGY KANPUR}\\%[\@thesistitlemedskip]
       {\large \@date}
