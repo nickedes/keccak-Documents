@@ -337,5 +337,75 @@ Substituting value of $a_4$ from equation \ref{eq:a4_3} in \ref{eq:a0}. We get,
 a_0^\prime = a_0 \oplus \left( a_{1} \oplus 1\right) \cdot \left( a_{2} \oplus \left( a_{3} \oplus 1 \right) \cdot \left( a_4^\prime \oplus c \right)  \right)
 \end{align}
 Similarly, we can substitute the values of $a_4$ in equations \ref{eq:a1}, \ref{eq:a2}, \ref{eq:a3}.
+
+\item \label{ob4}\textbf{Observation 4:} $\chi$ is an interesting non-linear operation. If we consider:
+\begin{figure}[H]
+	\begin{center}
+		\begin{tikzpicture}[ampersand replacement=\&]
+		\matrix (m1) [matrix of nodes,
+		nodes={inner sep=5pt,text width=0.5cm,align=center,minimum height=.5cm, draw,text height=1em,text depth=.2em}
+		]{
+			$a_0$ \& $a_1$\& $a_2$ \& $a_3$ \& $a_4$\\
+		};
+		
+		\matrix (m2) [right = 1.2cm of m1, matrix of nodes,
+		nodes={inner sep=5pt,text width=0.5cm,align=center,minimum height=.5cm, draw,text height=1em,text depth=.2em}
+		]{
+			$b_0$ \& $b_1$\& $b_2$ \& $b_3$ \& $b_4$\\
+		};
+		\draw[->, very thick] (m1)-- node[above, pos=0.5] {$\chi$} (m2);
+		\end{tikzpicture}
+	\end{center}
+	\caption{Computation of $\chi$ for full row \label{chi_inv}}
+\end{figure}
+
+Then,
+\begin{align}\label{eq:b0}
+b_0 = a_0 \oplus \left( a_1 \oplus 1 \right) \cdot a_2
+\end{align}
+
+similarly,
+\begin{align}\label{eq:b1}
+b_1 = a_1 \oplus \left( a_2 \oplus 1 \right) \cdot a_3
+\end{align}
+
+By equation~\ref{eq:b1} we have
+\begin{align}\label{eq:b1_2}
+b_1 \cdot a_2 = \left( a_1 \oplus \left( a_2 \oplus 1 \right) \cdot a_3 \right) \cdot a_2 = a_1 \cdot a_2
+\end{align}
+
+Similarly,
+\begin{align}\label{eq:b1_3}
+\left(b_1 \oplus 1 \right) \cdot a_2 = \left( \left( a_1 \oplus \left( a_2 \oplus 1 \right) \cdot a_3 \right) \oplus 1 \right) \cdot a_2 = \left( a_1 \oplus 1 \right) \cdot a_2
+\end{align}
+
+Using equation~\ref{eq:b1_3} and substituting in~\ref{eq:b0}. We obtain,
+\begin{align}\label{eq:b0_2}
+b_0 = a_0 \oplus \left( b_1 \oplus 1 \right) \cdot a_2
+\end{align}
+
+If the value of $b_1 = 1$ then we obtain a new relation for $b_0$,
+\begin{align}\label{eq:b0_3}
+b_0 = a_0 \oplus \left( 1 \oplus 1 \right) \cdot a_2 = a_0 \oplus \left( 0 \right) \cdot a_2 = a_0 \oplus 0 = a_0
+\end{align}
+
+So we observe that when output bit $b_1 = 1$ then we can say that $a_0 = b_0$. This observation is useful in cases where 2 consecutive output bits i.e. $b_i, \; b_{i+1}$ of step $\chi$ are known and $b_{i+1} = 1$, then we can imply that $a_i = b_i$.
+
+\item \label{ob5}\textbf{Observation 5:}
+\begin{figure}[H]
+	\centering
+	\includegraphics{chistep.pdf}
+	\caption{Linear variables after $\chi$}
+	\label{fig:chistep}
+\end{figure}
+
+Yellow colored bits in Figure~\ref{fig:chistep} represent linear variable and white colored bit represents constant ($0, 1$). This figure demonstrates the spread of linear variables after applying $\chi$. The equation for $\chi$ operation is:
+
+\begin{align}\label{eq:chi}
+b_i = a_i \oplus \left( a_{i+1} \oplus 1 \right) \cdot a_{i+2}
+\end{align}
+
+Based on equation~\ref{eq:chi}, we can say that $b_i$ is non-linear if both $a_{i+1}$ and $a_{i+2}$ are linear variables. The input row to $\chi$ step in Figure~\ref{fig:chistep} has no two adjacent bits as linear variables due to which there are no non-linear terms in the output row.
+
 %------------------------------------------------------
 \end{enumerate}
