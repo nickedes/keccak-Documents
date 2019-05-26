@@ -4,8 +4,7 @@
 In this chapter we discuss details of the construction of \KECCAK{} and its standardization \SHA-$3$.
 
 \section{\Keccak{} Description and Notations}
-\Keccak{} is a family of sponge hash functions with arbitrary output length. A sponge construction consists of a permutation function, denoted by $f$, a parameter ``rate'', denoted by $r$, and a padding rule pad. The construction 
-produces a sponge function which takes as input a bit string $N$ and output length $d$. 
+\Keccak{} is a family of sponge hash functions with arbitrary output length. A sponge construction consists of a permutation function, denoted by $f$, a parameter ``rate'', denoted by $r$, and a padding rule pad. The construction produces a sponge function that takes as input a bit string $N$ and output length $d$. 
 It is described below.
 
 \begin{figure}
@@ -13,30 +12,30 @@ It is described below.
 \caption{The sponge construction~\cite{bertoni2011cryptographic}\label{sponge}}
 \end{figure}
 
-The input bit string $N$ is first padded based on the padding rule given by pad such that after padding, $N$ is a multiple of $r$. The padded string is then divided into blocks of length $r$, where $r$ is the rate of \KECCAK{}. The permutation function $f$ maps a string of length $b$ to another string of same length. It operates on the $b$-bit string where the first part contains the $r$ bits of the state and the second part contains the remaining $c$ bits of the state, where $c$ is the capacity of \KECCAK{}. 
+The input bit string $N$ is first padded based on the padding rule given by pad such that after padding, $N$ is a multiple of $r$. The padded string is then divided into blocks of length $r$, where $r$ is the rate of \KECCAK{}. The permutation function $f$ maps a string of length $b$ to another string of the same length. It operates on the $b$-bit string where the first part contains the $r$ bits of the state and the second part contains the remaining $c$ bits of the state, where $c$ is the capacity of \KECCAK{}. 
 
-$c$ denotes the capacity which is a positive integer such that $r + c = b$. The initial state is a $b$-bit string which is set to all zeros. After the string $N$ is padded, it undergoes two phases of sponge, namely absorbing and squeezing. 
+$c$ denotes the capacity which is a positive integer such that $r + c = b$. The initial state is a $b$-bit string that is set to all zeros. After the string $N$ is padded, it undergoes two phases of sponge, namely absorbing and squeezing. 
 
-In the absorbing phase, the padded string $N^\prime$ is split into $r$-bit blocks, say $N_1, N_2, N_3,\ldots,N_m$. The first $r$ bits of initial state are XOR-ed with the first block $N_1$ and the remaining $c$ bits are appended to the output of XOR. The XOR-ed state is fed as input to the function $f$ as shown in the diagram given in the Figure~\ref{sponge}. The output of $f$ becomes the initial state for the next block and this process repeats for all blocks of the message. After all the blocks are absorbed, the absorption phase is finished. Let the resulting state after absorption be $P$. 
+In the absorbing phase, the padded string $N^\prime$ is split into $r$-bit blocks, say $N_1, N_2, N_3,\ldots,N_m$. The first $r$ bits of the initial state is XOR-ed with the first block $N_1$ and the remaining $c$ bits are appended to the output of XOR. The XOR-ed state is fed as input to the function $f$ as shown in the diagram given in the Figure~\ref{sponge}. The output of $f$ becomes the initial state for the next block and this process repeats for all blocks of the message. After all the blocks are absorbed, the absorption phase is finished. Let the resulting state after absorption is $P$. 
 
-In the squeezing phase, an string $Z$ is initialized with the first $r$ bits of the state $P$. The function $f$ is applied on the state $P$ and the first $r$ bits of the output state, say $P^\prime$, is appended to $Z$. The state $P^\prime$ is again passed to $f$ and this process is repeated until $|Z| \geq d$. The output of sponge construction is given by the first $d$ bits of $Z$.
+In the squeezing phase, a string $Z$ is initialized with the first $r$ bits of the state $P$. The function $f$ is applied on the state $P$ and the first $r$ bits of the output state, say $P^\prime$, is appended to $Z$. The state $P^\prime$ is again passed to $f$ and this process is repeated until $|Z| \geq d$. The output of sponge construction is given by the first $d$ bits of $Z$.
 
 The \Keccak{} family of hash functions is based on the sponge construction. The function $f$, in the sponge construction, is denoted by \Keccak-$f\left[b\right]$, where $b$ is the length of input string. Internally \Keccak-$f\left[b\right]$ consists of a round function $p$ which is recursively applied a specified number of times, say $n_r$. More precisely \Keccak-$f\left[b\right]$ function is specialization of \Keccak-$p\left[b,\,n_r\right]$ family where $n_r = 12 + 2\,l$ and $l = \log_2 (b/25)$.
 
 The \KECCAK-$p$ permutation is defined with two parameters :
 \begin{enumerate}
-	\item The width of the permutation, $b$
-	\item Number of rounds, $n_r$. The internal round function $rnd$ is called $n_r$ number of times.
+    \item The width of the permutation, $b$
+    \item Number of rounds, $n_r$. The internal round function $rnd$ is called $n_r$ number of times.
 \end{enumerate}
 
 So,
 \[
-	\Keccak\text{-}f\left[b\right] = \Keccak\text{-}p\left[b,  12 + 2l\right].
+    \Keccak\text{-}f\left[b\right] = \Keccak\text{-}p\left[b,  12 + 2l\right].
 \]
 
 The state \KECCAK-$f$[$b$] consists of $b$ bits, the state is divided into slices. Here, the size of each slice is always fixed i.e. 25 bits and the number of slices depends on size $b$ bits. For \KECCAK-$f$[$1600$] state consists of $1600$ bits, where each slice contains $25$ bits and there are $1600/25 = 64$ slices. A bit position in state \KECCAK-$f$[$1600$] is determined by $x, y, $ and $z$ coordinates. $z$ coordinate determines the slice number i.e. $0 \leq z \leq 63$ for $b = 1600$ and $x, y$ determines the position of the bit in that particular slice $z$.
 
-The round function $p$ in \Keccak{} comprises of $5$ steps, in each of which the state undergoes transformations specified by the step mapping. These step mappings are called $\theta, \rho, \pi, \chi$ and  $\iota$. These transformations are applied in sequence. A state $S$, which is a $b$-bit string, in \Keccak{} is usually denoted by a $3$-dimensional grid of size $(5 \times 5 \times w)$ as shown in the Figure~\ref{ss}. The value of $w$ depends on the parameters of \Keccak{}. For example in the case of \Keccak-$f\left[1600\right]$, $w$ is equal to $64$. It is usual practice to represent a state in terms of rows, columns, lanes, plane, sheets, slices and width of the $3$-dimensional grid.
+The round function $p$ in \Keccak{} comprises of $5$ steps, in each of which the state undergoes transformations specified by the step mapping. These step mappings are called $\theta, \rho, \pi, \chi$ and  $\iota$. These transformations are applied in sequence. A state $S$, which is a $b$-bit string, in \Keccak{} is usually denoted by a $3$-dimensional grid of size $(5 \times 5 \times w)$ as shown in the Figure~\ref{ss}. The value of $w$ depends on the parameters of \Keccak{}. For example in the case of \Keccak-$f\left[1600\right]$, $w$ is equal to $64$. It is usual practice to represent a state in terms of rows, columns, lanes, planes, sheets, slices and width of the $3$-dimensional grid.
 
 Given a bit location $(x,y,z)$ in the grid, the corresponding row is given by $\left( S[x+i \pmod 5,y,z] : \, i \in [0,4] \right)$. Similarly the corresponding column is given by the bits $\left( S[x,y+i \pmod 5,z] : \, i \in [0,4] \right)$ and the corresponding lane is given by $\left( S[x,y,z+i \pmod w] : \, i \in [0,w-1] \right)$. 
 
@@ -86,7 +85,7 @@ In the following, we provide a brief description of the step mappings.
  Let $A$ and $B$ respectively denote input and output states of a step mapping.
 \begin{enumerate}
     \item $\theta$ ({\bf theta}): The theta step XORs each bit in the state with the parities of two neighboring columns. 
-		Parity of a column is defined as the $XOR$ of all the bits present in that column, i.e. $\oplus_{y = 0}^{4} A[x, y, z]$. For a given bit position $(x, y, z)$, one column is $((x - 1) \bmod 5, z) $ and the other is $((x+1)\bmod 5, (z - 1) \bmod w)$.
+        Parity of a column is defined as the $XOR$ of all the bits present in that column, i.e. $\oplus_{y = 0}^{4} A[x, y, z]$. For a given bit position $(x, y, z)$, one column is $((x - 1) \bmod 5, z) $ and the other is $((x+1)\bmod 5, (z - 1) \bmod w)$.
     
     Thus, if we have $A$ as the input state to $\theta$ then the output state $B$ is :
     \begin{align}\nonumber
@@ -106,28 +105,28 @@ In the following, we provide a brief description of the step mappings.
     \end{align}
     where $\rho(x, y)$ is the constant for lane $(x, y)$. 
     
-		The constant value $\rho(x, y)$ is specified for each lane in the construction of \Keccak{} as shown in Table : ~\ref{tab4} 
-		
-		\begin{table}[h!]
-			\begin{center}
-				\begin{tabular}{c|c|c|c|c|c}
-					\textbf{.} & \textbf{x = 3} & \textbf{x = 4} & \textbf{x = 0} & \textbf{x = 1} & \textbf{x = 2}\\ % <-- added & and content for each column
-					\hline
-					\textbf{y = 2} & 153 & 231 & 3 & 10 & 171\\ % <--
-					\hline
-					\textbf{y = 1} & 55 & 276 & 36 & 300 & 6\\ % <--
-					\hline
-					\textbf{y = 0} & 28 & 91 & 0 & 1 & 190\\ % <--
-					\hline
-					\textbf{y = 0} & 120 & 78 & 210 & 66 & 253\\ % <--
-					\hline
-					\textbf{y = 4} & 21 & 136 & 105 & 45 & 15\\ % <--
-					\hline
-				\end{tabular}
-				\caption{Values of $\rho$ constants for all lanes}\label{tab4}
-			\end{center}
-		\end{table}                                                                 
-		$\rho$ is also a linear step mapping.
+        The constant value $\rho(x, y)$ is specified for each lane in the construction of \Keccak{} as shown in Table : ~\ref{tab4} 
+        
+        \begin{table}[h!]
+            \begin{center}
+                \begin{tabular}{c|c|c|c|c|c}
+                    \textbf{.} & \textbf{x = 3} & \textbf{x = 4} & \textbf{x = 0} & \textbf{x = 1} & \textbf{x = 2}\\ % <-- added & and content for each column
+                    \hline
+                    \textbf{y = 2} & 153 & 231 & 3 & 10 & 171\\ % <--
+                    \hline
+                    \textbf{y = 1} & 55 & 276 & 36 & 300 & 6\\ % <--
+                    \hline
+                    \textbf{y = 0} & 28 & 91 & 0 & 1 & 190\\ % <--
+                    \hline
+                    \textbf{y = 0} & 120 & 78 & 210 & 66 & 253\\ % <--
+                    \hline
+                    \textbf{y = 4} & 21 & 136 & 105 & 45 & 15\\ % <--
+                    \hline
+                \end{tabular}
+                \caption{Values of $\rho$ constants for all lanes}\label{tab4}
+            \end{center}
+        \end{table}                                                                 
+        $\rho$ is also a linear step mapping.
 
     \vskip5pt
     \item $\pi$ ({\bf pi}): It permutes the positions of lanes. The new position of a lane is determined by a matrix, 
@@ -136,7 +135,7 @@ In the following, we provide a brief description of the step mappings.
     \begin{bmatrix} 0 & 1 \\ 2 &  3 \end{bmatrix} \cdot \begin{bmatrix} x\\ y\end{bmatrix},
     \end{align}
     where $(x', y')$ is the position of lane $(x, y)$ after $\pi$ step.
-		$\pi$ is also a linear step mapping.
+        $\pi$ is also a linear step mapping.
     \vskip5pt
     \item $\chi$ ({\bf chi}): In this operation each bit in the original state is XOR-ed with a non-linear function of next two bits in the same row i.e.,
     \begin{align}\nonumber
@@ -153,7 +152,7 @@ In the following, we provide a brief description of the step mappings.
    \end{align}
     where $RC_i$ is round constant that depends on the round number. The remaining $24$ lanes remain unaffected.
     
-    All the rounds are identical but the symmetry is destroyed by the step $\iota$ by the addition of round constant to a particular lane, where the round constant is dependent on the round index.
+    All the rounds are identical but the symmetry is destroyed by the step $\iota$ by the addition of a round constant to a particular lane, where the round constant is dependent on the round index.
     All the additions and multiplications in the operations defined above are in $\textbf{GF}(2)$.
 \end{enumerate}
 Thus a round in \Keccak{} is given by ${\tt Round}(A, i_r) = \iota( \chi( \pi ( \rho ( \theta ( A ) ) ) ) , i_r)$, where $A$ is the state and $i_r$ is the round index. In the \Keccak-$p[b, n_r]$, $n_r$ iterations of ${\tt Round}(\cdot)$ is applied on the state $A$.
@@ -203,7 +202,7 @@ The function produced from this construction is known as the sponge function whi
 \subsection{Padding Rule Specification}
 \label{padding}
 
-The padding rule followed by \KECCAK{} is \textbf{pad10*1}. The asterisk in the padding rule indicates that $0$ bit is either not present or is repeated as required, so that the length of output string after padding is a multiple of block length (i.e. $r$). So, the padding rule is that the input string is appended with a $1$ bit followed by some number of $0$ bits and followed by $1$ bit.
+The padding rule followed by \KECCAK{} is \textbf{pad10*1}. The asterisk in the padding rule indicates that $0$ bit is either not present or is repeated as required so that the length of output string after padding is a multiple of the block length (i.e. $r$). So, the padding rule is that the input string is appended with a $1$ bit followed by some number of $0$ bits and followed by $1$ bit.
 
 \subsection{\KECCAK{}$[c]$ Specification}
 \label{keccakc}
@@ -228,7 +227,7 @@ There are $4$ \SHA-3 hash functions, which are defined from \KECCAK{}[$c$] speci
 
 Since there are two types of functions for \SHA-3 i.e. hash functions and Extendable-output functions. So, in order to differentiate the inputs to $\KECCAK{}[c]$ the message is appended with a suffix $01$ i.e. $M||01$.For each of four hash functions the capacity $c = 2\cdot d$. The four hash functions are \SHA3-224, \SHA3-256, \SHA3-384 and \SHA3-512
 
-\subsection{\SHA-3 Extendable-Output Functions}
+\subsection{SHA-3 Extendable-Output Functions}
 
 The two \SHA-3 XOFs are \textsc{Shake}128, \textsc{Shake}256 which are defined from the \KECCAK{}[$c$] function.
 
@@ -241,7 +240,7 @@ The two \SHA-3 XOFs are \textsc{Shake}128, \textsc{Shake}256 which are defined f
 
 \section{Notations and Observations}
 
-In the following chapters, we study the cryptanalysis of \KECCAK{} which uses certain notations and observations, in this section we study them.
+In the following chapters, we study the cryptanalysis of \KECCAK{} which uses certain notations and observations, in this section, we study them.
 In the analysis, we will represent a state by the lanes. There are in total $5\times 5$ lanes. Each lane in a state will be represented by a variable which is a $64$-bit array. 
 A variable with a number in round bracket $"( . )"$ represents the shift of the bits in array towards MSB. A variable with a number in square bracket $"[ . ]"$ represents the bit value of the variable at that index. If there are multiple numbers in the square bracket then it represents the corresponding bit values.
 
@@ -257,13 +256,13 @@ We are going to use the following observations in our analysis.
 \matrix (m1) [matrix of nodes,
 nodes={inner sep=5pt,text width=0.5cm,align=center,minimum height=.5cm, draw,text height=1em,text depth=.2em}
 ]{
-	$a_0$ \& $a_1$\& $a_2$ \& $a_3$ \& $a_4$\\
+    $a_0$ \& $a_1$\& $a_2$ \& $a_3$ \& $a_4$\\
 };
 
 \matrix (m2) [right = 1.2cm of m1, matrix of nodes,
 nodes={inner sep=5pt,text width=0.5cm,align=center,minimum height=.5cm, draw,text height=1em,text depth=.2em}
 ]{
-	$a_0^\prime$ \& $a_1^\prime$\& $a_2^\prime$ \& $a_3^\prime$ \& $a_4^\prime$\\
+    $a_0^\prime$ \& $a_1^\prime$\& $a_2^\prime$ \& $a_3^\prime$ \& $a_4^\prime$\\
 };
 \draw[->, very thick] (m1)-- node[above, pos=0.5] {$\chi^{-1}$} (m2);
 \end{tikzpicture}
@@ -277,7 +276,7 @@ a_i^\prime = a_i \oplus \left( a_{i+1} \oplus 1\right) \cdot \left( a_{i+2} \opl
 \end{align}
 
 
-\item \label{ob2}\textbf{Observation 2:} When only one output bit is known after $\chi$ step, then the corresponding input bits have $2^4$ possibilities. Kumar \etal\cite{kumar2018cryptanalysis} gave a way to fix the first output bit to be the same as input bit and the second bit as $1$. It is shown in the Figure~\ref{chi_inv2}.
+\item \label{ob2}\textbf{Observation 2:} When only one output bit is known after $\chi$ step, then the corresponding input bits have $2^4$ possibilities. Kumar \etal\cite{kumar2018cryptanalysis} gave a way to fix the first output bit to be the same as the input bit and the second bit as $1$. It is shown in the Figure~\ref{chi_inv2}.
 
 %------------------------------------------------------
 \begin{figure}[ht]
@@ -286,13 +285,13 @@ a_i^\prime = a_i \oplus \left( a_{i+1} \oplus 1\right) \cdot \left( a_{i+2} \opl
 \matrix (m1) [matrix of nodes,
 nodes={inner sep=5pt,text width=0.5cm,align=center,minimum height=.5cm, draw,text height=1em,text depth=.2em}
 ]{
-	$a_0$ \& $*$ \& $*$ \& $*$ \& $*$\\
+    $a_0$ \& $*$ \& $*$ \& $*$ \& $*$\\
 };
 
 \matrix (m2) [right = 1.2cm of m1, matrix of nodes,
 nodes={inner sep=5pt,text width=0.5cm,align=center,minimum height=.5cm, draw,text height=1em,text depth=.2em}
 ]{
-	$a_0$ \& $1$ \& $*$ \& $*$ \& $*$\\
+    $a_0$ \& $1$ \& $*$ \& $*$ \& $*$\\
 };
 \draw[->, very thick] (m1)-- node[above, pos=0.5] {$\chi^{-1}$} (m2);
 \end{tikzpicture}
@@ -319,7 +318,7 @@ a_3^\prime = a_3 \oplus \left( a_{4} \oplus 1\right) \cdot \left( a_{0} \oplus \
 a_4^\prime = a_4 \oplus \left( a_{0} \oplus 1\right) \cdot \left( a_{1} \oplus \left( a_{2} \oplus 1 \right) \cdot a_{3}\right)
 \end{align}
 
-If know the values of $a_0, a_1, a_2, a_3$ and with the above $5$ equations in terms of the unknown output bit i.e. $a_4$. Then we can establish $4$ linear equations by eliminating $a_4$ from the above $5$ equations.
+If we know the values of $a_0, a_1, a_2, a_3$ and with the above $5$ equations in terms of the unknown output bit i.e. $a_4$. Then we can establish $4$ linear equations by eliminating $a_4$ from the above $5$ equations.
 
 So, from equation \ref{eq:a4} we get,
 \begin{align}\label{eq:a4_2}
@@ -340,23 +339,23 @@ Similarly, we can substitute the values of $a_4$ in equations \ref{eq:a1}, \ref{
 
 \item \label{ob4}\textbf{Observation 4:} $\chi$ is an interesting non-linear operation. If we consider:
 \begin{figure}[H]
-	\begin{center}
-		\begin{tikzpicture}[ampersand replacement=\&]
-		\matrix (m1) [matrix of nodes,
-		nodes={inner sep=5pt,text width=0.5cm,align=center,minimum height=.5cm, draw,text height=1em,text depth=.2em}
-		]{
-			$a_0$ \& $a_1$\& $a_2$ \& $a_3$ \& $a_4$\\
-		};
-		
-		\matrix (m2) [right = 1.2cm of m1, matrix of nodes,
-		nodes={inner sep=5pt,text width=0.5cm,align=center,minimum height=.5cm, draw,text height=1em,text depth=.2em}
-		]{
-			$b_0$ \& $b_1$\& $b_2$ \& $b_3$ \& $b_4$\\
-		};
-		\draw[->, very thick] (m1)-- node[above, pos=0.5] {$\chi$} (m2);
-		\end{tikzpicture}
-	\end{center}
-	\caption{Computation of $\chi$ for full row \label{chi_inv}}
+    \begin{center}
+        \begin{tikzpicture}[ampersand replacement=\&]
+        \matrix (m1) [matrix of nodes,
+        nodes={inner sep=5pt,text width=0.5cm,align=center,minimum height=.5cm, draw,text height=1em,text depth=.2em}
+        ]{
+            $a_0$ \& $a_1$\& $a_2$ \& $a_3$ \& $a_4$\\
+        };
+        
+        \matrix (m2) [right = 1.2cm of m1, matrix of nodes,
+        nodes={inner sep=5pt,text width=0.5cm,align=center,minimum height=.5cm, draw,text height=1em,text depth=.2em}
+        ]{
+            $b_0$ \& $b_1$\& $b_2$ \& $b_3$ \& $b_4$\\
+        };
+        \draw[->, very thick] (m1)-- node[above, pos=0.5] {$\chi$} (m2);
+        \end{tikzpicture}
+    \end{center}
+    \caption{Computation of $\chi$ for full row \label{chi_inv}}
 \end{figure}
 
 Then,
@@ -393,13 +392,13 @@ So we observe that when output bit $b_1 = 1$ then we can say that $a_0 = b_0$. T
 
 \item \label{ob5}\textbf{Observation 5:}
 \begin{figure}[H]
-	\centering
-	\includegraphics{chistep.pdf}
-	\caption{Linear variables after $\chi$}
-	\label{fig:chistep}
+    \centering
+    \includegraphics{chistep.pdf}
+    \caption{Linear variables after $\chi$}
+    \label{fig:chistep}
 \end{figure}
 
-Yellow colored bits in Figure~\ref{fig:chistep} represent linear variable and white colored bit represents constant ($0, 1$). This figure demonstrates the spread of linear variables after applying $\chi$. The equation for $\chi$ operation is:
+Yellow colored bits in Figure~\ref{fig:chistep} represent linear variable and white colored bit represents constant ($0$ or $1$). This figure demonstrates the spread of linear variables after applying $\chi$. The equation for $\chi$ operation is:
 
 \begin{align}\label{eq:chi}
 b_i = a_i \oplus \left( a_{i+1} \oplus 1 \right) \cdot a_{i+2}
