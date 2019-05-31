@@ -1,14 +1,16 @@
 \chapter{A Background on \KECCAK{}}
 \label{chap:design-impl}
 
-In this chapter we discuss details of the construction of \KECCAK{} and its standardization \SHA-$3$.
+In this chapter we provide construction details of \KECCAK{} and its standardization \SHA-$3$.
 
 \section{\Keccak{} Description and Notations}
 \Keccak{} is a family of sponge hash functions with arbitrary output length. A sponge construction consists of a permutation function, denoted by $f$, a parameter ``rate'', denoted by $r$, and a padding rule pad. The construction produces a sponge function that takes as input a bit string $N$ and output length $d$. 
 It is described below.
 
-\begin{figure}
-\includegraphics[width=\textwidth]{sponge.png}
+\begin{figure}[H]
+\resizebox{\linewidth}{!}{
+	\includegraphics[width=\textwidth]{sponge.png}
+}
 \caption{The sponge construction~\cite{bertoni2011cryptographic}\label{sponge}}
 \end{figure}
 
@@ -16,7 +18,7 @@ The input bit string $N$ is first padded based on the padding rule given by pad 
 
 $c$ denotes the capacity which is a positive integer such that $r + c = b$. The initial state is a $b$-bit string that is set to all zeros. After the string $N$ is padded, it undergoes two phases of sponge, namely absorbing and squeezing. 
 
-In the absorbing phase, the padded string $N^\prime$ is split into $r$-bit blocks, say $N_1, N_2, N_3,\ldots,N_m$. The first $r$ bits of the initial state is XOR-ed with the first block $N_1$ and the remaining $c$ bits are appended to the output of XOR. The XOR-ed state is fed as input to the function $f$ as shown in the diagram given in the Figure~\ref{sponge}. The output of $f$ becomes the initial state for the next block and this process repeats for all blocks of the message. After all the blocks are absorbed, the absorption phase is finished. Let the resulting state after absorption is $P$. 
+In the absorbing phase, the padded string $N^\prime$ is split into $r$-bit blocks, say $N_1, N_2, N_3,\ldots,N_m$. The first $r$ bits of the initial state is XOR-ed with the first block $N_1$ and the remaining $c$ bits are appended to the output of XOR. The XOR-ed state is fed as input to the function $f$ as shown in the diagram given in the Figure~\ref{sponge}. The output of $f$ becomes the initial state for the next block and this process repeats for all blocks of the message. After all the blocks are absorbed, the absorption phase is finished. Let the resulting state after absorption be $P$. 
 
 In the squeezing phase, a string $Z$ is initialized with the first $r$ bits of the state $P$. The function $f$ is applied on the state $P$ and the first $r$ bits of the output state, say $P^\prime$, is appended to $Z$. The state $P^\prime$ is again passed to $f$ and this process is repeated until $|Z| \geq d$. The output of sponge construction is given by the first $d$ bits of $Z$.
 
@@ -33,7 +35,7 @@ So,
     \Keccak\text{-}f\left[b\right] = \Keccak\text{-}p\left[b,  12 + 2l\right].
 \]
 
-The state \KECCAK-$f$[$b$] consists of $b$ bits, the state is divided into slices. Here, the size of each slice is always fixed i.e. 25 bits and the number of slices depends on size $b$ bits. For \KECCAK-$f$[$1600$] state consists of $1600$ bits, where each slice contains $25$ bits and there are $1600/25 = 64$ slices. A bit position in state \KECCAK-$f$[$1600$] is determined by $x, y, $ and $z$ coordinates. $z$ coordinate determines the slice number i.e. $0 \leq z \leq 63$ for $b = 1600$ and $x, y$ determines the position of the bit in that particular slice $z$.
+The state \KECCAK-$f$[$b$] consists of $b$ bits, the state is divided into slices. Here, the size of each slice is always fixed i.e. $25$ bits and the number of slices depends on size $b$ bits. For \KECCAK-$f$[$1600$] state consists of $1600$ bits, where each slice contains $25$ bits and there are $1600/25 = 64$ slices. A bit position in state \KECCAK-$f$[$1600$] is determined by $x, y, $ and $z$ coordinates. $z$ coordinate determines the slice number i.e. $0 \leq z \leq 63$ for $b = 1600$ and $x, y$ determines the position of the bit in that particular slice $z$.
 
 The round function $p$ in \Keccak{} comprises of $5$ steps, in each of which the state undergoes transformations specified by the step mapping. These step mappings are called $\theta, \rho, \pi, \chi$ and  $\iota$. These transformations are applied in sequence. A state $S$, which is a $b$-bit string, in \Keccak{} is usually denoted by a $3$-dimensional grid of size $(5 \times 5 \times w)$ as shown in the Figure~\ref{ss}. The value of $w$ depends on the parameters of \Keccak{}. For example in the case of \Keccak-$f\left[1600\right]$, $w$ is equal to $64$. It is usual practice to represent a state in terms of rows, columns, lanes, planes, sheets, slices and width of the $3$-dimensional grid.
 
@@ -84,8 +86,7 @@ $\Rnd$\;- A round of \KECCAK-$p$ permutation, it consists of five transformation
 In the following, we provide a brief description of the step mappings.
  Let $A$ and $B$ respectively denote input and output states of a step mapping.
 \begin{enumerate}
-    \item $\theta$ ({\bf theta}): The theta step XORs each bit in the state with the parities of two neighboring columns. 
-        Parity of a column is defined as the $XOR$ of all the bits present in that column, i.e. $\oplus_{y = 0}^{4} A[x, y, z]$. For a given bit position $(x, y, z)$, one column is $((x - 1) \bmod 5, z) $ and the other is $((x+1)\bmod 5, (z - 1) \bmod w)$.
+    \item $\theta$ ({\bf theta}): The theta step XORs each bit in the state with the parities of two neighboring columns. Parity of a column is defined as the $XOR$ of all the bits present in that column, i.e. $\oplus_{y = 0}^{4} A[x, y, z]$. For a given bit position $(x, y, z)$, one column is $((x - 1) \bmod 5, z) $ and the other is $((x+1)\bmod 5, (z - 1) \bmod w)$.
     
     Thus, if we have $A$ as the input state to $\theta$ then the output state $B$ is :
     \begin{align}\nonumber
@@ -105,22 +106,22 @@ In the following, we provide a brief description of the step mappings.
     \end{align}
     where $\rho(x, y)$ is the constant for lane $(x, y)$. 
     
-        The constant value $\rho(x, y)$ is specified for each lane in the construction of \Keccak{} as shown in Table : ~\ref{tab4} 
+        The constant value $\rho(x, y)$ is specified for each lane in the construction of \Keccak{} as shown in Table~\ref{tab4}
         
         \begin{table}[h!]
             \begin{center}
                 \begin{tabular}{c|c|c|c|c|c}
-                    \textbf{.} & \textbf{x = 3} & \textbf{x = 4} & \textbf{x = 0} & \textbf{x = 1} & \textbf{x = 2}\\ % <-- added & and content for each column
+                    \textbf{.} & $x = 3$ & ${x = 4}$ & ${x = 0}$ & ${x = 1}$ & ${x = 2}$\\ % <-- added & and content for each column
                     \hline
-                    \textbf{y = 2} & 153 & 231 & 3 & 10 & 171\\ % <--
+                    ${y = 2}$ & $153$ & $231$ & $3$ & $10$ & $171$\\ % <--
                     \hline
-                    \textbf{y = 1} & 55 & 276 & 36 & 300 & 6\\ % <--
+                    ${y = 1}$ & $55$ & $276$ & $36$ & $300$ & $6$\\ % <--
                     \hline
-                    \textbf{y = 0} & 28 & 91 & 0 & 1 & 190\\ % <--
+                    ${y = 0}$ & $28$ & $91$ & $0$ & $1$ & $190$\\ % <--
                     \hline
-                    \textbf{y = 0} & 120 & 78 & 210 & 66 & 253\\ % <--
+                    ${y = 4}$ & $120$ & $78$ & $210$ & $66$ & $253$\\ % <--
                     \hline
-                    \textbf{y = 4} & 21 & 136 & 105 & 45 & 15\\ % <--
+                    ${y = 3}$ & $21$ & $136$ & $105$ & $45$ & $15$\\ % <--
                     \hline
                 \end{tabular}
                 \caption{Values of $\rho$ constants for all lanes}\label{tab4}
@@ -132,7 +133,7 @@ In the following, we provide a brief description of the step mappings.
     \item $\pi$ ({\bf pi}): It permutes the positions of lanes. The new position of a lane is determined by a matrix, 
     \begin{align}
     \begin{bmatrix} x'\\ y'\end{bmatrix} = 
-    \begin{bmatrix} 0 & 1 \\ 2 &  3 \end{bmatrix} \cdot \begin{bmatrix} x\\ y\end{bmatrix},
+    \begin{bmatrix} $0$ & $1$ \\ $2$ &  $3$ \end{bmatrix} \cdot \begin{bmatrix} x\\ y\end{bmatrix},
     \end{align}
     where $(x', y')$ is the position of lane $(x, y)$ after $\pi$ step.
         $\pi$ is also a linear step mapping.
@@ -158,7 +159,7 @@ In the following, we provide a brief description of the step mappings.
 Thus a round in \Keccak{} is given by ${\tt Round}(A, i_r) = \iota( \chi( \pi ( \rho ( \theta ( A ) ) ) ) , i_r)$, where $A$ is the state and $i_r$ is the round index. In the \Keccak-$p[b, n_r]$, $n_r$ iterations of ${\tt Round}(\cdot)$ is applied on the state $A$.
 
 %% Check
-The \SHA-3 hash function is \Keccak-$p[b, 12 + 2\,l]$, where $w = b/25$ and $l = \log_{2}(w)$. The value of $b$ is $1600$, so we have $l = 6$. Thus the $f$ function in \SHA-3 is \Keccak-$p[1600, 24]$.
+The \SHA-$3$ hash function is \Keccak-$p[b, 12 + 2\,l]$, where $w = b/25$ and $l = \log_{2}(w)$. The value of $b$ is $1600$, so we have $l = 6$. Thus the $f$ function in \SHA-$3$ is \Keccak-$p[1600, 24]$.
 
 The \Keccak{} team denotes the instances of \Keccak{} by $\Keccak[r,c]$, where $r=1600-c$ and the capacity $c$ is chosen to be twice the size of hash output $d$, to avoid generic attacks with expected cost below $2^d$. Thus the hash function with output length $d$ is denoted by 
 \begin{eqnarray}
@@ -167,6 +168,7 @@ The \Keccak{} team denotes the instances of \Keccak{} by $\Keccak[r,c]$, where $
 \begin{table}
 \begin{center}
 \caption{Parameters and Symbols used in \KECCAK{}}\label{tab3}
+\resizebox{\linewidth}{!}{
 \begin{tabular}{|c|l|}
 \hline
 Symbol & Description\\
@@ -184,6 +186,7 @@ $\theta,\rho,\pi,\chi,\iota$ & A round is comprised of these five step mappings 
 SPONGE$[f, $pad$, r]$ & Sponge function in which the underlying permutation function is $f$,\\ & padding rule is pad and rate is $r$ \\
 \hline
 \end{tabular}
+}
 \end{center}
 \end{table}
 
@@ -191,13 +194,14 @@ Table~\ref{tab3} shows various parameters and other variables related to \KECCAK
 
 \section{Sponge Construction}
 
-The sponge construction is an iterated construction for building a function SPONGE$[f, $pad$, r]$ with arbitrary input and output lengths which is built on three components : fixed length permutation function $f$ which operates on a state of fixed length $b$, pad - a padding rule and $r$ - a parameter called rate.
+The sponge construction is an iterated construction for a function SPONGE$[f, $pad$, r]$ with arbitrary input and output lengths which is built on three components: fixed length permutation function $f$ which operates on a state of fixed length $b$; pad - a padding rule; and $r$ 
+- a parameter called rate.
 
 The function produced from this construction is known as the sponge function which is denoted by SPONGE$[f, $pad$, r](N, d)$. It takes as input $N$ and $d$ where $N$ is the input bit string of any length and $d$ is the length of the output string.
 
 \section{\KECCAK{} Specification}
 
-\KECCAK{} is a family of sponge functions, the padding rule for \KECCAK{} is called multi-rate padding specified in section~\ref{padding}. \SHA-3 functions are defined by \KECCAK{}[$c$] which is a further smaller family of \KECCAK{} functions specified in section~\ref{keccakc}.
+\KECCAK{} is a family of sponge functions, the padding rule for \KECCAK{} is called multi-rate padding specified in section~\ref{padding}. \SHA-$3$ functions are defined by \KECCAK{}[$c$] which is a further smaller family of \KECCAK{} functions specified in section~\ref{keccakc}.
 
 \subsection{Padding Rule Specification}
 \label{padding}
@@ -210,22 +214,22 @@ The padding rule followed by \KECCAK{} is \textbf{pad10*1}. The asterisk in the 
 \KECCAK{} is a family of sponge functions with the \KECCAK{}-$p[b, 12 + 2l]$ permutation function, \textbf{pad10*1} as the padding rule and rate $r$, such that $r + c = b$. The family of sponge functions is parameterized for any width $b$ in $[25, 50,100,200,400,800,1600]$ with any rate $r$ and capacity $c$ such that $r + c = b$.
 
 When $b = 1600$, the \KECCAK{} family is denoted by \KECCAK{}[$c$], where $c$ is the capacity, so the rate depends on the value of the $c$. So, 
-\[\KECCAK{}[c] = \text{SPONGE}[\KECCAK{}\text{-}p[1600, 24], pad10*1, 1600-c]\]
+\[\KECCAK{}[c] = \text{SPONGE}[\KECCAK{}\text{-}p[1600, 24], \textbf{pad10*1}, 1600-c]\]
 For an input $N$ bit string and digest length $d$, the specification is 
-\[\KECCAK{}[c](N, d) = \text{SPONGE}[\KECCAK{}\text{-}p[1600, 24], pad10*1, 1600-c](N, d)\]
+\[\KECCAK{}[c](N, d) = \text{SPONGE}[\KECCAK{}\text{-}p[1600, 24], \textbf{pad10*1}, 1600-c](N, d)\]
 \section{SHA-3 Functions}
 
-The \SHA-3 hash family supports minimum four different output length $d \in \{224,256,384,512\}$. In the \Keccak-384, the size of $c = 2\cdot d = 768$ and the rate $r = 1600 - c = 1600 - 768 = 832= 13\cdot 64$.
+The \SHA-3 hash family supports minimum four different output length $d \in \{224,256,384,512\}$. In the \Keccak-384, the size of $c = 2\cdot d = 768$ and the rate $r = 1600 - c = 1600 - 768 = 832 = 13 \cdot 64$.
 
 \subsection{SHA-3 Hash Functions}
 
-There are $4$ \SHA-3 hash functions, which are defined from \KECCAK{}[$c$] specified in ~\ref{keccakc}. These functions specify the input message along with the length of the digest $d$.
+There are $4$ \SHA-$3$ hash functions, which are defined from \KECCAK{}[$c$] specified in ~\ref{keccakc}. These functions specify the input message along with the length of the digest $d$.
 
 \[
-   \text{ \SHA3-}d\;(M) = \KECCAK{}[c]\;(M||01 , d), \text{ where } c = 2*d
+   \text{ \SHA3-}d\;(M) = \KECCAK{}[c]\;(M||01 , d), \text{ where } c = 2 \cdot d
 \]
 
-Since there are two types of functions for \SHA-3 i.e. hash functions and Extendable-output functions. So, in order to differentiate the inputs to $\KECCAK{}[c]$ the message is appended with a suffix $01$ i.e. $M||01$.For each of four hash functions the capacity $c = 2\cdot d$. The four hash functions are \SHA3-224, \SHA3-256, \SHA3-384 and \SHA3-512
+Since there are two types of functions for \SHA-$3$ i.e. hash functions and Extendable-output functions. So, in order to differentiate the inputs to $\KECCAK{}[c]$ the message is appended with a suffix $01$ i.e. $M||01$. For each of four hash functions the capacity $c = 2\cdot d$. The four hash functions are \SHA3-$224$, \SHA3-$256$, \SHA3-$384$ and \SHA3-$512$.
 
 \subsection{SHA-3 Extendable-Output Functions}
 
@@ -239,9 +243,11 @@ The two \SHA-3 XOFs are \textsc{Shake}128, \textsc{Shake}256 which are defined f
 \]
 
 \section{Notations and Observations}
+In this section, we mention the notations and observations, which are used in the cryptanalysis of \KECCAK{}, presented in the subsequent chapters.
 
-In the following chapters, we study the cryptanalysis of \KECCAK{} which uses certain notations and observations, in this section, we study them.
-In the analysis, we will represent a state by the lanes. There are in total $5\times 5$ lanes. Each lane in a state will be represented by a variable which is a $64$-bit array. 
+In the analysis, we represent a \KECCAK{} state by the lanes. There are 
+ total $25:=5 \times 5$ lanes and each lane in a state is represented by a
+ variable which is a $64$-bit array. 
 A variable with a number in round bracket $"( . )"$ represents the shift of the bits in array towards MSB. A variable with a number in square bracket $"[ . ]"$ represents the bit value of the variable at that index. If there are multiple numbers in the square bracket then it represents the corresponding bit values.
 
 %% More details
@@ -388,7 +394,7 @@ If the value of $b_1 = 1$ then we obtain a new relation for $b_0$,
 b_0 = a_0 \oplus \left( 1 \oplus 1 \right) \cdot a_2 = a_0 \oplus \left( 0 \right) \cdot a_2 = a_0 \oplus 0 = a_0
 \end{align}
 
-So we observe that when output bit $b_1 = 1$ then we can say that $a_0 = b_0$. This observation is useful in cases where 2 consecutive output bits i.e. $b_i, \; b_{i+1}$ of step $\chi$ are known and $b_{i+1} = 1$, then we can imply that $a_i = b_i$.
+So we observe that when output bit $b_1 = 1$ then we can say that $a_0 = b_0$. This observation is useful in cases where $2$ consecutive output bits i.e. $b_i, \; b_{i+1}$ of step $\chi$ are known and $b_{i+1} = 1$, then we can imply that $a_i = b_i$.
 
 \item \label{ob5}\textbf{Observation 5:}
 \begin{figure}[H]
