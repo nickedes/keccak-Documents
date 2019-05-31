@@ -1,10 +1,10 @@
-\chapter{Preimage Attack on 2-Rounds of \KECCAK{}$\mathbf{[r:=800-384, c:=384]}$}
+\chapter{Preimage Attack on 2-Rounds of \KECCAK{}${[r:=800-384, c:=384]}$}
 
-In this chapter we present a new preimage attack on 2 rounds of \KECCAK{}$[r:=800-384, c:=384]$. We will show that the preimage can be found in $O(2^{44})$ time and $O(2^{42})$ memory for $2$ rounds of round-reduced \KECCAK{}$[r:=800-384, c:=384]$. It is a practical attack, and also it is an improvement over the existing best-known attack, for $2$ rounds of \KECCAK{}$[r:=800-384, c:=384]$, which takes $O(2^{64})$ time~\cite{guo2016linear}.
+In this chapter we present a new preimage attack on $2$ rounds of \KECCAK{}$[r:=800-384, c:=384]$. We will show that the preimage can be found in $O(2^{44})$ time and $O(2^{42})$ memory for $2$ rounds of round-reduced \KECCAK{}$[r:=800-384, c:=384]$. It is a practical attack, and also it is an improvement over the existing best-known attack, for $2$ rounds of \KECCAK{}$[r:=800-384, c:=384]$, which has a time complexity of $O(2^{64})$~\cite{guo2016linear}.
 
 \section{Description of the Attack}
 \label{2rkeccak800attack}
-The \KECCAK{}$[r:=800-384, c:=384]$ has rate $r = 800-384 = 416$, capacity $c = 384$ and outputs $192$ bits hash value, which is represented by the first $6$ lanes ($lanesize = 32$ bits) in the state obtained at the end of the squeezing phase. The diagram in the Figure~\ref{initial_sq} represents this state. In the hash state except the first $6$ lanes, we don't care about other lanes i.e. remaining $19$ lanes. We are interested in finding a preimage for which $6$ lanes of corresponding state matches. We will call this state as \emph{final state}.
+The \KECCAK{}$[r:=800-384, c:=384]$ has rate $r = 800-384 = 416$, capacity $c = 384$ and outputs a hash of $192$ bits, which is represented by the first $6$ lanes ($lanesize = 32$ bits) in the state obtained at the end of the squeezing phase. Figure~\ref{initial_sq} represents the hash state. In the hash state except the first $6$ lanes, we don't care about other lanes i.e. remaining $19$ lanes. We are interested in finding a preimage for which $6$ lanes of corresponding state matches. We will call this state as \emph{final state}.
 %------------------------------------------------
 \begin{figure}[ht]
 \begin{center}
@@ -39,7 +39,7 @@ nodes={inner sep=5pt,text width=0.5cm,align=center,minimum height=.5cm, draw,tex
 In this attack, we can ignore the {$\iota$} step mapping without the loss of generality, as it does not affect the procedure of the attack. However it should be taken into account while implementing the attack.
 
 We further note that the initial state, which is fed to \KECCAK-$f$ function, is the first message block which is represented by $25-2\cdot 6$ i.e., $13$ lanes. The remaining $12$ lanes are initially set to $0$. Pictorially, this state is represented by the diagram in the Figure~\ref{initial_state}. We call this state \emph{initial state}.
-Our aim is to find the values of $a_0, a_1, a_2$, $b_0, b_1, b_2$, $c_0, c_1, c_2$, $d_0, d_1$ and $e_0, e_1$ variables in the initial state which lead to a final state having first six lanes as $h_0, h_1, h_2,h_3, h_4$ and $h_5$. 
+Our aim is to find the values of $a_0, a_1, a_2$, $b_0, b_1, b_2$, $c_0, c_1, c_2$, $d_0, d_1$ and $e_0, e_1$ variables in the initial state which lead to a final state having first six lanes as $h_0,\;h_1,\;h_2,\;h_3,\;h_4$ and $h_5$. 
 
 We follow the basic idea of the attack, as given in the paper~\cite{naya2011practical}.
 We start the attack by setting variables in the initial state which ensures zero column parity. 
@@ -76,7 +76,7 @@ nodes={inner sep=5pt,text width=0.5cm,align=center,minimum height=.5cm, draw,tex
 
 This type of assignment to the initial state will make the {$\theta$} step mapping, an identity mapping. Even though we have put some restrictions to the initial state, we still find the input space of \KECCAK{}$[r:=800-384, c:=384]$ (with $1$ message block) large enough to ensure first $6$ lanes of output state, the given hash value. We explain the details of the analysis below. 
 
-Note that the output of attack is an assignment to the variables $a_0, a_1, a_2$, $b_0, b_1, b_2$, $c_0, c_1, c_2$, $d_0, d_1$ and $e_0, e_1$, which on applying 2 rounds of \KECCAK-$f$ gives the target hash value. Recall that we are mounting an attack on the $2$-Round \KECCAK{}$[r:=800-384, c:=384]$ (see the diagram in Figure~\ref{two_rnd}).
+Note that the output of attack is an assignment to the variables $a_0, a_1, a_2$, $b_0, b_1, b_2$, $c_0, c_1, c_2$, $d_0, d_1$ and $e_0, e_1$, which on applying $2$ rounds of \KECCAK-$f$ gives the target hash value. Recall that we are mounting an attack on the $2$ rounds of \KECCAK{}$[r:=800-384, c:=384]$ (see the diagram in Figure~\ref{two_rnd}).
 
 %\begin{figure}
 %\begin{center}
@@ -163,9 +163,7 @@ mycell/.list={(5,1,gray!50),(5,2,gray!50),(5,3,gray!50),(5,4,gray!50),(5,5,gray!
 \end{figure}
 %-------------------------------------
 The State~$2$, in the Figure~\ref{atk}, represents the state after $\pi \circ \rho \circ \theta$ is applied to the State~$1$. 
-The $\theta$-mapping becomes identity due to the condition
-(Equation~\ref{cond_state1}) imposed on the initial state. 
-The $\rho$ and $\pi$ mappings are, nevertheless, linear.
+The $\theta$-mapping becomes identity due to the condition (Equation~\ref{cond_state1}) imposed on the initial state. The $\rho$ and $\pi$ mappings are, nevertheless, linear.
 
 We are given with a hash value which is represented by first $6$ lanes in the State~$4$ [Figure~\ref{atk}]. It represents the final state ({\tt Round}~2) of \KECCAK{}$[r:=800-384, c:=384]$. The state can be inverted by applying $\chi^{-1} \circ \iota^{-1}$ mapping. The $\iota^{-1}$ is trivial and $\chi^{-1}$ can be computed using the Observations~\ref{ob1} and~\ref{ob2}. The first $7$ lanes of the output is $\{h_0',h_1',h_2',h_3',h_4',h_5',h_6',1\}$. We do not care about the remaining  lanes. 
 Then the mappings $\pi^{-1}$ and $\rho^{-1}$ are applied, which are very easy to compute, to get the State~$3$ [Figure~\ref{atk}]. 
@@ -239,12 +237,12 @@ This can be explained using the following example. If we take the first three sl
 \end{equation}
 None of these variables have any dependency despite the initial restriction, given by Equation~\ref{cond_state1}. So we have an input space of $33$ independent variables in a given $3$-slice. 
 
-Given a $3$-slice in the State~2, we need to apply $\theta \circ \iota \circ \chi$ mapping to get an output in the State~3. Since the $\theta$ mapping depends on the values of two slices; the current slice and one preceding it, we will only able to get the correct output for two slices. In the State~3, we have the values of $7$ lanes available with us. So for the two slices, we have $7\cdot 2 = 14$ fixed bit values.
-For each of $2^{33}$ assignments in a $3$-slice of the State~2, we compute the output of $\theta \circ \iota \circ \chi$ mapping and match it with the $14$ bit locations, the values of which are available in the State~3. If these $14$ bits are not matched then this solution does not help build a solution that matches all the $7*32$ bits present in State~3.
+Given a $3$-slice in the State~$2$, we need to apply $\theta \circ \iota \circ \chi$ mapping to get an output in the State~$3$. Since the $\theta$ mapping depends on the values of two slices; the current slice and one preceding it, we will only able to get the correct output for two slices. In the State~$3$, we have the values of $7$ lanes available with us. So for the two slices, we have $7\cdot 2 = 14$ fixed bit values.
+For each of $2^{33}$ assignments in a $3$-slice of the State~$2$, we compute the output of $\theta \circ \iota \circ \chi$ mapping and match it with the $14$ bit locations, the values of which are available in the State~$3$. If these $14$ bits are not matched then this solution does not help build a solution that matches all the $7 \cdot 32$ bits present in State~$3$.
 Thus for each $3$-slice, we get $2^{33-14} = 2^{19}$ solutions. This is repeated for $8$ consecutive $3$-slices, other than last $8$ slices. We use the fact that the time complexity of building the list is given by the size of the list as stated in Section~6.4 of~\cite{naya2011practical}. Thus the required time and memory complexity is of the order $8 \cdot 2^{19} = 2^{22}$.
 
 \subsection{Possible solutions for  6-slices}
-The possible solutions for a $6$-slice are obtained by merging the possible solutions of its constituents two $3$-slices. The variables restricted to the $6$-slice is again independent. This can be explained in the following manner. Consider the rotated lanes $a_0(0)$, $a_1(3)$ and $a_2(4)$. Since the lane variable $a_2$ is rotated by $4$ and $a_1$ is rotated by $3$, the corresponding bits of original lanes are just $1$ place apart. Therefore there are 2 bits repeated. Similarly $e_0$ is rotated by $27$ and $e_1$ is rotated by $20$, the corresponding bits are again $7$ places apart, so there is no repetitions of bits (remember initial condition $e_0 = e_1$). Since the difference between the rotation of related variables is more than $6$, the bit variables in a $6$-slice are mostly independent.
+The possible solutions for a $6$-slice are obtained by merging the possible solutions of its constituents two $3$-slices. The variables restricted to the $6$-slice is again independent. This can be explained in the following manner. Consider the rotated lanes $a_0(0)$, $a_1(3)$ and $a_2(4)$. Since the lane variable $a_2$ is rotated by $4$ and $a_1$ is rotated by $3$, the corresponding bits of original lanes are just $1$ place apart. Therefore there are $2$ bits repeated. Similarly $e_0$ is rotated by $27$ and $e_1$ is rotated by $20$, the corresponding bits are again $7$ places apart, so there is no repetitions of bits (remember initial condition $e_0 = e_1$). Since the difference between the rotation of related variables is more than $6$, the bit variables in a $6$-slice are mostly independent.
 So we have $2^{19\cdot 2 - 2}= 2^{36}$ possibilities for the bit variables in a $6$-slice. 
 
 We have already noted that the $\theta$-mapping cannot be computed for the first slice of a given $3$-slice. But, when we are merging two consecutive $3$-slices, $\theta$-mapping for the first slice of second $3$-slice group can be computed with the help of last slice of the first $3$-slice group and this will pose an additional restriction (of $7$ bits) for the input space of the $6$-slice.
@@ -373,27 +371,29 @@ In the long term, we hope the community will find this work useful and this will
 
 \chapter{Preimage Attacks on 3,4 rounds of \KECCAK{}}
 
-In this chapter, we will present some theoretical attacks for 3,4 rounds of \KECCAK{}, mainly on \KECCAK{}-$256$ and \KECCAK{}-$224$. These attacks use the techniques of linearization suggested by Guo \etal in ~\cite{guo2016linear}.
+In this chapter, we will present some theoretical attacks for $3,\;4$ rounds of \KECCAK{}, mainly on \KECCAK{}-$256$ and \KECCAK{}-$224$. These attacks use the techniques of linearization suggested by Guo \etal in ~\cite{guo2016linear}.
 
-\section{Preimage Attack on 3-round \KECCAK-256}
-In this section, we discuss a preimage attack for 3 rounds of \KECCAK-$256$. This attack draws motivation from the preimage attack on 2 round \Keccak-$256$ using the idea of linear structure as explained in section~\ref{section2RKeccak256}.
+\section{Preimage Attack on 3 rounds of \KECCAK-256}
+In this section, we discuss a preimage attack on $3$ rounds of \KECCAK-$256$. This attack draws motivation from the preimage attack on $2$ rounds of \Keccak-$256$ using the idea of linear structure as described in section~\ref{section2RKeccak256}.
 
-\Keccak-$256$ structure has capacity $c = 256\cdot2 = 512 = 8$ lanes and rate$ =  25 - 8 = 17$ lanes. We increase the number of variable lanes here as compared to \Keccak-$384$ structure, by keeping the lanes $(0,0), (0,1), (0,2), (0,3)$ and $(2,0), (2,1), (2,2)$ as variables in columns $0$ and $2$ respectively as seen in Figure~\ref{fig:3rkeccak256}. The yellow colored lanes represents the variables in the state, the white lanes represent any random constant and the gray lanes are the $0$ lanes. The orange colored lanes in the state $B$ represent quadratic variables in the Figure~\ref{fig:3rkeccak256}.
+\Keccak-$256$ structure has capacity $c = 256 \cdot 2 = 512 = 8$ lanes and rate$ =  25 - 8 = 17$ lanes. We increase the number of variable lanes for this attack as compared to structure used for attacking $2$ rounds of \Keccak-$256$ as shown in Figure~\ref{fig:2rkeccak256}, by keeping the lanes $(0,0), (0,1), (0,2), (0,3)$ and $(2,0), (2,1), (2,2)$ as variables in columns $0$ and $2$ respectively as shown in Figure~\ref{fig:3rkeccak256}. The yellow colored lanes represents the variables in the state, the white lanes represent any random constant and the gray lanes are the $0$ lanes. The orange colored lanes in the state $B$ represent non-linear terms in the Figure~\ref{fig:3rkeccak256}.
 
 \begin{figure}[H]
         \centering
-        \includegraphics[scale=0.7]{3Rkeccak256.pdf}
-        \caption{Preimage Attack on 3-round \KECCAK-$256$}
+        \resizebox{\linewidth}{!}{
+        \includegraphics[scale=0.6]{3Rkeccak256.pdf}
+    }
+        \caption{Preimage Attack on $3$-round \KECCAK-$256$}
         \label{fig:3rkeccak256}
 \end{figure}
 
 To prevent the spread of $\theta$ in the first round we need to add constraints :
 \begin{enumerate}
 \item \[
-        A[0,3] = A[0,0] \oplus A[0,1] \oplus A[0, 2] \oplus \alpha_0
+        A[0,0] = A[0,1] \oplus A[0,2] \oplus A[0,3] \oplus \alpha_0
     \]
 \item \[
-        A[2,2] = A[2,0] \oplus A[2,1] \oplus \alpha_2
+        A[2,0] = A[2,1] \oplus A[2,2] \oplus \alpha_2
     \]
 \end{enumerate}
 where, $\alpha_0, \alpha_2$ are random constants.
@@ -402,12 +402,12 @@ Due to the above constraints, the state remains linear and the variables do not 
 
 Hence after applying $\iota \circ \chi \circ \pi \circ \rho \circ \theta $ i.e. one round on the initial state, the output state remains linear.
 
-Moving on to the second round, the state is linear even after application of $\pi \circ \rho \circ \theta$, since these step mappings are linear and they don't introduce any non-linear terms. The input state (i.e. state $A$ as shown in Figure~\ref{fig:3rkeccak256}) to $\chi$ step of the second round is linear. Each row of state $A$ contains adjacent linear variables, therefore, we obtain quadratic variables in state $B$ after applying $\chi$ step.
+Moving on to the second round, the state is linear even after application of $\pi \circ \rho \circ \theta$, since these step mappings are linear and they don't introduce any non-linear terms. The input state (i.e. state $A$ as shown in Figure~\ref{fig:3rkeccak256}) to $\chi$ step of the second round is linear. Each row of state $A$ contains adjacent linear variables, therefore, we obtain non-linear terms in state $B$ after applying $\chi$ step. This is due to the fact that $\chi$ is a non-linear operation.
 
 % On the other hand, for \KECCAK-$256$ we have $d = 256 = 64*4$ i.e. hash value of only $4$ lanes. To make it easier to invert the $\chi$ step we can assume any random value as the value of the 5th lane in the hash state. but this will add more conditions to satisfy those assumed 64 bits for the 5-th lane.
 % We can directly apply $\iota^{-1}$ on the given hash and then we obtain $4$ hash lanes. Further, we can apply observation~\ref{ob3} to obtain $4$ linear equations on the bits input to $\chi$ for that row. By this, we obtain linear relations for the input state to the $\chi$ step.
 
-Then we can apply the same technique as mentioned in section 6.3 of \cite{guo2016linear} for this structure also. If we observe then, each bit of the inverted hash state is a sum of 11 bits of the output of the second round. Since $\pi \circ \rho$ just permutate the positions of these bits and $\iota$ just add a constant to the first lane, they do not increase the nonlinear terms, and thus we can ignore these step mappings in the last one and a half rounds. For \Keccak-$256$ the hash state comprises of 4 lanes. We can't directly apply $\chi^{-1} \circ \iota^{-1}$ on the hash state since we know only 4 out of 5 bits in row-$0$ of hash state. For this attack we can use observation~\ref{ob4} to set up equations such as $a_0 = b_0$ when $b_1 = 1$~\cite{guo2016linear}. Here $a_i,b_i$ denotes the input and output bit of $\chi$ respectively. 
+Then we can apply the same technique as mentioned in section~\ref{3rkeccak512attack} for this structure also. If we observe then, each bit of the inverted hash state is a sum of $11$ bits (due to $\theta$ step) of the output of the second round. Since $\pi \circ \rho$ just permutate the positions of these bits and $\iota$ just adds a constant to the first lane, they do not increase the nonlinear terms, and thus we can ignore these step mappings in the last one and a half rounds. For $3$ rounds of \Keccak-$256$ the hash state comprises of 4 lanes. We can't directly apply $\chi^{-1} \circ \iota^{-1}$ on the hash state since we know only $4$ out of $5$ bits in row-$0$ of hash state. For this attack we can use observation~\ref{ob4} to set up equations such as $a_0 = b_0$ when $b_1 = 1$~\cite{guo2016linear}. Here $a_i,b_i$ denotes the input and output bit of $\chi$ respectively. 
 
 Now, we aim to linearize $C[x][y][z]$ by guessing a few terms and then matching it with the bit obtained after applying $\chi^{-1}$ as explained above.
 
@@ -423,18 +423,18 @@ Where,
 \[
     a = A[x][y][z], b = A[x + 1][y][z], c = A[x + 2][y][z], d = A[x - 1][y][z]
 \]
-Guessing $b$ and other 9 terms would make $C[x][y][z]$ linear. Hence, We linearize $C[x][y][z]$ by guessing these 10 bits. We obtain 11 = 1 + 10 linear equations and match 1 bit of the hash value corresponding to $C[x][y][z]$. So, if we have $t$ variables in our state, then we can match $t/11$ bits of the hash.
+Guessing $b$ and other $9$ terms would make $C[x][y][z]$ linear. Hence, We linearize $C[x][y][z]$ by guessing these $10$ bits. We obtain $11 = 1 + 10$ linear equations and match $1$ bit of the hash value corresponding to $C[x][y][z]$. So, if we have $t$ variables in our state, then we can match $t/11$ bits of the hash.
 
-For \Keccak-$256$, we started with $7$ lanes variable states in the initial state. After applying conditions to keep $\theta$ as constant we are left with $7 - 2 = 5$ lane variables. Hence $t = 5*64 = 320$ variables.
-So the no. of matched bits of the hash are $t/11 = 320/11 = 29$, with this we have a complexity gain over brute-force of $2^{29}$.
+For \Keccak-$256$, we started with $7$ lanes variable states in the initial state. After applying conditions to keep $\theta$ as constant we are left with $7 - 2 = 5$ lane variables. Hence $t = 5 \cdot 64 = 320$ variables.
+Therefore, the number of matched bits of the hash are $t/11 = 320/11 = 29$, with this we have a complexity gain over brute-force of $2^{29}$.
 
 Attack complexity $ = 2^{256 - 29} = 2^{227}$.
 
-So the attack complexity for 3-round \KECCAK{}-$256$ is $2^{227}$.
+So the attack complexity for $3$ rounds of \KECCAK{}-$256$ is $2^{227}$.
 
-\section{Preimage attack on 3-round \KECCAK-224}
+\section{Preimage Attack on 3 rounds of \KECCAK-224}
 
-In this section, we discuss a preimage attack for 3-round \KECCAK{}-$224$ where we try to keep the first 2 rounds linear and then build a system of 128 linear equations on 128 variables from the 224-bit hash.
+In this section, we discuss a preimage attack for $3$ rounds of \KECCAK{}-$224$ where we try to keep the first $2$ rounds linear and then build a system of $128$ linear equations on $128$ variables from the $224$-bit hash.
 
 \KECCAK{}-$224$ has hash length $d=224$, capacity $c=448$ and rate $r = 1152 = 18$ lanes. We start with the initial state as shown in Figure~\ref{fig:3rkeccak224} where the yellow lanes represent linear variables, blue lanes represent lanes containing all bits as $1$ and white lanes represent lanes containing all bits as $0$. To prevent the spread of linear variables by $\theta$ step we add the following constraints:
 
@@ -448,26 +448,30 @@ In this section, we discuss a preimage attack for 3-round \KECCAK{}-$224$ where 
 \end{enumerate}
 
 \begin{figure}[H]
+	\resizebox{\linewidth}{!}{
 	\includegraphics[scale=0.7]{3R,Keccak-224.pdf}
-	\caption{Preimage attack on 3-round \KECCAK-$224$}
+}
+	\caption{Preimage Attack on 3-round \KECCAK-$224$}
 	\label{fig:3rkeccak224}
 \end{figure}
 
 Due to the above constraints, after $\theta$ step the variables in the column $0$ and $2$ doesn't spread. Moreover, the parity of column-$1$ and column-$3$ is $1$ which causes the increase in the number of lanes containing all bits as $1$ after $\theta$ as shown in the second state of Figure~\ref{fig:3rkeccak224}. After applying $\pi \circ \rho$ on the second state, the position of lanes is permuted as shown in the third state. Further, on applying $\iota \circ \chi$ we obtain the fourth state, we observe that there is no increase in the number of linear terms in this state this is primarily due to the values of the rows input to $\chi$. With this, the first round is complete and the output state i.e. fourth state is still linear.
 
-We now proceed with the second round, since there are $4$ columns in the fourth state with linear terms of Figure~\ref{fig:3rkeccak224}. These linear variables will spread after the $\theta$ step, to prevent this we constraint the parity of these $4$ columns to be random constants. After applying the $\theta$ step we obtain the fifth state where the yellow lanes represent the linear variables and gray lanes represent constants. On the application of $\pi \circ \rho$ on the fifth state, the position of all lanes is permuted. Now after applying $\iota \circ \chi$ on the sixth state we observe that all the lanes in the seventh state contain linear terms, this is primarily due to atmost 2 linear terms in some rows of the state input to $\chi$ as explained in observation~\ref{ob5}. Due to this the complete row after applying $\chi$ contains linear terms. With this, the second round is complete and the output state i.e. seventh state where all lanes are linear as shown in~\ref{fig:3rkeccak224}.
+We now proceed with the second round, since there are $4$ columns in the fourth state with linear terms in Figure~\ref{fig:3rkeccak224}. These linear variables will spread after the $\theta$ step of second round, to prevent this we constraint the parity of these $4$ columns to be random constants. After applying the $\theta$ step we obtain the fifth state where the yellow lanes represent the linear variables and gray lanes represent constants. On the application of $\pi \circ \rho$ on the fifth state, the position of all lanes is permuted. Now after applying $\iota \circ \chi$ on the sixth state we observe that all the lanes in the seventh state contain linear terms, this is primarily due to atmost 2 linear terms in some rows of the state input to $\chi$ as explained in observation~\ref{ob5}. Due to this the complete row after applying $\chi$ contains linear terms. With this, the second round is complete and the output state i.e. seventh state where all lanes are linear as shown in~\ref{fig:3rkeccak224}.
 
-Further, we start with the third round. After applying $\pi \circ \rho \circ \theta$ steps on the seventh state we obtain state $A$ which is linear as all these steps are linear mappings. For \Keccak{}-$224$, the hash state comprises of $3$ lanes and $32$ bits in the 4th lane. We can't directly apply $\chi^{-1} \circ \iota^{-1}$ on the hash state since we don't have value of complete row. For this attack we can use observation~\ref{ob3} for the first 32 slices of the hash state and obtain 4 linear equations on the state $A$ i.e. input state to the $\chi$ step of third round. In the initial state, we have $8$ yellow lanes and after applying conditions for the first and second rounds of $\theta$ we are left with $8 - 2 - 4 = 2$ variable lanes. Therefore, the size of the linear structure is $2$ lanes = $128$ bits. All the bits in state $A$ are expressed in the form of these $128$ variables, we setup $128$ linear equations on $128$ variables from a $224$-bit hash value. We expect a complexity gain over bruteforce of $2^{128}$ and then can expect a correct preimage in $2^{224 - 128} = 2^{96}$ tries. The complexity of this attack is $O(2^{96})$.
+Further, we start with the third round. After applying $\pi \circ \rho \circ \theta$ steps on the seventh state we obtain state $A$ which is linear as all these steps are linear mappings. For \Keccak{}-$224$, the hash state comprises of $3$ lanes and $32$ bits in the 4th lane as shown in green lanes in~\ref{fig:3rkeccak224}. We can't directly apply $\chi^{-1} \circ \iota^{-1}$ on the hash state since we don't have value of complete row. For this attack we can use observation~\ref{ob3} for the first $32$ slices of the hash state and obtain $4$ linear equations for each slice on the state $A$ i.e. input state to the $\chi$ step of third round. In the initial state, we have $8$ yellow lanes and after applying conditions for the first and second rounds of $\theta$ we are left with $8 - 2 - 4 = 2$ variable lanes. Therefore, the size of the linear structure is $2$ lanes = $128$ bits. All the bits in state $A$ are expressed in the form of these $128$ variables, we setup $128$ linear equations on $128$ variables from a $224$-bit hash value. We expect a complexity gain over bruteforce of $2^{128}$ and then can expect a correct preimage in $2^{224 - 128} = 2^{96}$ tries. The complexity of this attack is $O(2^{96})$.
 
-\section{Preimage attack on 4-round \KECCAK-224}
+\section{Preimage Attack on 4 rounds of \KECCAK-224}
     
-In this section, we discuss a preimage attack for 4-round \KECCAK{}-$224$ where we try to keep the first 2 rounds linear and then linearize the initial state of the 4th round to be able to match some bits of the hash.
+In this section, we discuss a preimage attack for $4$ rounds of \KECCAK{}-$224$ where we try to keep the first $2$ rounds linear and then linearize the initial state of the $4$th round to be able to match some bits of the hash.
 
 We start with the initial state as shown in Figure~\ref{fig:keccak224} where the yellow lanes represent linear variables, blue lanes represent lanes containing all bits as $1$ and white lanes represent lanes containing all bits as $0$. To prevent the spread of linear variables by $\theta$ step we add the following constraints:
 
 \begin{figure}[H]
+	\resizebox{\linewidth}{!}{
     \includegraphics[scale=0.7]{4R,Keccak-224.pdf}
-    \caption{Preimage attack on 4-round \KECCAK-$224$}
+}
+    \caption{Preimage Attack on 4-round \KECCAK-$224$}
     \label{fig:keccak224}
 \end{figure}
 
@@ -482,13 +486,13 @@ We start with the initial state as shown in Figure~\ref{fig:keccak224} where the
     \]
 \end{enumerate}
 
-Due to the above constraints, after $\theta$ step the variables in the column $0$ and $2$ doesn't spread. Moreover, the parity of column-$1$ and column-$3$ is $1$ which causes the increase in the number of lanes containing all bits as $1$ after $\theta$ as shown in the second state of Figure~\ref{fig:keccak224}. After applying $\pi \circ \rho$ on the second state, the position of lanes is permuted as shown in the third state. Further on applying $\iota \circ \chi$ we obtain the fourth state, we observe that there is no increase in the number of linear terms this is due to the values of the rows input to $\chi$ as explained in observation~\ref{ob5}. With this, the first round is complete and the output state i.e. fourth state is still linear.
+Due to the above constraints, after $\theta$ step the variables in the column $0$ and $2$ doesn't spread. Moreover, the parity of column-$1$ and column-$3$ is $1$ which causes the increase in the number of lanes containing all bits as $1$ after $\theta$ as shown in the second state of Figure~\ref{fig:keccak224}. After applying $\pi \circ \rho$ on the second state, the position of lanes is permuted as shown in the third state. Further on applying $\iota \circ \chi$ we obtain the fourth state, we observe that there is no increase in the number of linear terms. This is due to the values of the rows input to $\chi$ of first round. With this, the first round is complete and the output state i.e. fourth state is still linear.
 
 We now proceed with the second round, since there are $4$ columns in the fourth state with linear terms of Figure~\ref{fig:keccak224}. These linear variables will spread after the $\theta$ step, to prevent this we constraint the parity of these $4$ columns to be random constants. After applying the $\theta$ step we obtain the fifth state where the yellow lanes represent the linear variables and gray lanes represent constants. On the application of $\pi \circ \rho$ on the fifth state, the position of all lanes is permuted. Now after applying $\iota \circ \chi$ on the sixth state we observe that almost all the lanes state in the seventh state contain linear terms, this is primarily due to 2 linear terms in few rows in the state input to $\chi$ as explained in observation~\ref{ob5}. Due to this the complete row after applying $\chi$ contains linear terms. With this, the second round is complete and the output state i.e. seventh state where all lanes are linear as shown in~\ref{fig:keccak224}.
 
-Further, we start with the third round. After applying $\theta$ step on the seventh state the state remains linear as $\theta$ is a linear operation. After applying $\pi \circ \rho$ we obtain state $A$ which is linear as $\pi$ and $\rho$ steps are linear step mappings. In state $A$ each row contains linear variables, and since $\chi$ is a non-linear operation so if two adjacent bits are linear in a row then the output state will contain quadratic variables after applying $\chi$. So on applying step $\chi$ to state $A$, we obtain state $B$ where orange lanes represent quadratic variables as shown in ~\ref{fig:keccak224}.
+Further, we start with the third round. After applying $\theta$ step on the seventh state the state remains linear as $\theta$ is a linear operation. After applying $\pi \circ \rho$ we obtain state $A$ which is linear as $\pi$ and $\rho$ steps are linear step mappings. In state $A$ each row contains linear variables, and since $\chi$ is a non-linear operation so if two adjacent bits are linear in a row then the output state will contain non-linear terms after applying $\chi$. So on applying step $\chi$ to state $A$, we obtain state $B$ where orange lanes represent non-linear as shown in ~\ref{fig:keccak224}.
 
-If we carefully observe then the input to step $\chi$ of the third round is linear i.e. state $A$ and also that each bit of the input state of the $\chi$ step of the fourth round is a sum of 11 bits of the output state of the third round. Since $\pi \circ \rho$ just permutate the positions of these bits and $\iota$ just adds a constant to the first lane so they don't increase the nonlinear terms. Therefore, we ignore these step mappings in the last one and a half rounds.
+If we carefully observe then the input to step $\chi$ of the third round is linear i.e. state $A$ and also that each bit of the input state of the $\chi$ step of the fourth round is a sum of $11$ bits (due to $\theta$ step) of the output state of the third round. Since $\pi \circ \rho$ just permutate the positions of these bits and $\iota$ just adds a constant to the first lane so they don't increase the nonlinear terms. Therefore, we ignore these step mappings in the last one and a half rounds.
 
 For \Keccak{}-$224$ the hash state comprises of 3 lanes and 32 bits in the 4th lane. We can't directly apply $\chi^{-1} \circ \iota^{-1}$ on the hash state since we don't have value of complete row. For this attack we can use observation~\ref{ob4} to set up equations such as $a_0 = b_0$ when $b_1 = 1$~\cite{guo2016linear}. Here $a_i, \; b_i$ denotes the input and output bit of $\chi$ respectively.
 
@@ -506,7 +510,7 @@ a = A[x][y][z], b = A[x + 1][y][z], c = A[x + 2][y][z], d = A[x - 1][y][z]
 \]
 Guessing $b$ and other 9 terms would make $C[x][y][z]$ linear. Hence, We linearize $C[x][y][z]$ by guessing these 10 bits. We obtain 11 = 1 + 10 linear equations and match 1 bit of the hash value corresponding to $C[x][y][z]$. So, if we have $t$ variables in our state, then we can match $t/11$ bits of the hash.
 
-For \Keccak-$224$, we started with $8$ variable lanes in the initial state. After applying conditions to keep $\theta$ as constant in the first and the second round we are left with $8 - 2 - 4 = 2$ variable lane. Hence the number of variables $t = 2*64 = 128$. From these variables we can match atmost $t/11 = 128/11 = 11$ bits. 
+For \Keccak-$224$, we started with $8$ variable lanes in the initial state. After applying conditions to keep $\theta$ as constant in the first and the second round we are left with $8 - 2 - 4 = 2$ variable lane. Hence the number of variables $t = 2\cdot 64 = 128$. From these variables we can match atmost $t/11 = 128/11 = 11$ bits. 
 With this, we have a complexity gain over the brute-force of $2^{11}$.
 
 Attack complexity $ = 2^{224 - 11} = 2^{213}$.
