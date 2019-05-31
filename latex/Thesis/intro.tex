@@ -3,103 +3,122 @@
 
 \section{Hash Functions}
 
-A hash function $H:\{0,1\}^* \rightarrow \{0,1\}^n $ is a deterministic function which compresses an input of arbitrary size to a fixed size output. The cryptographic applications of a hash function further require it to satisfy the following conditions.
+A hash function $H:\{0,1\}^* \rightarrow \{0,1\}^n $ is a deterministic
+function which takes as input a arbitrary size string and outputs a fixed size string. The cryptographic applications of a hash function further require it to satisfy the following conditions.
 
-\begin{itemize}\setlength\itemindent{20pt}
-    \item Efficiency : Given $m$, it is easy to compute $H(m)$.
-    \item Preimage Resistance : Given $H(m)$, it is computationally hard to find $m$.
-    \item Second-preimage Resistance : Given $m$, it is computationally hard to find $m^\prime$ such that $H(m)=H(m^\prime)$.
-    \item Collision Resistance : It is computationally hard to find $m$ and $m^\prime$ such that $H(m)=H(m^\prime)$.
+\begin{itemize}\setlength\itemindent{10pt}
+    \item {\bf Efficiency}: Given $m$, it is easy to compute $H(m)$.
+    \item {\bf Preimage Resistance}: Given $H(m)$, it is computationally hard to find $m$.
+    \item {\bf Second-preimage Resistance}: Given $m$, it is computationally hard to find $m^\prime$ such that $H(m)=H(m^\prime)$.
+    \item {\bf Collision Resistance}: It is computationally hard to find $m$ and $m^\prime$ such that $H(m)=H(m^\prime)$.
 \end{itemize}
 
-The hash function having the above properties are referred to as cryptographic hash functions. Cryptographic hash functions are an important component of modern cryptography. The input of such a function is generally called a message i.e. $m$ and the output i.e. $H(m)$ is often referred to as digest or fingerprint of the message $m$. The cryptographic hash function is also sometimes referred to as a secure hash function. From now on, even if we refer a hash function, we always mean a cryptographic hash function.
+The hash functions having the above properties are referred to as cryptographic hash functions. Cryptographic hash functions are an important component of modern cryptography. The input of such a function is generally called a message i.e. $m$ and the output, i.e. $H(m)$, is often referred as digest or fingerprint of the message $m$. 
+A cryptographic hash function is also sometimes called as a secure hash function. From now on, even if we refer a hash function, we always mean a cryptographic hash function.
 
 \section{Some Applications of Hash functions}
 
-Since a hash function maps data of any size to a data of fixed size and is pre-image and collision resistant, it has found many applications in the field of computer science. A few very basic applications of hash functions are the following:
+As a hash function maps data of any size to a data of fixed size and which is pre-image and collision resistant, it has found many applications in the field of computer science. A few very basic applications of hash functions are the following:
 \begin{enumerate}
     \item Computing a digest from a big file and then using the digest later to ensure that there are no changes to the file. For example, in the Linux release servers along with the iso files, we often see \SHA256SUM and \SHA1SUM text files. These text files contain the digest of iso files and are meant to check if the file is not altered en route.
     
-    \item The Hash functions are also used for storing passwords. Secure applications don't store the passwords directly in the database but the hash of the password is stored in the database. The hash stored in the database is used in the future for comparing with the hash of the password entered by the user and then appropriate action is taken on a successful match. In the case of a security breach, the attacker does get to know the digests of passwords only, not the actual passwords. Deriving password (Preimage) from the hash is difficult due to the pre-image resistance.
+    \item Hash functions are also used for storing passwords. It 
+    is often convenient to use same password for many accounts/applications but this has added risk that if the password gets compromised for one application, it is compromised for all.
+    A quick remedy is to let applications  not to store password
+   for authentication but the hash of it in their database. The hash stored in the database is used in the future for comparing with the hash of the password entered by the user and then appropriate action is taken on a successful match. In the case of a security breach, the attacker does get to know the digests of the password only, not the actual password. Deriving password (preimage) from the hash is difficult due to the pre-image resistance.
 \end{enumerate}
 
-Apart from the above very basic applications, the hash functions are frequently used in cryptography. /it has now become an integral component of cryptography. It is used in many cryptographic applications such as Authentication, Non-repudiation, Digital Signatures, and Integrity, etc.. The main motivation behind designing a hash function is that it should ideally behave like a random oracle. A random oracle is described as a black box, which when receives a new input it generates a uniform and random output and stores this output corresponding to the input, on receiving an old input it just returns the stored output generated previously. So a random oracle is like a hash function such that we know nothing about the output of random oracle for a message $m$ until we use $m$ as input to the oracle and see its output. Therefore, it's difficult to build a random oracle and there is no proof that it exists. Hence the candidates for random oracle are hash functions, though hash functions can be secure to preimage, collision attacks this doesn't mean that they are a random oracle. It has been shown using length extension attacks that hash functions like \SHA-256, \SHA-512 are not random oracle but are secure hash functions, as they can guess a hash of message without even trying that message. Protocols or modes of hash functions are proven secure in the random oracle model, i.e. when the hash function is assumed to be a random oracle.
+Apart from the above very basic applications, the hash functions are frequently used in cryptography. It has now become an integral component of modern cryptography. It is used in cryptographic applications such as Authentication, Digital Signatures and Integrity etc.. Designing a practical cryptographic hash function is a challenging task. The main motivation behind designing a hash function is that it should ideally behave like a random oracle. A random oracle is described as a black box, which when receives a new input it generates a uniform and random output and stores this output corresponding to the input, on receiving an old input it just returns the stored output generated previously. So a random oracle is like a hash function such that we know nothing about the output of random oracle for a message $m$ until we use $m$ as input to the oracle and see its output. Therefore, it's difficult to build a random oracle and there is no proof that it exists. Hence the candidates for random oracle are hash functions, though hash functions can be secure to preimage, collision attacks this doesn't mean that they are random oracle. It has been shown using length extension attacks that hash functions like \SHA-$256$, \SHA-$512$ are not random oracle but are secure hash functions, as they can guess a hash of message without even trying that message. Protocols or modes of hash functions are proven secure in the random oracle model, i.e. when the hash function is assumed to be a random oracle.
 
 \section{History of Hash functions}
 
-There are many popular families of hash functions like MD (Message Digest) and \SHA(Secure Hash Algorithm). The MD family of hash functions comprises of MD4, MD5, etc.. Similarly \SHA{} family of hash functions comprises of \SHA-0, \SHA-1, \SHA-2, and \SHA-3.
-Though \SHA-3 belongs to the same family as \SHA-2, yet it has a different structure and construction.
+There are two main families of hash functions namely MD (Message Digest) and \SHA (Secure Hash Algorithm). The MD family of hash functions comprises of MD$4$, MD$5$ etc.. Similarly \SHA{} family of hash functions consists of \SHA-$0$, \SHA-$1$, \SHA-$2$, and \SHA-$3$.
+Though \SHA-$3$ belongs to the same family as \SHA-$2$, yet it has a different structure and construction.
 
-Most of these popular hash functions like MD5, \SHA-2 follow the Merkle-Damgard construction~\cite{merkle}. As seen in figure:~\ref{MDConstruction}.
-
+Most of these popular hash functions like MD$5$, \SHA-$2$ follow the Merkle-Damgard construction~\cite{merkle}, shown in Figure~\ref{MDConstruction}.
+%
 \begin{figure}
     \centering
+    \resizebox{\linewidth}{!}{
     \includegraphics[scale=0.5]{MDConstruction.png}
+}
     \caption{Merkle Damgard Construction~\cite{MDamgard}}
     \label{MDConstruction}
 \end{figure}
+%
+%So, how does a Hash function compress data of arbitrary any size to a fixed length output? 
+%
+In this construction, it uses a compression function \textbf{f} which takes as input a fixed-length data and generates a data of fixed-length $n$ which is shorter than the length of input data. Let the input data size be $b$, greater than $n$, then the function \textbf{f} accepts two inputs such that it is of the form $\big\{0,1\big\}^n \times \big\{0,1\big\}^{b - n} \rightarrow \big\{0,1\big\}^n$. To hash a message $M$ of size $N$ bits, it is divided into message blocks of size $b-n$, i.e. block size, and then each block is processed by \textbf{f} one by one in the same order the message is broken into blocks. So a hash function $H$ just iterates a compression function \textbf{f}. The construction is as follows, the algorithm starts with a $IV$ i.e. a initialization vector (initial value) of size $n$. The value of $IV$ depends on the algorithm and implementation. Also, the input data message is divided into blocks of fixed size $b-n$. The compression function \textbf{f} will compress each message block combined with the output of the previous block and then produce the output for the next block. When \textbf{f} is applied to the first message block then instead of input from the previous block, $IV$ is used. The final block is padded based on pad function so that its size is the same as block size after padding and then \textbf{f} is applied on it. The output of the final block is the hash of the complete data. Many popular hash functions use this construction as their main design paradigm. 
 
-So, how does a Hash function compress data of arbitrary any size to a fixed length output? In this construction, it uses a compression function \textbf{f} which takes as input a fixed-length data and generates a data of fixed-length $n$ which is shorter than the length of input data. If the input data size $b$ is greater than $n$, then the function \textbf{f} accepts two inputs such that it is of the form $\big\{0,1\big\}^n \times \big\{0,1\big\}^{b - n} \rightarrow \big\{0,1\big\}^n$. To hash a message $M$ of size $N$ bits, it is divided into message blocks of size $b-n$ i.e. block size and then each block is processed by \textbf{f} one by one in the order the message is broken into blocks. So a hash function $H$ just iterates a compression function \textbf{f}. The construction is as follows, the algorithm starts with a $IV$ i.e. initialization vector (initial value) of size $n$. The value of $IV$ depends on the algorithm and implementation. Also, the input data message is divided into blocks of fixed size $b-n$.
-The compression function \textbf{f} will compress each message block combined with the output of the previous block and then produce the output for the next block. When \textbf{f} is applied to the first message block then instead of input from the previous block, $IV$ is used. The final block is padded based on pad function so that its size is the same as block size after padding and then \textbf{f} is applied on it. The output of the final block is the hash of the complete data. Many popular hash functions use this construction as the main design. 
-
-MD5, \SHA-1, \SHA-2 are very popular hash functions and are widely used. The cryptanalysis results on these hash functions namely MD4, MD5, \SHA-1 was a shock for the National Institute of Standards and Technology (NIST). In the year 2005, the first practical collision attack on MD5 was published by Xiaoyun Wang and Hongbo Yu~\cite{wang2005break}. They could find a collision for MD5 within an hour by applying a differential attack, the same attack could also be applied to other hash functions like MD4 and obtain a collision. The attack starts with a zero initial difference between two messages and proceeds further by applying the round function to it for every round. To get a final difference between messages as zero, they added certain conditions that the messages should satisfy at those particular steps. On satisfying those conditions and proceeding with the rounds it leads to a zero output difference with an overall probability of $2^{-38}$. So the overall time complexity of finding $(M_0, M^\prime_0)$ such that MD5$(M_0) = $MD5$(M^\prime_0)$ doesn't exceed the running time $2^{39}$ MD5 operations. Further, in the same year, a practical collision attack on \SHA-0 was published in~\cite{wang2005efficient}, and the first collision attack on \SHA-1 was also published~\cite{wang2005finding}. An interesting observation is that Xiaoyun Wang's involvement in all these attacks. Due to all these cryptanalysis, NIST was worried about the security of hash functions, though by that time NIST had started using the \SHA-2 family of hash functions. But since \SHA-2 was also based on Merkle-Damgard construction like \SHA-0, \SHA-1, so there was a possibility that it could also be attacked in a similar way like those attacks published in the year 2005. Due to all these concerns in 2006 NIST held a Cryptographic Hash Workshop where it decided to hold a competition for the next secure hash function.
+MD$5$, \SHA-$1$, \SHA-$2$ are very popular hash functions and are widely used. The cryptanalysis results on these hash functions namely MD$4$, MD$5$, \SHA-$1$ was a big surprise for the National Institute of Standards and Technology (NIST). In the year $2005$, the first practical collision attack on MD$5$ was published by Xiaoyun Wang and Hongbo Yu~\cite{wang2005break}. They could find a collision for MD$5$ within an hour by applying a differential attack, the same attack could also be applied to other hash functions like MD$4$ and obtain a collision. The attack starts with a zero initial difference between two messages and proceeds further by applying the round function to it for every round. To get a final difference between messages as zero, they added certain conditions that the messages should satisfy at those particular steps. On satisfying those conditions and proceeding with the rounds it leads to a zero output difference with an overall probability of $2^{-38}$. So the overall time complexity of finding $(M_0, M^\prime_0)$ such that MD$5(M_0) = $MD$5(M^\prime_0)$ doesn't exceed the running time $2^{39}$ MD$5$ operations. Further, in the same year, a practical collision attack on \SHA-$0$ was published in~\cite{wang2005efficient}, and the first collision attack on \SHA-$1$ was also published~\cite{wang2005finding}.
+ An interesting observation is the involvement of Xiaoyun Wang in all of them. Due to all these cryptanalysis, NIST was worried about the security of hash functions, though by that time NIST had started using the \SHA-$2$ family of hash functions. But as \SHA-$2$ was also based on Merkle-Damgard construction like \SHA-$0$, \SHA-$1$, so there was a possibility that it could also be attacked in a similar fashion. With these things in mind, in the year $2006$ NIST held a Cryptographic Hash Workshop where it decided to hold a competition for the next secure hash function.
 
 % Keccak Intro start
-In 2008, U.S. NIST announced a competition for the Secure Hash Algorithm-3 (\SHA-3). A total of $64$ proposals were submitted to the competition. In the year $2012$, NIST announced \KECCAK{} as the winner of the competition among BLAKE~\cite{aumasson2008sha}, Gr\o stl~\cite{gauravaram2011s}, JH~\cite{wu2011hash}, \KECCAK{}~\cite{bertonikeccak}, Skein~\cite{fergusonskein}. The \KECCAK{} hash function was designed by Guido Bertoni, Joan Daemen, Micha\"{e}l Peeters and Gilles Van Assche~\cite{bertoni2009keccak}. Since $2015$, \KECCAK{} has been standardized as \SHA-$3$ by the NIST.
+In $2008$, NIST announced a competition for the Secure Hash Algorithm-$3$ (\SHA-$3$). A total of $64$ proposals were submitted to the competition. They were rigorously analysed by the NIST and rest of academic community.
+ In the year $2012$, NIST announced \KECCAK{} as the winner of the competition among the five finalists viz. BLAKE~\cite{aumasson2008sha}, Gr\o stl~\cite{gauravaram2011s}, JH~\cite{wu2011hash}, \KECCAK{}~\cite{bertonikeccak} and Skein~\cite{fergusonskein}. The \KECCAK{} hash function was designed by Guido Bertoni, Joan Daemen, Micha\"{e}l Peeters and Gilles Van Assche~\cite{bertoni2009keccak}. Since $2015$, \KECCAK{} has been standardized as \SHA-$3$ by the NIST.
 
-\section{\KECCAK{}}
+\section{\mbox{\KECCAK{}}}
 
-The \KECCAK{} hash function is based on sponge construction~\cite{bertoni2011cryptographic} which is different from previous \SHA{} standards. \SHA-3 family of hash functions is based on \Keccak{}. The \SHA-3 family provides four hash functions and two extendable-output functions. These functions are designed to provide resistance against preimage attacks, collision attacks, and second-preimage attacks.
+The \KECCAK{} hash function is based on sponge construction~\cite{bertoni2011cryptographic} which is different from previous \SHA{} standards. \SHA-$3$ family of hash functions is based on \Keccak{}. The \SHA-$3$ family provides four hash functions and two extendable-output functions. These functions are designed to provide resistance against preimage attacks, collision attacks, and second-preimage attacks.
 
 \Keccak{}'s excellent resistance towards crypt-analytic attacks is one of the main reasons for its selection by NIST. The algorithm is a good mixture of linear as well as non-linear operations.
 
-Intensive cryptanalysis of \KECCAK{} is done since its inception ~\cite{bernstein2010second}~\cite{naya2011practical}~\cite{dinur2012new}~\cite{dinur2013collision}~\cite{morawiecki2013sat}
-~\cite{dinur2014improved}~\cite{chang20141st}~\cite{guo2016linear}~\cite{qiao2017new}~\cite{song2017non}~\cite{kumar2018cryptanalysis}. In $2011$, Naya Plasencia \etal gave various attacks for \KECCAK{}, one of them was a practical (second) preimage attack on 2 rounds of \KECCAK-$256$ and other was . In $2012$, Dinur \etal gave a practical collision attack for $4$ rounds of \KECCAK-$224$ and \KECCAK-$256$ using differential and algebraic techniques~\cite{dinur2012new} and also provided attacks for $3$ rounds for \KECCAK-$384$ and \KECCAK-$512$. They further gave collision attacks in $2013$ for $5$ rounds of \KECCAK-$256$ using internal differential techniques~\cite{dinur2013collision}. In $2016$, using linear structures, Guo \etal proposed preimage attacks for $2$ and $3$ rounds of \KECCAK-$224$, \KECCAK-$256$, \KECCAK-$384$, \KECCAK-$512$ and for $4$ rounds in case of smaller hash lengths~\cite{guo2016linear}. Recently, in the year $2017$, Kumar \etal gave efficient preimage and collision attacks for $1$ round of \KECCAK~\cite{kumar2018cryptanalysis}. In $2019$, Ting Li and Yao Sun proposed practical preimage attack for $3$ rounds of \KECCAK-$224$ with complexity $2^{39.39}$ and improved theoretical preimage attacks for $4$ rounds \KECCAK-$224$, \KECCAK-$256$~\cite{lipreimage}. They used two blocks of message to improve over theoretical attacks for $3$ rounds \KECCAK-$224$. There are hardly any attack for the full round \KECCAK{}, but there are many attacks for reduced round \Keccak{}. These attacks on round reduced versions of \KECCAK{} are still far from affecting the security of 24 rounds of \KECCAK{}. Some of the important results are shown in the Table~\ref{tab1} and Table~\ref{tab2}.
+\KECCAK{} faced intensive cryptanalysis of \KECCAK{} since it was
+proposed~\cite{bernstein2010second}~\cite{naya2011practical}~\cite{dinur2012new}
+ \cite{dinur2013collision}~\cite{morawiecki2013sat}~\cite{dinur2014improved}~\cite{chang20141st}~\cite{guo2016linear}~\cite{qiao2017new}~\cite{song2017non}~\cite{kumar2018cryptanalysis}. 
+In $2011$, Naya Plasencia \etal gave various attacks for \KECCAK{}, 
+one of them was a practical (second) preimage attack on $2$ rounds of
+ \KECCAK-$256$. In $2012$, Dinur \etal gave a practical collision attack for $4$ rounds of \KECCAK-$224$ and \KECCAK-$256$ using differential and algebraic techniques~\cite{dinur2012new} and also provided attacks for $3$ rounds for \KECCAK-$384$ and \KECCAK-$512$. Dinur \etal also gave collision attacks in $2013$ for $5$ rounds of \KECCAK-$256$ using internal differential techniques~\cite{dinur2013collision}. In $2016$, using linear structures, Guo \etal proposed preimage attacks for $2$ and $3$ rounds of \KECCAK-$224$, \KECCAK-$256$, \KECCAK-$384$, \KECCAK-$512$ and for $4$ rounds in case of smaller hash lengths~\cite{guo2016linear}. In $2017$, Kumar \etal gave efficient preimage and collision attacks for $1$ round of \KECCAK~\cite{kumar2018cryptanalysis}. Recently in the year $2019$, Ting Li and Yao Sun proposed practical preimage attack for $3$ rounds of \KECCAK-$224$ with complexity $2^{39.39}$ and improved theoretical preimage attacks for $4$ rounds \KECCAK-$224$, \KECCAK-$256$~\cite{lipreimage}. In this attack, two blocks of message are used improve over theoretical attacks for $3$ rounds of \KECCAK-$224$. There are hardly any attack for the full round \KECCAK{}, but there are many attacks for reduced round \Keccak{}. These attacks on round reduced versions of \KECCAK{} are still far from affecting the security of $24$ rounds of \KECCAK{}. Some of the important results are shown in the Table~\ref{tab1} and Table~\ref{tab2}.
 
 \begin{table}
 \begin{center}
-\caption{Preimage attacks on \KECCAK{} reduced up to 4 rounds}\label{tab1}
+\caption{Preimage attacks on \KECCAK{} reduced up to $4$ rounds}\label{tab1}
+\resizebox{\linewidth}{!}{
 \begin{tabular}{|c|l|l|c|}
 \hline
-No. of rounds & Hash length & Time Complexity & Reference\\
+Number of rounds & Hash length & Time Complexity & Reference\\
 \hline
-1 & \Keccak - $224/256/384/512$ & Practical & ~\cite{kumar2018cryptanalysis} \\
-2 & \Keccak - $224/256$ & $2^{33}$ & ~\cite{naya2011practical} \\
-2 & \Keccak - $224/256$ & 1 & ~\cite{guo2016linear} \\
-2 & \Keccak - $384/512$ & $2^{129} / 2^{384}$ & ~\cite{guo2016linear}\\
-2 & \KECCAK{}$[r:=800-384, c:=384]$ & $2^{44}$ & ~\ref{2rkeccak800attack}\\
-3 & \Keccak - $224/256$ & $2^{41} / 2^{84} $ & ~\cite{lipreimage}\\
-3 & \Keccak - $384/512$ & $2^{322} / 2^{484}$ & ~\cite{guo2016linear}\\
-4 & \Keccak - $224/256$ & $2^{207} / 2^{239}$ & ~\cite{lipreimage}\\
-4 & \Keccak - $384/512$ & $2^{378} / 2^{506}$ & ~\cite{morawiecki2013rotational}\\
+$1$ & \Keccak - $224/256/384/512$ & Practical & ~\cite{kumar2018cryptanalysis} \\
+$2$ & \Keccak - $224/256$ & $2^{33}$ & ~\cite{naya2011practical} \\
+$2$ & \Keccak - $224/256$ & $1$ & ~\cite{guo2016linear} \\
+$2$ & \Keccak - $384/512$ & $2^{129} / 2^{384}$ & ~\cite{guo2016linear}\\
+$2$ & \KECCAK{}$[r:=800-384, c:=384]$ & $2^{44}$ & ~\ref{2rkeccak800attack}\\
+$3$ & \Keccak - $224/256$ & $2^{41} / 2^{84} $ & ~\cite{lipreimage}\\
+$3$ & \Keccak - $384/512$ & $2^{322} / 2^{484}$ & ~\cite{guo2016linear}\\
+$4$ & \Keccak - $224/256$ & $2^{207} / 2^{239}$ & ~\cite{lipreimage}\\
+$4$ & \Keccak - $384/512$ & $2^{378} / 2^{506}$ & ~\cite{morawiecki2013rotational}\\
 \hline
 \end{tabular}
+}
 \end{center}
 \end{table}
 
 \begin{table}
 \begin{center}
-\caption{Collision attacks on \KECCAK{} reduced up to 5 rounds}\label{tab2}
+\caption{Collision attacks on \KECCAK{} reduced up to $5$ rounds}\label{tab2}
+\resizebox{\linewidth}{!}{
 \begin{tabular}{|c|l|l|c|}
 \hline
-No. of rounds & Hash length & Time Complexity & Reference\\
+Number of rounds & Hash length & Time Complexity & Reference\\
 \hline
-1 & \Keccak - $224/256/384/512$ & Practical & ~\cite{kumar2018cryptanalysis} \\
-2 & \Keccak - $224/256$ & $2^{33}$ & ~\cite{naya2011practical}\\
-3 & \Keccak - $384/512$ & practical & ~\cite{dinur2013collision}\\
-4 & \Keccak - $224/256$ & $2^{24}$ & ~\cite{dinur2012new}\\
-4 & \Keccak - $224/256$ & $2^{12}$ & ~\cite{qiao2017new}\\
-4 & \Keccak - $384$ & $2^{147}$ & ~\cite{dinur2013collision}\\
-5 & \Keccak - $224$ & $2^{101}$ & ~\cite{qiao2017new}\\
-5 & \Keccak - $224$ & Practical & ~\cite{song2017non}\\
-5 & \Keccak - $256$ & $2^{115}$ & ~\cite{dinur2013collision}\\
+$1$ & \Keccak - $224/256/384/512$ & Practical & ~\cite{kumar2018cryptanalysis} \\
+$2$ & \Keccak - $224/256$ & $2^{33}$ & ~\cite{naya2011practical}\\
+$3$ & \Keccak - $384/512$ & Practical & ~\cite{dinur2013collision}\\
+$4$ & \Keccak - $224/256$ & $2^{24}$ & ~\cite{dinur2012new}\\
+$4$ & \Keccak - $224/256$ & $2^{12}$ & ~\cite{qiao2017new}\\
+$4$ & \Keccak - $384$ & $2^{147}$ & ~\cite{dinur2013collision}\\
+$5$ & \Keccak - $224$ & $2^{101}$ & ~\cite{qiao2017new}\\
+$5$ & \Keccak - $224$ & Practical & ~\cite{song2017non}\\
+$5$ & \Keccak - $256$ & $2^{115}$ & ~\cite{dinur2013collision}\\
 \hline
 \end{tabular}
+}
 \end{center}
 \end{table}
 
 \newpage
-To further promote cryptanalysis of round reduced versions of \KECCAK{}, Keccak team (Michaël Peeters, Guido Bertoni, Joan Daemen, Ronny Van Keer, Gilles Van Assche, and Seth Hoffert) has launched some Preimage and Collision challenges named \textbf{Keccak Crunchy Crypto Collision and Preimage Contest}. To promote the solving of these challenges, cash prizes are provided after solving open challenges. To make the challenges beyond the computation capability of a computer they have set output size as 160 and 80 bits for collision and preimage challenges respectively so that even the brute-force complexity for solving these challenges would require $2^{80}$ computations which is practically not possible.
+To further promote cryptanalysis of round reduced versions of \KECCAK{}, \KECCAK{} team (Michaël Peeters, Guido Bertoni, Joan Daemen, Ronny Van Keer, Gilles Van Assche, and Seth Hoffert) has launched some Preimage and Collision challenges named \textbf{Keccak Crunchy Crypto Collision and Preimage Contest}. 
+They also announced some cash prizes (of small amount) for them. To make the challenges beyond the computation capability of a computer they have set output size as $160$ and $80$ bits for collision and preimage challenges respectively. Thus the brute-force way of solving these challenges would require $O(2^{80})$ computer operations, which is well beyond the reach of most of us.
 \newline
 
-\textbf{Our Contribution:} We propose a preimage attack for $2$ rounds of round-reduced \KECCAK{}$[r:=800-384, c:=384]$. The time complexity of the attack is $O(2^{44})$ and the memory complexity is $O(2^{42})$. The proposed attack outperforms the previous best-known attack of complexity $2^{64}$~\cite{guo2016linear}, with a good gap of $2^{20}$. The proposed attack does not affect the security of full \KECCAK{}. We also propose a preimage attack for $4$ rounds of round-reduced \KECCAK-$224$. The time complexity of the attack is $2^{213}$. This attack is not practical, and it has the same complexity as the attack described in~\cite{guo2016linear}, though recently this year a better attack has been published in~\cite{lipreimage}.
+\textbf{Contribution of the thesis:} We propose a preimage attack for $2$ rounds of round-reduced \KECCAK{}$[r:=800-384, c:=384]$. The time complexity of the attack is $O(2^{44})$ and the memory complexity is $O(2^{42})$. The proposed attack outperforms the previous best-known attack of complexity $2^{64}$~\cite{guo2016linear}, with a good gap of $2^{20}$. The proposed attack does not affect the security of full \KECCAK{}. We also propose a preimage attack for $4$ rounds of round-reduced \KECCAK-$224$. The time complexity of the attack is $2^{213}$. This attack is not practical, and it has the same complexity as the attack described in~\cite{guo2016linear}, though recently this year a better attack has been published in~\cite{lipreimage}.
