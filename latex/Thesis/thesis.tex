@@ -57,8 +57,13 @@
 % to display URLs in blue roman font according to Springer's eBook style:
 % \renewcommand\UrlFont{\color{blue}\rmfamily}
 
-\newcommand{\KECCAK}{\mbox{\textsc{Keccak}}}
-\newcommand{\Keccak}{\mbox{\textsc{Keccak}}}
+%\newcommand{\KECCAK}{\mbox{\textsc{Keccak}}}
+%\newcommand{\Keccak}{\mbox{\textsc{Keccak}}}
+\newcommand{\shashank}[1]{\textcolor{red}{#1}}
+
+\newcommand{\KECCAK}{\mbox{\texttt{Keccak}}}
+\newcommand{\Keccak}{\mbox{\texttt{Keccak}}}
+
 \newcommand{\SHA}{\textsc{Sha}}
 \newcommand{\Rnd}{\textsc{Round}}
 \newcommand{\etal}{\textit{et al. }}
@@ -99,6 +104,7 @@
 }
 \makeatother
 
+\setlength{\marginparwidth}{1.0in}
 
 \newtheorem{theorem}{Theorem}[chapter]
 \newtheorem{assertion}[theorem]{Assertion}
@@ -205,7 +211,7 @@
 \addcontentsline{toc}{chapter}{References}
 \renewcommand\bibname{References}
 \printbibliography
-\nocite{*}
+%\nocite{*}
 \end{singlespace}
 
 \end{document}
