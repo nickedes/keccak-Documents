@@ -35,17 +35,17 @@ So,
     \Keccak\text{-}f\left[b\right] = \Keccak\text{-}p\left[b,  12 + 2l\right].
 \]
 
-The state \KECCAK-$f$[$b$] consists of $b$ bits, the state is divided into slices. Here, the size of each slice is always fixed i.e. $25$ bits and the number of slices depends on size $b$ bits. For \KECCAK-$f$[$1600$] state consists of $1600$ bits, where each slice contains $25$ bits and there are $1600/25 = 64$ slices. A bit position in state \KECCAK-$f$[$1600$] is determined by $x, y, $ and $z$ coordinates. $z$ coordinate determines the slice number i.e. $0 \leq z \leq 63$ for $b = 1600$ and $x, y$ determines the position of the bit in that particular slice $z$.
+The state \KECCAK-$f$[$b$] consists of $b$ bits, the state is divided into slices. Here, the size of each slice is always fixed i.e. $25$ bits and the number of slices depends on size $b$ bits. For \KECCAK-$f$[$1600$] state consists of $1600$ bits, where each slice contains $25$ bits and there are $1600/25 = 64$ slices. A bit position in state \KECCAK-$f$[$1600$] is determined by $x,\;y$ and $z$ coordinates. $z$ coordinate determines the slice number i.e. $0 \leq z \leq 63$ for $b = 1600$ and $x,\;y$ determines the position of the bit in that particular slice $z$.
 
-The round function $p$ in \Keccak{} comprises of $5$ steps, in each of which the state undergoes transformations specified by the step mapping. These step mappings are called $\theta, \rho, \pi, \chi$ and  $\iota$. These transformations are applied in sequence. A state $S$, which is a $b$-bit string, in \Keccak{} is usually denoted by a $3$-dimensional grid of size $(5 \times 5 \times w)$ as shown in the Figure~\ref{ss}. The value of $w$ depends on the parameters of \Keccak{}. For example in the case of \Keccak-$f\left[1600\right]$, $w$ is equal to $64$. It is usual practice to represent a state in terms of rows, columns, lanes, planes, sheets, slices and width of the $3$-dimensional grid.
+The round function $p$ in \Keccak{} comprises of $5$ steps, in each of which the state undergoes transformations specified by the step mapping. These step mappings are called $\theta,\;\rho,\; \pi,\; \chi$ and  $\iota$. These transformations are applied in sequence. A state $S$, which is a $b$-bit string, in \Keccak{} is usually denoted by a $3$-dimensional grid of size $(5 \times 5 \times w)$ as shown in the Figure~\ref{ss}. The value of $w$ depends on the parameters of \Keccak{}. For example in the case of \Keccak-$f\left[1600\right]$, $w$ is equal to $64$. It is usual practice to represent a state in terms of rows, columns, lanes, planes, sheets, slices and width of the $3$-dimensional grid.
 
-Given a bit location $(x,y,z)$ in the grid, the corresponding row is given by $\left( S[x+i \pmod 5,y,z] : \, i \in [0,4] \right)$. Similarly the corresponding column is given by the bits $\left( S[x,y+i \pmod 5,z] : \, i \in [0,4] \right)$ and the corresponding lane is given by $\left( S[x,y,z+i \pmod w] : \, i \in [0,w-1] \right)$. 
+Given a bit location $(x,\;y,\;z)$ in the grid, the corresponding row is given by $\left( S[x+i \pmod 5,\;y,\;z] : \, i \in [0,\;4] \right)$. Similarly the corresponding column is given by the bits $\left( S[x,\;y+i \pmod 5,\;z] : \, i \in [0,\;4] \right)$ and the corresponding lane is given by $\left( S[x,\;y,\;z+i \pmod w] : \, i \in [0,\;w-1] \right)$. 
 
-Further, the plane corresponding to a location $(x,y,z)$, consists of 
+Further, the plane corresponding to a location $(x,\;y,\;z)$, consists of 
 
-$\left( S[x+j \pmod 5,y \pmod 5,z + i] : \, i,\,j \in [0,4] \right)$, similarly the sheets consists of $\left( S[x \pmod 5,y+j \pmod 5,z + i] : \, i,\,j \in [0,4] \right)$, and slice consists of 
+$\left( S[x+j \pmod 5,\;y \pmod 5,\;z + i] : \, i,\,j \in [0,\;4] \right)$, similarly the sheets consists of $\left( S[x \pmod 5,\;y+j \pmod 5,\;z + i] : \, i,\,j \in [0,\;4] \right)$, and slice consists of 
 
-$\left( S[x+j \pmod 5,y+i \pmod 5,z] : \, i,\,j \in [0,4] \right)$ bits.
+$\left( S[x+j \pmod 5,\;y+i \pmod 5,\;z] : \, i,\,j \in [0,\;4] \right)$ bits.
 
 Some of the above are pictorially shown in the Figure~\ref{ss}.
 \begin{figure}
@@ -86,16 +86,16 @@ $\Rnd$\;- A round of \KECCAK-$p$ permutation, it consists of five transformation
 In the following, we provide a brief description of the step mappings.
  Let $A$ and $B$ respectively denote input and output states of a step mapping.
 \begin{enumerate}
-    \item $\theta$ ({\bf theta}): The theta step XORs each bit in the state with the parities of two neighboring columns. Parity of a column is defined as the $XOR$ of all the bits present in that column, i.e. $\oplus_{y = 0}^{4} A[x, y, z]$. For a given bit position $(x, y, z)$, one column is $((x - 1) \bmod 5, z) $ and the other is $((x+1)\bmod 5, (z - 1) \bmod w)$.
+    \item $\theta$ ({\bf theta}): The theta step XORs each bit in the state with the parities of two neighboring columns. Parity of a column is defined as the XOR of all the bits present in that column, i.e. $\oplus_{y = 0}^{4} A[x,\; y,\; z]$. For a given bit position $(x,\; y,\; z)$, one column is $((x - 1) \bmod 5,\; z) $ and the other is $((x+1)\bmod 5,\; (z - 1) \bmod w)$.
     
     Thus, if we have $A$ as the input state to $\theta$ then the output state $B$ is :
     \begin{align}\nonumber
-        B\left[x, y, z\right] &= A\left[x, y, z\right] \oplus P\left[ (x - 1) \bmod 5 ,\, z \right] \\
+        B\left[x,\; y,\; z\right] &= A\left[x,\; y,\; z\right] \oplus P\left[ (x - 1) \bmod 5 ,\, z \right] \\
         &\hspace{1.3cm}\oplus P\left[ (x + 1) \bmod 5 ,\, (z - 1) \bmod w \right]
     \end{align}
-    where $P[x, z]$ represents the parity of the column represented by $(x, z)$ and 
+    where $P[x,\; z]$ represents the parity of the column represented by $(x,\; z)$ and 
     \[
-        P[x, z]  = \oplus_{y = 0}^{4} A[x, y, z]
+        P[x,\; z]  = \oplus_{y = 0}^{4} A[x,\; y,\; z]
     \]
     $\theta$ is a linear transformation, therefore it doesn't introduce any non-linear terms if the state is linear.
     %%% CHECK: Done
@@ -104,9 +104,9 @@ In the following, we provide a brief description of the step mappings.
     \begin{align}
         B[x, \,y,\, z] = A[x, \,y, \,z + \rho(x, y) \bmod w ],
     \end{align}
-    where $\rho(x, y)$ is the constant for lane $(x, y)$. 
+    where $\rho(x,\; y)$ is the constant for lane $(x,\; y)$. 
     
-        The constant value $\rho(x, y)$ is specified for each lane in the construction of \Keccak{} as shown in Table~\ref{tab4}
+        The constant value $\rho(x,\; y)$ is specified for each lane in the construction of \Keccak{} as shown in Table~\ref{tab4}
         
         \begin{table}[h!]
             \begin{center}
@@ -135,33 +135,33 @@ In the following, we provide a brief description of the step mappings.
     \begin{bmatrix} x'\\ y'\end{bmatrix} = 
     \begin{bmatrix} $0$ & $1$ \\ $2$ &  $3$ \end{bmatrix} \cdot \begin{bmatrix} x\\ y\end{bmatrix},
     \end{align}
-    where $(x', y')$ is the position of lane $(x, y)$ after $\pi$ step.
+    where $(x',\; y')$ is the position of lane $(x,\; y)$ after $\pi$ step.
         $\pi$ is also a linear step mapping.
     \vskip5pt
     \item $\chi$ ({\bf chi}): In this operation each bit in the original state is XOR-ed with a non-linear function of next two bits in the same row i.e.,
     \begin{align}\nonumber
-        B[x, y, z] &=  A[x, y, z] \;\oplus \\
-        & \hspace{0.5cm} \left( \left(A[ (x + 1 )\bmod 5, y, z] \oplus 1\right) \cdot  A[ (x + 2) \bmod 5, y, z] ) \right).
+        B[x,\; y,\; z] &=  A[x,\; y,\; z] \;\oplus \\
+        & \hspace{0.5cm} \left( \left(A[ (x + 1 )\bmod 5,\; y,\; z] \oplus 1\right) \cdot  A[ (x + 2) \bmod 5,\; y,\; z] ) \right).
     \end{align}
     
     $\chi$ is the only non-linear operation among the $5$ step mappings in \KECCAK{}.
     
     \vskip5pt
-    \item $\iota$ ({\bf iota}): This step mapping only modifies the $(0, 0)$ lane depending on the round number i.e., 
+    \item $\iota$ ({\bf iota}): This step mapping only modifies the $(0,\;0)$ lane depending on the round number i.e., 
     \begin{align}
-       B[0, 0] = A[0, 0] \oplus RC_i,
+       B[0,\; 0] = A[0,\; 0] \oplus RC_i,
    \end{align}
     where $RC_i$ is round constant that depends on the round number. The remaining $24$ lanes remain unaffected.
     
     All the rounds are identical but the symmetry is destroyed by the step $\iota$ by the addition of a round constant to a particular lane, where the round constant is dependent on the round index.
     All the additions and multiplications in the operations defined above are in $\textbf{GF}(2)$.
 \end{enumerate}
-Thus a round in \Keccak{} is given by ${\tt Round}(A, i_r) = \iota( \chi( \pi ( \rho ( \theta ( A ) ) ) ) , i_r)$, where $A$ is the state and $i_r$ is the round index. In the \Keccak-$p[b, n_r]$, $n_r$ iterations of ${\tt Round}(\cdot)$ is applied on the state $A$.
+Thus a round in \Keccak{} is given by ${\tt Round}(A,\; i_r) = \iota( \chi( \pi ( \rho ( \theta ( A ) ) ) ),\; i_r)$, where $A$ is the state and $i_r$ is the round index. In the \Keccak-$p[b,\; n_r]$, $n_r$ iterations of ${\tt Round}(\cdot)$ is applied on the state $A$.
 
 %% Check
-The \SHA-$3$ hash function is \Keccak-$p[b, 12 + 2\,l]$, where $w = b/25$ and $l = \log_{2}(w)$. The value of $b$ is $1600$, so we have $l = 6$. Thus the $f$ function in \SHA-$3$ is \Keccak-$p[1600, 24]$.
+The \SHA-$3$ hash function is \Keccak-$p[b,\; 12 + 2\,l]$, where $w = b/25$ and $l = \log_{2}(w)$. The value of $b$ is $1600$, so we have $l = 6$. Thus the $f$ function in \SHA-$3$ is \Keccak-$p[1600,\; 24]$.
 
-The \Keccak{} team denotes the instances of \Keccak{} by $\Keccak[r,c]$, where $r=1600-c$ and the capacity $c$ is chosen to be twice the size of hash output $d$, to avoid generic attacks with expected cost below $2^d$. Thus the hash function with output length $d$ is denoted by 
+The \Keccak{} team denotes the instances of \Keccak{} by $\Keccak[r,\;c]$, where $r=1600-c$ and the capacity $c$ is chosen to be twice the size of hash output $d$, to avoid generic attacks with expected cost below $2^d$. Thus the hash function with output length $d$ is denoted by 
 \begin{eqnarray}
 \mbox{\Keccak-$d$}  &=& \Keccak[r:=1600-2d,\;c:=2d],
 \end{eqnarray}
@@ -182,8 +182,8 @@ $i_r$ & Round index for a \KECCAK-$p$ permutation\\
 $n_r$ & Number of rounds for \KECCAK-$p$ permutation\\
 pad & padding rule for the sponge construction\\
 $w$ & Number of bits in a lane in \KECCAK{} state\\
-$\theta,\rho,\pi,\chi,\iota$ & A round is comprised of these five step mappings \\
-SPONGE$[f, $pad$, r]$ & Sponge function in which the underlying permutation function is $f$,\\ & padding rule is pad and rate is $r$ \\
+$\theta,\;\rho,\;\pi,\;\chi,\;\iota$ & A round is comprised of these five step mappings \\
+SPONGE$[f,\; $pad$,\; r]$ & Sponge function in which the underlying permutation function is $f$,\\ & padding rule is pad and rate is $r$ \\
 \hline
 \end{tabular}
 }
@@ -194,10 +194,10 @@ Table~\ref{tab3} shows various parameters and other variables related to \KECCAK
 
 \section{Sponge Construction}
 
-The sponge construction is an iterated construction for a function SPONGE$[f, $pad$, r]$ with arbitrary input and output lengths which is built on three components: fixed length permutation function $f$ which operates on a state of fixed length $b$; pad - a padding rule; and $r$ 
+The sponge construction is an iterated construction for a function SPONGE$[f,\; $pad$,\; r]$ with arbitrary input and output lengths which is built on three components: fixed length permutation function $f$ which operates on a state of fixed length $b$; pad - a padding rule; and $r$ 
 - a parameter called rate.
 
-The function produced from this construction is known as the sponge function which is denoted by SPONGE$[f, $pad$, r](N, d)$. It takes as input $N$ and $d$ where $N$ is the input bit string of any length and $d$ is the length of the output string.
+The function produced from this construction is known as the sponge function which is denoted by SPONGE$[f,\; $pad$,\; r](N,\; d)$. It takes as input $N$ and $d$ where $N$ is the input bit string of any length and $d$ is the length of the output string.
 
 \section{\KECCAK{} Specification}
 
@@ -211,22 +211,22 @@ The padding rule followed by \KECCAK{} is \textbf{pad10*1}. The asterisk in the 
 \subsection{\KECCAK{}$[c]$ Specification}
 \label{keccakc}
 
-\KECCAK{} is a family of sponge functions with the \KECCAK{}-$p[b, 12 + 2l]$ permutation function, \textbf{pad10*1} as the padding rule and rate $r$, such that $r + c = b$. The family of sponge functions is parameterized for any width $b$ in $[25, 50,100,200,400,800,1600]$ with any rate $r$ and capacity $c$ such that $r + c = b$.
+\KECCAK{} is a family of sponge functions with the \KECCAK{}-$p[b,\; 12 + 2l]$ permutation function, \textbf{pad10*1} as the padding rule and rate $r$, such that $r + c = b$. The family of sponge functions is parameterized for any width $b$ in $[25,\;50,\;100,\;200,\;400,\;800,\;1600]$ with any rate $r$ and capacity $c$ such that $r + c = b$.
 
 When $b = 1600$, the \KECCAK{} family is denoted by \KECCAK{}[$c$], where $c$ is the capacity, so the rate depends on the value of the $c$. So, 
-\[\KECCAK{}[c] = \text{SPONGE}[\KECCAK{}\text{-}p[1600, 24], \textbf{pad10*1}, 1600-c]\]
+\[\KECCAK{}[c] = \text{SPONGE}[\KECCAK{}\text{-}p[1600,\;24],\;\textbf{pad10*1},\;1600-c]\]
 For an input $N$ bit string and digest length $d$, the specification is 
-\[\KECCAK{}[c](N, d) = \text{SPONGE}[\KECCAK{}\text{-}p[1600, 24], \textbf{pad10*1}, 1600-c](N, d)\]
+\[\KECCAK{}[c](N,\; d) = \text{SPONGE}[\KECCAK{}\text{-}p[1600,\; 24],\; \textbf{pad10*1},\; 1600-c](N,\; d)\]
 \section{SHA-3 Functions}
 
-The \SHA-3 hash family supports minimum four different output length $d \in \{224,256,384,512\}$. In the \Keccak-384, the size of $c = 2\cdot d = 768$ and the rate $r = 1600 - c = 1600 - 768 = 832 = 13 \cdot 64$.
+The \SHA-3 hash family supports minimum four different output length $d \in \{224,\;256,\;384,\;512\}$. In the \Keccak-$384$, the size of $c = 2\cdot d = 768$ and the rate $r = 1600 - c = 1600 - 768 = 832 = 13 \cdot 64$.
 
 \subsection{SHA-3 Hash Functions}
 
 There are $4$ \SHA-$3$ hash functions, which are defined from \KECCAK{}[$c$] specified in ~\ref{keccakc}. These functions specify the input message along with the length of the digest $d$.
 
 \[
-   \text{ \SHA3-}d\;(M) = \KECCAK{}[c]\;(M||01 , d), \text{ where } c = 2 \cdot d
+   \text{ \SHA3-}d\;(M) = \KECCAK{}[c]\;(M||01,\; d), \text{ where } c = 2 \cdot d
 \]
 
 Since there are two types of functions for \SHA-$3$ i.e. hash functions and Extendable-output functions. So, in order to differentiate the inputs to $\KECCAK{}[c]$ the message is appended with a suffix $01$ i.e. $M||01$. For each of four hash functions the capacity $c = 2\cdot d$. The four hash functions are \SHA3-$224$, \SHA3-$256$, \SHA3-$384$ and \SHA3-$512$.
@@ -236,10 +236,10 @@ Since there are two types of functions for \SHA-$3$ i.e. hash functions and Exte
 The two \SHA-3 XOFs are \textsc{Shake}128, \textsc{Shake}256 which are defined from the \KECCAK{}[$c$] function.
 
 \[
-    \text{SHAKE}128\;(M,d) = \KECCAK{}[256]\;(M||1111 , d)
+    \text{SHAKE}128\;(M,\;d) = \KECCAK{}[256]\;(M||1111,\; d)
 \]
 \[
-    \text{SHAKE}256\;(M,d) = \KECCAK{}[512]\;(M||1111 , d)
+    \text{SHAKE}256\;(M,\;d) = \KECCAK{}[512]\;(M||1111,\; d)
 \]
 
 \section{Notations and Observations}
@@ -307,7 +307,8 @@ nodes={inner sep=5pt,text width=0.5cm,align=center,minimum height=.5cm, draw,tex
 
 \item \label{ob3}\textbf{Observation 3:} Guo \etal in~\cite{guo2016linear} observed that when $4$ out of $5$ output bits are known after $\chi$ step then we can establish $4$ linear equations on the input bits of $\chi$.
 
-$a_0, a_1, a_2, a_3, a_4$ are the output bits of $\chi$ and $a_0^\prime, a_1^\prime, a_2^\prime, a_3^\prime, a_4^\prime$ are the input bits.
+$a_0,\;a_1,\; a_2,\; a_3,\; a_4$ are the output bits of $\chi$ and $a_0^\prime, 
+\;a_1^\prime,\; a_2^\prime, \;a_3^\prime,\; a_4^\prime$ are the input bits.
 \begin{align}\label{eq:a0}
 a_0^\prime = a_0 \oplus \left( a_{1} \oplus 1\right) \cdot \left( a_{2} \oplus \left( a_{3} \oplus 1 \right) \cdot a_{4}\right)
 \end{align}
@@ -324,14 +325,14 @@ a_3^\prime = a_3 \oplus \left( a_{4} \oplus 1\right) \cdot \left( a_{0} \oplus \
 a_4^\prime = a_4 \oplus \left( a_{0} \oplus 1\right) \cdot \left( a_{1} \oplus \left( a_{2} \oplus 1 \right) \cdot a_{3}\right)
 \end{align}
 
-If we know the values of $a_0, a_1, a_2, a_3$ and with the above $5$ equations in terms of the unknown output bit i.e. $a_4$. Then we can establish $4$ linear equations by eliminating $a_4$ from the above $5$ equations.
+If we know the values of $a_0,\; a_1,\; a_2,\; a_3$ and with the above $5$ equations in terms of the unknown output bit i.e. $a_4$. Then we can establish $4$ linear equations by eliminating $a_4$ from the above $5$ equations.
 
 So, from equation \ref{eq:a4} we get,
 \begin{align}\label{eq:a4_2}
  a_4 = a_4^\prime \oplus \left( a_{0} \oplus 1\right) \cdot \left( a_{1} \oplus \left( a_{2} \oplus 1 \right) \cdot a_{3}\right)
 \end{align}
 
-As the values of $a_0,a_1,a_2,a_3$ are known, from equation \ref{eq:a4_2} we get
+As the values of $a_0,\;a_1,\;a_2,\;a_3$ are known, from equation \ref{eq:a4_2} we get
 \begin{align}\label{eq:a4_3}
 a_4 = a_4^\prime \oplus c
 \end{align}
