@@ -1,10 +1,10 @@
-\chapter{Preimage Attack on 2-Rounds of \KECCAK{}${[r:=800-384, c:=384]}$}
+\chapter{Preimage Attack on 2-Rounds of \KECCAK{}${[r:=800-384,\; c:=384]}$}
 
-In this chapter we present a new preimage attack on $2$ rounds of \KECCAK{}$[r:=800-384, c:=384]$. We will show that the preimage can be found in $O(2^{44})$ time and $O(2^{42})$ memory for $2$ rounds of round-reduced \KECCAK{}$[r:=800-384, c:=384]$. It is a practical attack, and also it is an improvement over the existing best-known attack, for $2$ rounds of \KECCAK{}$[r:=800-384, c:=384]$, which has a time complexity of $O(2^{64})$~\cite{guo2016linear}.
+In this chapter we present a new preimage attack on $2$ rounds of \KECCAK{}$[r:=800-384,\;c:=384]$. We will show that the preimage can be found in $O(2^{44})$ time and $O(2^{42})$ memory for $2$ rounds of round-reduced \KECCAK{}$[r:=800-384,\;c:=384]$. It is a practical attack, and also it is an improvement over the existing best-known attack, for $2$ rounds of \KECCAK{}$[r:=800-384,\;c:=384]$, which has a time complexity of $O(2^{64})$~\cite{guo2016linear}.
 
 \section{Description of the Attack}
 \label{2rkeccak800attack}
-The \KECCAK{}$[r:=800-384, c:=384]$ has rate $r = 800-384 = 416$, capacity $c = 384$ and outputs a hash of $192$ bits, which is represented by the first $6$ lanes ($lanesize = 32$ bits) in the state obtained at the end of the squeezing phase. Figure~\ref{initial_sq} represents the hash state. In the hash state except the first $6$ lanes, we don't care about other lanes i.e. remaining $19$ lanes. We are interested in finding a preimage for which $6$ lanes of corresponding state matches. We will call this state as \emph{final state}.
+The \KECCAK{}$[r:=800-384,\;c:=384]$ has rate $r = 800-384 = 416$, capacity $c = 384$ and outputs a hash of $192$ bits, which is represented by the first $6$ lanes (${\rm lanesize} = 32$ bits) in the state obtained at the end of the squeezing phase. Figure~\ref{initial_sq} represents the hash state. In the hash state except the first $6$ lanes, we do not care about other lanes i.e. remaining $19$ lanes. We are interested in finding a preimage for which $6$ lanes of corresponding state matches. We will call this state as \emph{final state}.
 %------------------------------------------------
 \begin{figure}[ht]
 \begin{center}
@@ -39,7 +39,7 @@ nodes={inner sep=5pt,text width=0.5cm,align=center,minimum height=.5cm, draw,tex
 In this attack, we can ignore the {$\iota$} step mapping without the loss of generality, as it does not affect the procedure of the attack. However it should be taken into account while implementing the attack.
 
 We further note that the initial state, which is fed to \KECCAK-$f$ function, is the first message block which is represented by $25-2\cdot 6$ i.e., $13$ lanes. The remaining $12$ lanes are initially set to $0$. Pictorially, this state is represented by the diagram in the Figure~\ref{initial_state}. We call this state \emph{initial state}.
-Our aim is to find the values of $a_0, a_1, a_2$, $b_0, b_1, b_2$, $c_0, c_1, c_2$, $d_0, d_1$ and $e_0, e_1$ variables in the initial state which lead to a final state having first six lanes as $h_0,\;h_1,\;h_2,\;h_3,\;h_4$ and $h_5$. 
+Our aim is to find the values of $a_0,\; a_1,\; a_2$, $b_0,\; b_1,\; b_2$, $c_0,\; c_1,\; c_2$, $d_0,\; d_1$ and $e_0,\; e_1$ variables in the initial state which lead to a final state having first six lanes as $h_0,\;h_1,\;h_2,\;h_3,\;h_4$ and $h_5$. 
 
 We follow the basic idea of the attack, as given in the paper~\cite{naya2011practical}.
 We start the attack by setting variables in the initial state which ensures zero column parity. 
@@ -74,9 +74,9 @@ nodes={inner sep=5pt,text width=0.5cm,align=center,minimum height=.5cm, draw,tex
     \label{two_rnd}
 \end{figure}
 
-This type of assignment to the initial state will make the {$\theta$} step mapping, an identity mapping. Even though we have put some restrictions to the initial state, we still find the input space of \KECCAK{}$[r:=800-384, c:=384]$ (with $1$ message block) large enough to ensure first $6$ lanes of output state, the given hash value. We explain the details of the analysis below. 
+This type of assignment to the initial state will make the {$\theta$} step mapping, an identity mapping. Even though we have put some restrictions to the initial state, we still find the input space of \KECCAK{}$[r:=800-384,\; c:=384]$ (with $1$ message block) large enough to ensure first $6$ lanes of output state, the given hash value. We explain the details of the analysis below. 
 
-Note that the output of attack is an assignment to the variables $a_0, a_1, a_2$, $b_0, b_1, b_2$, $c_0, c_1, c_2$, $d_0, d_1$ and $e_0, e_1$, which on applying $2$ rounds of \KECCAK-$f$ gives the target hash value. Recall that we are mounting an attack on the $2$ rounds of \KECCAK{}$[r:=800-384, c:=384]$ (see the diagram in Figure~\ref{two_rnd}).
+Note that the output of attack is an assignment to the variables $a_0,\; a_1,\; a_2$, $b_0,\; b_1,\; b_2$, $c_0,\; c_1,\; c_2$, $d_0,\; d_1$ and $e_0,\; e_1$, which on applying $2$ rounds of \KECCAK-$f$ gives the target hash value. Recall that we are mounting an attack on the $2$ rounds of \KECCAK{}$[r:=800-384,\; c:=384]$ (see the diagram in Figure~\ref{two_rnd}).
 
 %\begin{figure}
 %\begin{center}
@@ -163,21 +163,23 @@ mycell/.list={(5,1,gray!50),(5,2,gray!50),(5,3,gray!50),(5,4,gray!50),(5,5,gray!
 \end{figure}
 %-------------------------------------
 The State~$2$, in the Figure~\ref{atk}, represents the state after $\pi \circ \rho \circ \theta$ is applied to the State~$1$. 
-The $\theta$-mapping becomes identity due to the condition (Equation~\ref{cond_state1}) imposed on the initial state. The $\rho$ and $\pi$ mappings are, nevertheless, linear.
+The $\theta$-mapping becomes identity due to the condition
+(Equation~\ref{cond_state1}) imposed on the initial state. 
+The $\rho$ and $\pi$ mappings are, nevertheless, linear.
 
-We are given with a hash value which is represented by first $6$ lanes in the State~$4$ [Figure~\ref{atk}]. It represents the final state ({\tt Round}~2) of \KECCAK{}$[r:=800-384, c:=384]$. The state can be inverted by applying $\chi^{-1} \circ \iota^{-1}$ mapping. The $\iota^{-1}$ is trivial and $\chi^{-1}$ can be computed using the Observations~\ref{ob1} and~\ref{ob2}. The first $7$ lanes of the output is $\{h_0',h_1',h_2',h_3',h_4',h_5',h_6',1\}$. We do not care about the remaining  lanes. 
+We are given with a hash value which is represented by first $6$ lanes in the State~$4$ [Figure~\ref{atk}]. It represents the final state ({\tt Round}~2) of \KECCAK{}$[r:=800-384, c:=384]$. The state can be inverted by applying $\chi^{-1} \circ \iota^{-1}$ mapping. The $\iota^{-1}$ is trivial and $\chi^{-1}$ can be computed using the Observations~\ref{ob1} and~\ref{ob2}. The first $7$ lanes of the output is $\{h_0',\;h_1',\;h_2',\;h_3',\;h_4',\;h_5',\;h_6',\;1\}$. We do not care about the remaining  lanes. 
 Then the mappings $\pi^{-1}$ and $\rho^{-1}$ are applied, which are very easy to compute, to get the State~$3$ [Figure~\ref{atk}]. 
 
 Note that, at this point, the blank lanes in the State~$3$, of the Figure~\ref{atk}, could take any random value and this does not have any effect on the target hash value.
 
 The number shown in round brackets along with the variable, in the State~$2$ and State~$3$ [Figure~\ref{atk}], is due to rotation by $\rho$ step mapping in lanes.
 On applying $\theta \circ \iota \circ \chi$, operation on the State~$2$, the output should match with the values of the corresponding bits in State~$3$ [Figure~\ref{atk}], then only we can verify and claim that the values of the variables are a preimage for the hash value taken. In the State~$3$, there are $7$ lanes whose values are fixed. 
-This will impose a total of $7\times 32$ conditions on the variables we have set in the initial state. As mentioned earlier, we have also set $6$ conditions (see the Equation~\ref{cond_state1}) on the initial state variable and this will further add $7 \times 32$ conditions. So there are in total $13\times 32$ conditions. Since the number of variables and the number of conditions is equal, we can expect to find one solution and it is indeed the case. In the rest of this section, we provide an algorithm to get the preimage for the given hash of  \KECCAK{}$[r:=800-384, c:=384]$. Our method is based on the technique proposed by Naya-Plasencia \etal in the paper~\cite{naya2011practical}.
+This will impose a total of $7\times 32$ conditions on the variables we have set in the initial state. As mentioned earlier, we have also set $6$ conditions (see the Equation~\ref{cond_state1}) on the initial state variable and this will further add $7 \times 32$ conditions. So there are in total $13\times 32$ conditions. Since the number of variables and the number of conditions is equal, we can expect to find one solution and it is indeed the case. In the rest of this section, we provide an algorithm to get the preimage for the given hash of  \KECCAK{}$[r:=800-384,\;c:=384]$. Our method is based on the technique proposed by Naya-Plasencia \etal in the paper~\cite{naya2011practical}.
 
 We aim to find the assignment of bits to the initial state which leads to a target hash value. We proceed as follows. We start with all possible assignments in the groups successive $3$ slices. Using the constraints (transformation from State~2 to State~3 [Figure~\ref{atk}]), we discard some of the assignments, and store the remaining ones, out of which at least one would be a part of the solution. This is done for every $3$-slice from the first $48$ slices. The next step is to merge the two successive $3$-slices. Again we do discard certain choices of assignments and keep the remaining ones. This process is continued to fix a set of good assignments to the $6$-slices, $12$-slices, $16$-slices and $24$-slices groups. In the last, after combining all the assignments we are left with a unique assignment, which is the required preimage. We explain the details in the Section~\ref{sec:partial_sol} below. 
 
 \section{Finding Partial Solutions\label{sec:partial_sol}}
-We focus on the two intermediate states of the attack i.e., the State~2 and the State~3 (see the Figure~\ref{atk_partial} below). Note that, since $d_0$ and $d_1$ are set to $0$ in the beginning, we are now left with $11$ lane variables $a_0, a_1, a_2$, $b_0, b_1, b_2$, $c_0, c_1, c_2$, $e_0$ and $e_1$ only.
+We focus on the two intermediate states of the attack i.e., the State~2 and the State~3 (see the Figure~\ref{atk_partial} below). Note that, since $d_0$ and $d_1$ are set to $0$ in the beginning, we are now left with $11$ lane variables $a_0,\; a_1,\; a_2$, $b_0,\; b_1,\; b_2$, $c_0,\; c_1,\; c_2$, $e_0$ and $e_1$ only.
 \begin{figure}
     \begin{center}
         \resizebox{\textwidth}{!}{%
@@ -237,12 +239,12 @@ This can be explained using the following example. If we take the first three sl
 \end{equation}
 None of these variables have any dependency despite the initial restriction, given by Equation~\ref{cond_state1}. So we have an input space of $33$ independent variables in a given $3$-slice. 
 
-Given a $3$-slice in the State~$2$, we need to apply $\theta \circ \iota \circ \chi$ mapping to get an output in the State~$3$. Since the $\theta$ mapping depends on the values of two slices; the current slice and one preceding it, we will only able to get the correct output for two slices. In the State~$3$, we have the values of $7$ lanes available with us. So for the two slices, we have $7\cdot 2 = 14$ fixed bit values.
-For each of $2^{33}$ assignments in a $3$-slice of the State~$2$, we compute the output of $\theta \circ \iota \circ \chi$ mapping and match it with the $14$ bit locations, the values of which are available in the State~$3$. If these $14$ bits are not matched then this solution does not help build a solution that matches all the $7 \cdot 32$ bits present in State~$3$.
+Given a $3$-slice in the State~2, we need to apply $\theta \circ \iota \circ \chi$ mapping to get an output in the State~3. Since the $\theta$ mapping depends on the values of two slices; the current slice and one preceding it, we will only able to get the correct output for two slices. In the State~3, we have the values of $7$ lanes available with us. So for the two slices, we have $7\cdot 2 = 14$ fixed bit values.
+For each of $2^{33}$ assignments in a $3$-slice of the State~2, we compute the output of $\theta \circ \iota \circ \chi$ mapping and match it with the $14$ bit locations, the values of which are available in the State~3. If these $14$ bits are not matched then this solution does not help build a solution that matches all the $7 \cdot 32$ bits present in State~3.
 Thus for each $3$-slice, we get $2^{33-14} = 2^{19}$ solutions. This is repeated for $8$ consecutive $3$-slices, other than last $8$ slices. We use the fact that the time complexity of building the list is given by the size of the list as stated in Section~6.4 of~\cite{naya2011practical}. Thus the required time and memory complexity is of the order $8 \cdot 2^{19} = 2^{22}$.
 
 \subsection{Possible solutions for  6-slices}
-The possible solutions for a $6$-slice are obtained by merging the possible solutions of its constituents two $3$-slices. The variables restricted to the $6$-slice is again independent. This can be explained in the following manner. Consider the rotated lanes $a_0(0)$, $a_1(3)$ and $a_2(4)$. Since the lane variable $a_2$ is rotated by $4$ and $a_1$ is rotated by $3$, the corresponding bits of original lanes are just $1$ place apart. Therefore there are $2$ bits repeated. Similarly $e_0$ is rotated by $27$ and $e_1$ is rotated by $20$, the corresponding bits are again $7$ places apart, so there is no repetitions of bits (remember initial condition $e_0 = e_1$). Since the difference between the rotation of related variables is more than $6$, the bit variables in a $6$-slice are mostly independent.
+The possible solutions for a $6$-slice are obtained by merging the possible solutions of its constituents two $3$-slices. The variables restricted to the $6$-slice is again independent. This can be explained in the following manner. Consider the rotated lanes $a_0(0)$, $a_1(3)$ and $a_2(4)$. Since the lane variable $a_2$ is rotated by $4$ and $a_1$ is rotated by $3$, the corresponding bits of original lanes are just $1$ place apart. Therefore there are 2 bits repeated. Similarly $e_0$ is rotated by $27$ and $e_1$ is rotated by $20$, the corresponding bits are again $7$ places apart, so there is no repetitions of bits (remember initial condition $e_0 = e_1$). Since the difference between the rotation of related variables is more than $6$, the bit variables in a $6$-slice are mostly independent.
 So we have $2^{19\cdot 2 - 2}= 2^{36}$ possibilities for the bit variables in a $6$-slice. 
 
 We have already noted that the $\theta$-mapping cannot be computed for the first slice of a given $3$-slice. But, when we are merging two consecutive $3$-slices, $\theta$-mapping for the first slice of second $3$-slice group can be computed with the help of last slice of the first $3$-slice group and this will pose an additional restriction (of $7$ bits) for the input space of the $6$-slice.
@@ -296,8 +298,8 @@ Equation~(\ref{48_sol_2})] of $12$ slices, we get
     \;\;\right\}.
 \end{equation}
 
-Here the common variables for $\left< a_0, a_1,a_2\right>$ are the bits with positions
-$4, 5,\ldots, 23$. These are total $20$ repeated bits in number, out of which only $4$ are only new. It will impose $4$ conditions on the input space for the $24$-slice.
+Here the common variables for $\left< a_0,\; a_1,\;a_2\right>$ are the bits with positions
+$4, \;5,\;\ldots,\;23$. These are total $20$ repeated bits in number, out of which only $4$ are only new. It will impose $4$ conditions on the input space for the $24$-slice.
 
 $1^{\rm st}$ group :
 \begin{equation}\label{48_sol_3}
@@ -333,10 +335,10 @@ Equation~(\ref{48_sol_4})] of $12$ slices, we get
     \;\;\right\}.
 \end{equation}
 
-Here the common variables for $\left< b_0, b_1, b_2\right>$ are the bits with positions
+Here the common variables for $\left< b_0,\; b_1,\; b_2\right>$ are the bits with positions
 $12, 13,\ldots, 24$ and $1$. These are total $14$ repeated bits in number, out of which only $12$ are new. It will impose $12$ conditions on the input space for the $24$-slice.
 
-Similarly for the lanes $\left< c_0, c_1,c_2 \right>$, we get $11$ such conditions.
+Similarly for the lanes $\left< c_0,\; c_1,\;c_2 \right>$, we get $11$ such conditions.
 On the other hand, there are $7$ new repeated bits in the lanes $e_0$ and $e_1$ after merging the two groups. Thus the total number of possible solutions after merging of two $24$-slices, turns out to be $2^{41\cdot 2 - (4 + 12 + 11 + 7) - 7 } = 2^{41}$.
 
 \subsection{Possible solutions for remaining 8 slices} 
@@ -349,13 +351,13 @@ Now, we move towards the final step of the attack i.e. we have to merge the solu
 
 Total time complexity of the attack is given by sum of the complexities of all the steps which is : $2^{22} + 2^{31} + 2^{42} + 2^{41} + 2^{42}$, which is of the order $O(2^{43})$.
 Also, the total amount of memory required for the attack comes out to be $2^{42}$. 
-This confirms that there exists a set of values for the variables such that the preimage can be obtained from the hash value for the \KECCAK{}$[r:=800-384, c:=384]$.
+This confirms that there exists a set of values for the variables such that the preimage can be obtained from the hash value for the \KECCAK{}$[r:=800-384,\; c:=384]$. The idea's of this work is used in the paper~\cite{rns2018} to mount a pre-image attack on 384-bit \SHA-$3$ hash function.
 
 
 \paragraph{Remark:
-In this attack, the values $d_0, d_1$ lanes are fixed to be equal to $0$ as shown in Equation~(\ref{cond_state1}) because otherwise, these variables would have increased the number of solutions, due to shifting by $\rho$. 
-And this would have increased the complexity of the attack. We chose to eliminate their effects by setting them to $0$. For further implementation details, we refer to the Section~6.4 of the paper~\cite{naya2011practical}. Also due to the padding rule on the message, the assignment to the $c_1[31]$ bit should be 1. This happens with probability $\tfrac{1}{2}$. On failure we can repeat the attack by setting any value to $d_0$,$d_1$ which satisfies $d_0[i]=d_1[i]$. \\
-Also, we can find second preimages also by setting $d_0$,$d_1$ to a constant such that it satisfies $d_0[i]=d_1[i]$ and the repeating the attack for this setting.
+In this attack, the values $d_0,\;d_1$ lanes are fixed to be equal to $0$ as shown in Equation~(\ref{cond_state1}) because otherwise, these variables would have increased the number of solutions, due to shifting by $\rho$. 
+And this would have increased the complexity of the attack. We chose to eliminate their effects by setting them to $0$. For further implementation details, we refer to the Section~6.4 of the paper~\cite{naya2011practical}. Also due to the padding rule on the message, the assignment to the $c_1[31]$ bit should be 1. This happens with probability $\tfrac{1}{2}$. On failure we can repeat the attack by setting any value to $d_0$, $d_1$ which satisfies $d_0[i]=d_1[i]$. \\
+Also, we can find second preimages also by setting $d_0$, $d_1$ to a constant such that it satisfies $d_0[i]=d_1[i]$ and the repeating the attack for this setting.
 }
 
 Because of the above remark, the overall cost of the attack is $2\cdot 2^{43}$ i.e., $O(2^{44})$.

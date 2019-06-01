@@ -202,7 +202,7 @@
       Thesis title: \textbf{\@title} \\
     \end{center}
     \begin{singlespace}
-      Name of Thesis Supervisor: \textbf{\@advisorname}
+      Thesis Supervisors: \textbf{\@advisorname}
     \end{singlespace}
     Month and year of thesis submission: \textbf{\@date} \\
     \vspace{1 cm} \\
