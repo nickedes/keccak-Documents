@@ -14,14 +14,14 @@ In a preimage attack, the attacker can derive a message from the digest of the h
 
 There are some improved preimage attacks for $2$ rounds of \KECCAK-$384$, \KECCAK-$512$ proposed by Guo \etal in ~\cite{guo2016linear} which have complexities better than brute-force attacks but are still not practical. Similarly, there are many theoretical attacks on four \SHA-$3$ functions for a different number of rounds which are better than brute-force. Improving and achieving practical preimage attacks for reduced-round variants of \KECCAK{} is an active area of research and in this thesis, we address the same.
 
-In \cite{guo2016linear}, Guo \etal describe their techniques for preimage attacks where they use linear structures to linearize variables up to $3$ rounds. The Linear structures are the states of \KECCAK{} state which have a certain number of free linear variables, these free variables provide us with degrees of freedom which help in improving over brute-force attacks. These free variables form the linear structure. So, the higher the number of free variables the better the complexity of attack we can achieve provided the system of equations remains linear.
+In \cite{guo2016linear}, Guo \etal describe their techniques for preimage attacks where they use linear structures to linearize variables up to $3$ rounds. The linear structures are the states of \KECCAK{} state which have a certain number of free linear variables, these free variables provide us with degrees of freedom which help in improving over brute-force attacks. These free variables form the linear structure. So, the higher the number of free variables the better the complexity of attack we can achieve provided the system of equations remains linear.
 
 In this type of attack, we set message variables in the rate part in such a way that the state remains a linear structure for the number of required rounds. Here, we go forward with the message variables for (number of rounds - 1) $+$ half round, considering the state is linear structure and rest of round we go backward from the hash, and then build a system of linear equations and solve it to get the values of message variables. So, after a message is found from the hash we get the preimage successfully. This is a meet in the middle approach of attacking the system.
 
 \section{Preimage Attacks on 2-round \KECCAK}
 
-In this section, we will discuss some of the existing preimage attacks on $2$ rounds of round-reduced \KECCAK{} proposed in ~\cite{guo2016linear}. 
-The figure~\ref{fig:linkeccakstate} used for denoting \KECCAK{} state, the numbers $x,y$ in each cell denotes the position of these lanes in the state.
+In this section, we will discuss some of the existing preimage attacks on $2$ rounds of round-reduced \KECCAK{} proposed in~\cite{guo2016linear}. 
+The figure~\ref{fig:linkeccakstate} used for denoting \KECCAK{} state, the numbers $x,\;y$ in each cell denotes the position of these lanes in the state.
 
 \begin{figure}
     \centering
@@ -33,7 +33,7 @@ The figure~\ref{fig:linkeccakstate} used for denoting \KECCAK{} state, the numbe
 
 \subsection{Preimage Attack on 2-round \KECCAK-512}
 \label{section2RKeccak512}
-This attack, due to~\cite{guo2016linear}, is for $2$ rounds of \KECCAK-$512$, it uses meet in the middle approach. The first round is kept linear by linear structure and the last round, i.e.\ the second round, is inverted from the given hash value. From the given hash, they invert $\iota$ as its the simple addition of round constant for the particular round, followed by inverting only row-$0$ by the $\chi$ operation. This attack is for \KECCAK-$512$, so the hash length is $512$ i.e., $8$ lanes. Since the $\chi$ operation is like a sbox for a $row$, they invert the first row using the Observation~\ref{ob1}. So till now, we have the values of the first row of the state just before last round steps $\iota \circ \chi$. Now, Guo \etal focus on proceeding one round forward, so start with a state where lanes $(0,0), (0,1), (2,0) $ and $(2,1)$ are set as variables, rest of the part of the $rate$ is assigned random values and the $capacity$ part remains $0$ as shown in Figure~\ref{fig:2rkeccak512} where the yellow colored lanes represent variables i.e. $(0,0),\;(0,1)$ in column $0$ and $(2,0),\;(2,1)$ in column $2$. Also, the structure of the states in Figure~\ref{fig:2rkeccak512} is the same as in Figure~\ref{fig:linkeccakstate}. Lanes in white represent random values assigned to them and lanes in gray are set to all zeros in the $capacity$ part in Figure~\ref{fig:2rkeccak512}.
+This attack, due to Guo \etal\cite{guo2016linear}, is for $2$ rounds of \KECCAK-$512$, it uses meet in the middle approach. The first round is kept linear by linear structure and the last round, i.e.\ the second round, is inverted from the given hash value. From the given hash, they invert $\iota$ as its the simple addition of round constant for the particular round, followed by inverting only row-$0$ by the $\chi$ operation. This attack is for \KECCAK-$512$, so the hash length is $512$ i.e., $8$ lanes. Since the $\chi$ operation is like a sbox for a $row$, they invert the first row using the Observation~\ref{ob1}. So till now, we have the values of the first row of the state just before last round steps $\iota \circ \chi$. Now, Guo \etal focus on proceeding one round forward, so start with a state where lanes $(0,0),\; (0,1),\; (2,0) $ and $(2,1)$ are set as variables, rest of the part of the $rate$ is assigned random values and the $capacity$ part remains $0$ as shown in Figure~\ref{fig:2rkeccak512} where the yellow colored lanes represent variables i.e. $(0,0),\;(0,1)$ in column $0$ and $(2,0),\;(2,1)$ in column $2$. Also, the structure of the states in Figure~\ref{fig:2rkeccak512} is the same as in Figure~\ref{fig:linkeccakstate}. Lanes in white represent random values assigned to them and lanes in gray are set to all zeros in the $capacity$ part in Figure~\ref{fig:2rkeccak512}.
 \begin{figure}
     \centering
     \resizebox{\linewidth}{!}{
@@ -56,11 +56,13 @@ Further, build a system of linear equations from the equations of the first row 
         
 In the above method, initially there were $4$ variables lanes and after imposing $2$ conditions for the $\theta$ step, we are left with $2$ free variables each of $64$-bit namely $A[0,0]$ and $A[2, 0]$. So we observe a complexity gain over brute-force by the size of the free variables.
 
-Hence the complexity of the attack comes out to be $2^{512 - 64 - 64} = 2^{512 - 128} = 2^{384}$. For an attack to be possible, the degrees of freedom should be greater than $512$. We have $5$ random white lanes, $2$ variable lanes, and $2$ random constants i.e. $\alpha_{0}, \alpha_{2}$, and all of these are of size $w = 64$ in our discussion. So the total degree of freedom comes out to be $ 9 \cdot 64 = 576$ which is greater than $512$ and this indicates that a solution is possible.
+Hence the complexity of the attack comes out to be $2^{512 - 64 - 64} = 2^{512 - 128} = 2^{384}$. For an attack to be possible, the degrees of freedom should be greater than $512$. We have $5$ random white lanes, $2$ variable lanes, and $2$ random constants i.e. $\alpha_{0},\; \alpha_{2}$, and all of these are of size $w = 64$ in our discussion. So the total degree of freedom comes out to be $ 9 \cdot 64 = 576$ which is greater than $512$ and this indicates that a solution is possible.
 
 \subsection{Preimage Attack on 2-round \KECCAK-384}
 \label{section2RKeccak384}
-This attack, due to~\cite{guo2016linear} is very similar to the above attack for $2$ rounds of \KECCAK-$512$ described in section~\ref{section2RKeccak512}. We start with $6$ variable lanes with $A[0, 2] = A[0, 0] \oplus A[0, 1] \oplus \alpha_0$ and $A[2, 2] = A[2, 0] \oplus A[2, 1] \oplus \alpha_2$, where $\alpha_{0}, \alpha_{2}$ are random constants. So that $\theta$ step doesn't spread variables. We, then, proceed for the $1.5$ rounds forward and proceed backwards from the hash by applying $\chi^{-1} \circ \iota^{-1}$. Thus we set up a system of linear equations for $256$-bits and solve for message variables. Finally we check the obtained hash for correctness. Hence we observe a complexity gain over brute-force by the size of the free variables hence the complexity of the attack comes out to be $2^{384 - 4 \cdot 64} = 2^{384 - 256} = 2^{128}$. To meet the padding requirements in the worst case the complexity will be $2^{129}$.
+This attack is again due to Guo \etal\cite{guo2016linear} and is very similar to the attack for $2$ rounds of \KECCAK-$512$ described in Section~\ref{section2RKeccak512}. We start with $6$ variable lanes with $A[0, 2] = A[0, 0] \oplus A[0, 1] \oplus \alpha_0$ and $A[2, 2] = A[2, 0] \oplus A[2, 1] \oplus \alpha_2$, where $\alpha_{0},\; \alpha_{2}$ are random constants. So that $\theta$ step does not spread variables. We, then, proceed for the $1.5$ rounds forward and proceed backwards from the hash by applying $\chi^{-1} \circ \iota^{-1}$. Thus we set up a system of linear equations for $256$-bits and solve for the message variables.
+ Finally we check the obtained hash for correctness. 
+ Thus we observe a complexity gain over brute-force by the size of the free variables and hence the complexity of the attack comes out to be $2^{384 - 4 \cdot 64} = 2^{384 - 256} = 2^{128}$. To meet the padding requirements in the worst case the complexity will be $2^{129}$.
 
 \subsection{Practical Preimage Attack on 2-round \KECCAK-256}\label{section2RKeccak256}
     \begin{figure}
@@ -72,17 +74,17 @@ This attack, due to~\cite{guo2016linear} is very similar to the above attack for
         \label{fig:2rkeccak256}
     \end{figure}
 
-    This attack was proposed in~\cite{guo2016linear} for $2$ rounds of \KECCAK-$256$. The attack for $2$ rounds of \KECCAK-$256$ is very similar to the attack for $2$ rounds of \KECCAK-$384$ as described in section~\ref{section2RKeccak384}. In the initial state, the message variables are in lanes $(0, 0),\;(0, 1),\;(0, 2),\;(2, 0),\;(2, 1),\;(2, 2)$, rest all lanes in rate part can take any random value as shown in Figure~\ref{fig:2rkeccak256}. We keep the sum of variables in columns $0$ and $2$ constant by choosing the sum of variables in these columns to be $\alpha_0$ and $\alpha_2$ respectively, where $\alpha_0, \alpha_2$ are random constants. Due to these conditions, the parity of columns $0, 2$ is constant and $\theta$ step would affect the full state only by a constant value.
+    This attack was proposed in~\cite{guo2016linear} for $2$ rounds of \KECCAK-$256$. The attack for $2$ rounds of \KECCAK-$256$ is very similar to the attack for $2$ rounds of \KECCAK-$384$ as described in section~\ref{section2RKeccak384}. In the initial state, the message variables are in lanes $(0, 0),\;(0, 1),\;(0, 2),\;(2, 0),\;(2, 1),\;(2, 2)$, rest all lanes in rate part can take any random value as shown in Figure~\ref{fig:2rkeccak256}. We keep the sum of variables in columns $0$ and $2$ constant by choosing the sum of variables in these columns to be $\alpha_0$ and $\alpha_2$ respectively, where $\alpha_0,\; \alpha_2$ are random constants. Due to these conditions, the parity of columns $0,\; 2$ is constant and $\theta$ step would affect the full state only by a constant value.
     
-    For \KECCAK-$256$, length of digest is $d = 256 \rightarrow 4$ lanes and capacity $c = 512 \rightarrow 8$ lanes. We can get $4$ linear equations on the input bits of $\chi$ given $4$ output bits out of the $5$-bits using the Observation~\ref{ob3}. Therefore, we need $4$ variables in our state to build a linear system of $256$-bit equation. We have $h_0, h_1, h_2, h_3$  hash lanes in the output. By using the property of $\chi$, we can get $4$ linear equations on the input to the $\chi$ when $4$ output bits are given. The above is true for each lane in row $0$. i.e. we can get $4 \cdot 64$ linear equations on the input state to the $\chi$ step.
+    For \KECCAK-$256$, length of digest is $d = 256 \rightarrow 4$ lanes and capacity $c = 512 \rightarrow 8$ lanes. We can get $4$ linear equations on the input bits of $\chi$ given $4$ output bits out of the $5$-bits using the Observation~\ref{ob3}. Therefore, we need $4$ variables in our state to build a linear system of $256$-bit equation. We have $h_0,\; h_1,\; h_2,\; h_3$  hash lanes in the output. By using the property of $\chi$, we can get $4$ linear equations on the input to the $\chi$ when $4$ output bits are given. The above is true for each lane in row $0$. i.e. we can get $4 \cdot 64$ linear equations on the input state to the $\chi$ step.
     
-    So, we build the initial state such that we have $4 \cdot 64$ free variables. Take $A[0, 0] = A[0, 1] \oplus A[0, 2] \oplus \alpha_0$ and $A[2, 0] = A[2, 1] \oplus A[2, 2] \oplus \alpha_2$. The state remains linear after $1$ round and half-round i.e. $\pi \circ \rho \circ \theta$, initially there were $6$ variable lanes and after imposing $2$ conditions for $\theta$, we are left with $4$ free variables each of $64$-bit namely $A[0,1], A[0,2], A[2,1], A[2,2]$ i.e. the linear structure. We observe a complexity gain over brute-force by size of linear structure, hence the time complexity of attack$\;= 2^{256 - 256} = 2^{0} = 1$.
+    So, we build the initial state such that we have $4 \cdot 64$ free variables. Take $A[0, 0] = A[0, 1] \oplus A[0, 2] \oplus \alpha_0$ and $A[2, 0] = A[2, 1] \oplus A[2, 2] \oplus \alpha_2$. The state remains linear after $1$ round and half-round i.e. $\pi \circ \rho \circ \theta$, initially there were $6$ variable lanes and after imposing $2$ conditions for $\theta$, we are left with $4$ free variables each of $64$-bit namely $A[0,1],\; A[0,2],\; A[2,1],\; A[2,2]$ i.e. the linear structure. We observe a complexity gain over brute-force by size of linear structure, hence the time complexity of attack$\;= 2^{256 - 256} = 2^{0} = 1$.
     
     By solving the system of linear equations we get a solution in constant time. Though earlier in $2011$ a practical attack was proposed in~\cite{naya2011practical} but of complexity, $2^{33}$ and by the method of linear-structures Guo \etal in~\cite{guo2016linear} were able to compute the preimage in constant time.
 
 \section{Preimage Attacks on 3-round \KECCAK{}}
 
-In this section, we will discuss some of the existing preimage attacks proposed in~\cite{guo2016linear} on $3$ rounds of round-reduced \KECCAK{}.
+In this section, we will discuss some of the existing preimage attacks proposed in~\cite{guo2016linear} for $3$ rounds of round-reduced \KECCAK{}.
 
 \subsection{Preimage Attacks on 3-round \KECCAK-384, \KECCAK-512}
 \label{3rkeccak512attack}
@@ -91,29 +93,37 @@ The 3 rounds of \KECCAK{} can be summarized as:
     M \xrightarrow[\text{1.5 rounds}]{ \pi \circ \rho \circ \theta \circ R} A \xrightarrow[]{ \iota \circ \chi } B \xrightarrow[]{ \theta } C \xrightarrow[]{ \pi \circ \rho } | \xleftarrow[]{ \chi^{-1} \circ \iota^{-1} } h  
     \end{equation}
 
-  For $3$ rounds of \KECCAK-$512$, Guo \etal extend their attack on $2$ rounds of \KECCAK-$512$, as described in section~\ref{section2RKeccak512}. In the initial state there are $4$ variable lanes but after first $\theta$ only $2$ variable lanes are left so that the effect of $\theta$ is constant. So, we have only $128$ free variables. Then $\pi \circ \rho$ just permutate the variable lanes and after $\chi$ step the number of linear terms increases. So after the first round, almost all columns have at least one variable lane (except the 3rd column as shown in Figure~\ref{fig:2rkeccak512} ). Due to this, after $\theta$ step of the second round, the full state becomes linear and the $\pi \circ \rho$ further don't introduce any non-linear term, they only change the positions of lanes and rotate them, so the state is still linear.  These are the first $1.5$ rounds of \KECCAK{} where $0.5$ round includes only the first three step mappings i.e $\theta, \rho, \pi$. Hence the state after $1.5$ rounds i.e. $A$ remains linear.
+  For $3$ rounds of \KECCAK-$512$, Guo \etal extend their attack on $2$ rounds of \KECCAK-$512$, as described in section~\ref{section2RKeccak512}. In the initial state there are $4$ variable lanes but after first $\theta$ only $2$ variable lanes are left so that the effect of $\theta$ is constant. So, we have only $128$ free variables. Then $\pi \circ \rho$ just permutate the variable lanes and after $\chi$ step the number of linear terms increases. So after the first round, almost all columns have at least one variable lane (except the 3rd column as shown in Figure~\ref{fig:2rkeccak512} ). Due to this, after $\theta$ step of the second round, the full state becomes linear and the $\pi \circ \rho$ further do not introduce any non-linear term, they only change the positions of lanes and rotate them, so the state is still linear.  These are the first $1.5$ rounds of \KECCAK{} where $0.5$ round includes only the first three step mappings i.e $\theta,\; \rho,\; \pi$. Hence the state after $1.5$ rounds i.e. $A$ remains linear.
   
   Following this is the $\chi$ of the second round since the input to $\chi$ contains linear terms and as we know $\chi$ is a non-linear operation so the output state after $\chi$ is a non-linear i.e. quadratic state. Dealing with non-linear terms is not easy, so the idea is to linearize the quadratic terms and try to reduce the complexity as compared to a brute-force attack.
 
-  So, the bits input to step $\chi$ of the second round are all linear. We can directly invert the first 320 bits through $\chi^{-1}$ from the given hash value of $8$ lanes. Of the inverted state, each bit is a sum of $11$ bits (due to $\theta$ step) of the output of the second round though they will be permuted by $\rho, \pi$.
+  Since the bits input to step $\chi$ of the second round are all linear.
+   We can directly invert the first $320$ bits through $\chi^{-1}$ from
+    the given hash value of $8$ lanes. Of the inverted state, each bit
+     is a sum of $11$ bits (due to $\theta$ step) of the output of the
+      second round though they will be permuted by $\rho, \pi$.
 
-  Based on Equation~\ref{3r_eq}, we can express $C[x][y][z]$ in terms of $B[x][y][z]$, where  
+  Based on Equation~\ref{3r_eq}, we can express $C[x][y][z]$ in terms of $B[x][y][z]$ i.e.,  
 \begin{equation}\label{Cexpression}
  C[x][y][z] = B[x][y][z] \oplus \oplus_{y' = 0}^{4} B[x-1][y'][z] \oplus \oplus_{y' = 0}^{4} B[x+1][y'][z-1]
 \end{equation}
-  Open all the expressions in Equation~\ref{Cexpression} and separate two terms $B[x][y][z]$ and $B[x-1][y][z]$ and the rest of the $9$ terms remain as it is.
-    So we can further say that, 
-        \[ B[x][y][z] \oplus B[x-1][y][z] = (a \oplus c + b) \oplus d
-    \]
-    where,
-         \[
-        a = A[x][y][z], b = A[x + 1][y][z], c = A[x + 2][y][z], d = A[x - 1][y][z]
-    \]
-    So guessing $b$ and other $9$ terms in Equation~\ref{Cexpression} would make $C[x][y][z]$ linear. Hence, we linearize $C[x][y][z]$ by guessing $10$ bits input to step $\chi$. These $10$ terms include $A[x + 1][y][z],\;B[x + 1][\cdot][z-1]$ and $B[x-1][y'][z]$, where $0 \leq y' \leq 4 \text{ and } y' \neq y$. Hence, we obtain $1 + 10$ linear equations, by these linear equations we can match the hash value bit corresponding to $C[x][y][z]$. So $11$ linear equations for $1$ bit of hash value. For $3$ rounds of $\KECCAK$-$512$ we have only $128$ variable bits, so we can match $128/11 = 11$ bits of the hash value.
-    
+  By opening all the expressions in Equation~\ref{Cexpression} and separating two terms $B[x][y][z]$ and $B[x-1][y][z]$, we have
+\begin{equation}
+ B[x][y][z] \oplus B[x-1][y][z] = (a \oplus c + b) \oplus d
+\end{equation}
+ where,
+\begin{eqnarray}
+   a = A[x][y][z], b = A[x + 1][y][z], c = A[x + 2][y][z], d = A[x - 1][y][z].
+\end{eqnarray}
+ 
+    By guessing $b$ and other $9$ terms in the
+     Equation~\ref{Cexpression} we can make $C[x][y][z]$ linear. 
+    Hence, we linearize $C[x][y][z]$ by guessing $10$ bits input to step $\chi$.
+     These $10$ terms include $A[x + 1][y][z],\;B[x + 1][\cdot][z-1]$ and $B[x-1][y'][z]$, where $0 \leq y' \leq 4 \text{ and } y' \neq y$. 
+     Hence, we obtain $1 + 10$ linear equations, by these linear equations we can match the hash value bit corresponding to $C[x][y][z]$. So $11$ linear equations for $1$ bit of hash value. For $3$ rounds of $\KECCAK$-$512$ we have only $128$ variable bits, so we can match $128/11 = 11$ bits of the hash value.
     Time complexity of preimage attack $= 2^{512 - 11} = 2^{501}$.
 
-    \textbf{Note:} There is an improvement for the above attack and is described in section~\ref{improvedkeccak512} by which attack complexity comes out to be $2^{482}$.
+   \noindent\textit{Note:} There is an improvement for the above attack and is described in section~\ref{improvedkeccak512} by which attack complexity comes out to be $2^{482}$.
 
 	The same attack can also be applied for attacking $3$ rounds of \KECCAK-$384$, where we have $4$ variable lanes as described in section~\ref{section2RKeccak384}. The $4$ variable lanes are $A[0,1],\; A[0,2],\; A[2,1],\; A[2,2]$ but we need to set the last bit of $A[2,2]$ to $1$ to satisfy padding rule. Hence we are left with $4 \cdot 64 - 1 = 255$ variable bits.
     
@@ -133,7 +143,7 @@ The 3 rounds of \KECCAK{} can be summarized as:
         \]
         By guessing $A[x+1][y][z]$ we make both of the above equations linear. Hence we guess terms $A[x+1][y'][z]$ where $0 \leq y' \leq 4$. Due to this, the non-linear terms $B[x][\cdot][z]$ and $B[x-1][\cdot][z]$ are linearized.
         
-        Similarly to linearize $B[x+1][.][z-1], B[x+2][.][z-1]$ we guess $A[x+3][y'][z-1]$ where $0 \leq y' \leq 4$.
+        Similarly to linearize $B[x+1][.][z-1],\; B[x+2][.][z-1]$ we guess $A[x+3][y'][z-1]$ where $0 \leq y' \leq 4$.
         
         The expression for $C[x][y][z]$ in terms of state $B$ is,        
         \[
@@ -157,7 +167,7 @@ After applying constraints to keep $\theta$ on the message state as identity,  o
 
 So, $state2$ on applying $\theta \circ \iota \circ \chi$ gives $state3$. In this method instead of directly computing the values of all message variables corresponding to the hash value they build solutions for smaller groups. 
 
-For \KECCAK-$256$ we consider lane size $w = 64$, we start with building all possible solutions for some groups of $3$ slices of $state2$ and checking that these solutions match the values of $state3$. This required generating all possible solutions for the message variables in these $3$ slices and then discarding those solutions which don't satisfy the constraints.
+For \KECCAK-$256$ we consider lane size $w = 64$, we start with building all possible solutions for some groups of $3$ slices of $state2$ and checking that these solutions match the values of $state3$. This required generating all possible solutions for the message variables in these $3$ slices and then discarding those solutions which do not satisfy the constraints.
 
 Further, the solutions of the groups of $3$-slices are merged to give solutions for groups of $6$-slices and in this process we get the value of the $1$st slice of the second group because it depends on the last slice of the previous group in $\theta$ step. Further pruning of the solutions is done based on constraints due to the repetitions of variables amongst these $6$-slices.
 
@@ -173,7 +183,7 @@ This attack has time as well as space complexity, due to the size of the solutio
 
 \section{Collision Attacks on \KECCAK{}}
 
-A collision attack on cryptographic hash function means that the attack is able to generate two different input messages $M_1, M_2$ to the hash function $h(.)$ such that, hash of both the messages is same i.e. $h(M_1) = h(M_2)$.
+A collision attack on cryptographic hash function means that the attack is able to generate two different input messages $M_1,\; M_2$ to the hash function $h(.)$ such that, hash of both the messages is same i.e. $h(M_1) = h(M_2)$.
 
 In general, we can obtain a collision attack by generating random messages and obtaining their hashes and storing this hash in a table. While storing the hash in the table if the same hash already exists then we have found a collision, otherwise, we store it in the table. This is also known as the birthday attack. If the output of the hash function is a $n$-bit hash, then the birthday attack yields a collision in $2^{n/2}$ computations of the hash function.
 
@@ -196,7 +206,7 @@ Let $M_2 = b || \beta \oplus \alpha$, where the first message block consists of 
 \[
     f(M_2) \rightarrow f\left( f(b) \oplus \beta \oplus \alpha \right) \rightarrow f\left( \beta \oplus \beta \oplus \alpha || c \right) \rightarrow f\left( \left[\alpha || c\right] \right) \rightarrow S_1
 \]
-Both $M_1, M_2$ yield same state $S_1$ after applying hash function $f$, so a collision is found. But this method depends on the collision in the $capacity$ part of the state which requires $2^{c/2}$ computations of the hash function by birthday attack. So the actual complexity for the collision attack of \KECCAK{} hash function with a hash of size $d$-bits and capacity of $c$ bits is $min\left( 2^{c/2}, 2^{d/2}\right)$.
+Both $M_1,\; M_2$ yield same state $S_1$ after applying hash function $f$, so a collision is found. But this method depends on the collision in the $capacity$ part of the state which requires $2^{c/2}$ computations of the hash function by birthday attack. So the actual complexity for the collision attack of \KECCAK{} hash function with a hash of size $d$-bits and capacity of $c$ bits is $\min\left( 2^{c/2}, 2^{d/2}\right)$.
 
-\KECCAK{} didn't observed much collision attacks before the year $2011$. In the year $2011$, the first practical collision attack on $2$ rounds of round reduced \KECCAK-$256$ was proposed by~\cite{naya2011practical}. They used a low weight differential trail to find a collision for $2$ rounds of \KECCAK-$256$ with time complexity of $2^{33}$. Further in $2011$ Dinur \etal extended this attack to $4$ rounds by using round connectors and target difference algorithm. Dinur \etal in $2012$ proposed near-collisions for $5$ rounds of \KECCAK-$224$ and \KECCAK-$256$ in~\cite{dinur2012new}. Later in the year $2012$, Dinur \etal further extended their collision attack to $5$ rounds of \KECCAK-$256$ and gave practical collision attacks for $3$ rounds of \KECCAK-$384$, \KECCAK-$512$ using the technique of internal differential cryptanalysis which was based on subset cryptanalysis in~\cite{dinur2013collision}. In the year $2017$, Song \etal gave practical collision attacks for $5$ rounds of \KECCAK-$224$ and $6$ rounds of \KECCAK$[1440, 160, 160]$ using the technique of non-full linearization for the \KECCAK{} sbox in~\cite{song2017non}.
+\KECCAK{} did not observe much collision attacks before the year $2011$. In the year $2011$, the first practical collision attack on $2$ rounds of round reduced \KECCAK-$256$ was proposed by~\cite{naya2011practical}. They used a low weight differential trail to find a collision for $2$ rounds of \KECCAK-$256$ with time complexity of $2^{33}$. Further in $2011$, Dinur \etal extended this attack to $4$ rounds by using round connectors and target difference algorithm. Dinur \etal in $2012$ proposed near-collisions for $5$ rounds of \KECCAK-$224$ and \KECCAK-$256$ in~\cite{dinur2012new}. Later in the year $2012$, Dinur \etal further extended their collision attack to $5$ rounds of \KECCAK-$256$ and gave practical collision attacks for $3$ rounds of \KECCAK-$384$, \KECCAK-$512$ using the technique of internal differential cryptanalysis which was based on subset cryptanalysis in~\cite{dinur2013collision}. In the year $2017$, Song \etal gave practical collision attacks for $5$ rounds of \KECCAK-$224$ and $6$ rounds of \KECCAK$[1440,\; 160,\; 160]$ using the technique of non-full linearization for the \KECCAK{} sbox in~\cite{song2017non}.
 
