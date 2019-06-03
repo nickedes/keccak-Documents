@@ -373,13 +373,15 @@ In the long term, we hope the community will find this work useful and this will
 
 \chapter{Some Insights for Preimage Attacks on $3$ and $4$ rounds of \KECCAK{} and Future Work}
 
-In this chapter, we will share some insights for theoretical attacks on $3$ and $4$ rounds of \KECCAK{}, more especially for \KECCAK-$256$ and \KECCAK-$224$. These attacks use the techniques of linearization suggested by Guo \etal in~\cite{guo2016linear}. We further stress here that they need to be verified and checked thoroughly for correctness. We plan to take it also one of our future work.
+In this chapter, we share some insights for theoretical attacks on $3$ and $4$ rounds of \KECCAK{}, more especially for \KECCAK-$256$ and \KECCAK-$224$. These attacks use the techniques of linearization suggested by Guo \etal in~\cite{guo2016linear}. 
+We further stress here that these insights need to be verified and checked thoroughly for correctness. We plan to take it as one of our future work.
 
 \section{Preimage Attack on 3 rounds of \KECCAK-256}
 \label{3rkeccak256}
 The attack draws motivation from the preimage attack on $2$ rounds of \Keccak-$256$ using the idea of linear structure as described in Section~\ref{section2RKeccak256}.
 
-\Keccak-$256$ structure has capacity $c = 256 \cdot 2 = 512 = 8$ lanes and rate $=25-8=17$ lanes. We increase the number of variable lanes for this attack as compared to structure used for attacking $2$ rounds of \Keccak-$256$ as shown in Figure~\ref{fig:2rkeccak256}, by keeping the lanes $(0,0),\;(0,1),\;(0,2),\; (0,3)$ and $(2,0),\; (2,1),\; (2,2)$ as variables in columns $0$ and $2$ respectively as shown in Figure~\ref{fig:3rkeccak256}. The yellow colored lanes represents the variables in the state, the white lanes represent any random constant and the gray lanes are the $0$ lanes. The orange colored lanes in the state $B$ represent non-linear terms in the Figure~\ref{fig:3rkeccak256}.
+\Keccak-$256$ structure has capacity $c = 256 \cdot 2 = 512 = 8$ lanes and rate $r=25-8=17$ lanes. We increase the number of variable lanes for this attack as compared to structure used for attacking $2$ rounds of \Keccak-$256$ as shown in Figure~\ref{fig:2rkeccak256}, by keeping the lanes $(0,0),\;(0,1),\;(0,2),\; (0,3)$ and $(2,0),\; (2,1),\; (2,2)$ as variables in columns $0$ and $2$ respectively as shown in Figure~\ref{fig:3rkeccak256}. 
+The yellow colored lanes are variables in the state, the white lanes represent random constants and the gray lanes are the $0$ lanes. The orange colored lanes in the state $B$ represent non-linear terms in the Figure~\ref{fig:3rkeccak256}.
 
 \begin{figure}[H]
         \centering
@@ -401,10 +403,10 @@ The attack draws motivation from the preimage attack on $2$ rounds of \Keccak-$2
 \end{enumerate}
 where $\alpha_0,\; \alpha_2$ are random constants.
 Due to the above constraints, the state remains linear and the variables do not spread after application of $\theta$ step mapping as shown in the second state of the Figure~\ref{fig:3rkeccak256}. 
-Further applying $\pi \circ \rho$ on the second state, permutes the positions of the lanes as well as rotations within the lane. 
+Further an application of $\pi \circ \rho$ on the second state, permutes the positions of lanes followed by rotations within the lane. 
 Following this, $\iota \circ \chi$ step is applied to the third state to obtain the fourth state, which is a linear state. 
 As explained in observation~\ref{ob5} since $\chi$ is a row-dependent operation and each row in the third state contains at most $2$ variables which are not adjacent therefore the resultant row after applying $\chi$ does not contain any quadratic variables.
-Hence after applying $\iota \circ \chi \circ \pi \circ \rho \circ \theta $ i.e. one round on the initial state, the output state remains linear.
+Hence after applying $\iota \circ \chi \circ \pi \circ \rho \circ \theta $ i.e., one round on the initial state, the output state remains linear.
 
 Moving on to the second round, the state remains linear even after application of $\pi \circ \rho \circ \theta$, since these step mappings are linear and they do not introduce any non-linear terms. The input state (i.e. state $A$ as shown in Figure~\ref{fig:3rkeccak256}) to $\chi$ step of the second round is linear. Each row of state $A$ contains adjacent linear variables, therefore, we obtain non-linear terms in state $B$ after applying $\chi$ step. This is due to the fact that $\chi$ is a non-linear operation.
 
