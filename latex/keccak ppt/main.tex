@@ -132,40 +132,27 @@
 \author{Nikhil Mittal} % Your name
 \institute[17111056] % Your institution as it will appear on the bottom of every slide, may be shorthand to save space
 {
-  \usetheme{Madrid}       % or try default, Darmstadt, Warsaw, ...
-  \usecolortheme{default} % or try albatross, beaver, crane, ...
-  \usefonttheme{serif}    % or try default, structurebold, ...
-  \setbeamertemplate{navigation symbols}{}
-  \setbeamertemplate{caption}[numbered]
-} 
-
-\usepackage[english]{babel}
-\usepackage[utf8x]{inputenc}
-\usepackage{chemfig}
-\usepackage[version=3]{mhchem}
-
-% On Overleaf, these lines give you sharper preview images.
-% You might want to `comment them out before you export, though.
-\usepackage{pgfpages}
-\pgfpagesuselayout{resize to}[%
-  physical paper width=8in, physical paper height=6in]
-
-% Here's where the presentation starts, with the info for the title slide
-\title[Molecules in \LaTeX{}]{A short presentation on molecules in \LaTeX{}}
-\author{J. Hammersley}
-\institute{www.overleaf.com}
-\date{\today}
+	Under supervision of \\
+	\large Prof. Manindra Agrawal and Dr. Shashank Singh\\
+	\medskip
+	IIT Kanpur \\ % Your institution for the title page
+	\medskip
+	\textit{nickedes@cse.iitk.ac.in} % Your email address
+}
+\date{\today} % Date, can be changed to a custom date
+% \documentclass[border=10pt]{standalone}
 
 \begin{document}
-
-\begin{frame}
-  \titlepage
+	\setbeamertemplate{caption}{\raggedright\insertcaption\par}
+	
+	\begin{frame}
+	\titlepage % Print the title page as the first slide
 \end{frame}
 
-% These three lines create an automatically generated table of contents.
-\begin{frame}{Outline}
-  \tableofcontents
-\end{frame}
+%\begin{frame}
+%\frametitle{Table of Contents}
+%\tableofcontents
+%\end{frame}
 
 \section{Introduction}
 
