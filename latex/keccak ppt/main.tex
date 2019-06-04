@@ -1,37 +1,136 @@
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Overleaf (WriteLaTeX) Example: Molecular Chemistry Presentation
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Beamer Presentation
+% LaTeX Template
+% Version 1.0 (10/11/12)
 %
-% Source: http://www.overleaf.com
+% This template has been downloaded from:
+% http://www.LaTeXTemplates.com
 %
-% In these slides we show how Overleaf can be used with standard 
-% chemistry packages to easily create professional presentations.
-% 
-% Feel free to distribute this example, but please keep the referral
-% to overleaf.com
-% 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% How to use Overleaf: 
+% License:
+% CC BY-NC-SA 3.0 (http://creativecommons.org/licenses/by-nc-sa/3.0/)
 %
-% You edit the source code here on the left, and the preview on the
-% right shows you the result within a few seconds.
-%
-% Bookmark this page and share the URL with your co-authors. They can
-% edit at the same time!
-%
-% You can upload figures, bibliographies, custom classes and
-% styles using the files menu.
-%
-% If you're new to LaTeX, the wikibook is a great place to start:
-% http://en.wikibooks.org/wiki/LaTeX
-%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%----------------------------------------------------------------------------------------
+%    PACKAGES AND THEMES
+%----------------------------------------------------------------------------------------
 
 \documentclass{beamer}
 
-% For more themes, color themes and font themes, see:
-% http://deic.uab.es/~iblanes/beamer_gallery/index_by_theme.html
-%
-\mode<presentation>
+\mode<presentation> {
+	
+	% The Beamer class comes with a number of default slide themes
+	% which change the colors and layouts of slides. Below this is a list
+	% of all the themes, uncomment each in turn to see what they look like.
+	
+	%\usetheme{default}
+	%\usetheme{AnnArbor}
+	%\usetheme{Antibes}
+	%\usetheme{Bergen}
+	%\usetheme{Berkeley}
+	%\usetheme{Berlin}
+	%\usetheme{Boadilla}
+	%\usetheme{CambridgeUS}
+	%\usetheme{Copenhagen}
+	%\usetheme{Darmstadt}
+	%\usetheme{Dresden}
+	%\usetheme{Frankfurt}
+	%\usetheme{Goettingen}
+	%\usetheme{Hannover}
+	%\usetheme{Ilmenau}
+	%\usetheme{JuanLesPins}
+	%\usetheme{Luebeck}
+	\usetheme{Madrid}
+	% \usepackage{listings}
+	%\usetheme{Malmoe}
+	%\usetheme{Marburg}
+	%\usetheme{Montpellier}
+	%\usetheme{PaloAlto}
+	%\usetheme{Pittsburgh}
+	%\usetheme{Rochester}
+	%\usetheme{Singapore}
+	%\usetheme{Szeged}
+%	\usetheme{Warsaw}
+	
+	% As well as themes, the Beamer class has a number of color themes
+	% for any slide theme. Uncomment each of these in turn to see how it
+	% changes the colors of your current slide theme.
+	
+%	\usecolortheme{albatross}
+%	\usecolortheme{beaver}
+%	\usecolortheme{beetle}
+%	\usecolortheme{crane}
+%	\usecolortheme{dolphin}
+%	\usecolortheme{dove}
+%	\usecolortheme{fly}
+%	\usecolortheme{lily}
+%	\usecolortheme{orchid}
+%	\usecolortheme{rose}
+%	\usecolortheme{seagull}
+%	\usecolortheme{seahorse}
+%	\usecolortheme{whale}
+%	\usecolortheme{wolverine}
+	
+%	\setbeamertemplate{footline} % To remove the footer line in all slides uncomment this line
+	%\setbeamertemplate{footline}[page number] % To replace the footer line in all slides with a simple slide count uncomment this line
+	
+%	\setbeamertemplate{navigation symbols}{} % To remove the navigation symbols from the bottom of all slides uncomment this line
+%	\usefonttheme{serif}
+}
+\usepackage{graphicx,wrapfig,lipsum}
+\usepackage{graphicx} % Allows including images
+\usepackage{booktabs} % Allows the use of \toprule, \midrule and \bottomrule in tables
+\usepackage{wrapfig}
+
+\usepackage{subcaption}
+\usepackage{tikz}
+\usetikzlibrary{decorations.pathmorphing,matrix,decorations.pathreplacing,arrows,decorations.markings}
+\usetikzlibrary{fit,calc,shapes,arrows,positioning,shadings,backgrounds,patterns,tikzmark,matrix,spy}
+\usetikzlibrary{decorations.markings}
+
+\tikzset{myrow/.style args = {(#1,#2)}{%
+		row #1/.style={nodes={fill=#2}}}}
+
+\tikzset{mycolumn/.style args = {(#1,#2)}{%
+		column #1/.style={nodes={fill=#2}}}}
+
+\tikzset{mycell/.style args = {(#1,#2,#3)}{%
+		row #1 column #2/.style={nodes={fill=#3}}}}
+
+\makeatletter
+\usetikzlibrary{chains,patterns,shadows}
+\tikzset{% customization of pattern
+	% based on <m.wibrow@gm...> - 2013-03-24 07:20: 
+	hatch distance/.store in=\hatchdistance,
+	hatch distance=5pt,
+	hatch thickness/.store in=\hatchthickness,
+	hatch thickness=5pt
+}
+\pgfdeclarepatternformonly[\hatchdistance,\hatchthickness]{north east hatch}% name
+{\pgfqpoint{0pt}{0pt}}% below left
+{\pgfqpoint{\hatchdistance}{\hatchdistance}}% above right
+{\pgfpoint{\hatchdistance-1pt}{\hatchdistance-1pt}}%
+{
+	\pgfsetcolor{\tikz@pattern@color}
+	\pgfsetlinewidth{\hatchthickness}
+	\pgfpathmoveto{\pgfqpoint{0pt}{0pt}}
+	\pgfpathlineto{\pgfqpoint{\hatchdistance}{\hatchdistance}}
+	\pgfusepath{stroke}
+}
+
+\newcommand{\KECCAK}{\mbox{\textsc{Keccak}}}
+\newcommand{\Keccak}{\mbox{\textsc{Keccak}}}
+\newcommand{\SHA}{\textsc{Sha}}
+\newcommand{\Rnd}{\textsc{Round}}
+\newcommand{\etal}{\textit{et al. }}
+%----------------------------------------------------------------------------------------
+%    TITLE PAGE
+%----------------------------------------------------------------------------------------
+
+\title[Cryptanalysis of Round Reduced \KECCAK{}]{Cryptanalysis of Round Reduced \KECCAK{}} % The short title appears at the bottom of every slide, the full title is only on the title page
+
+\author{Nikhil Mittal} % Your name
+\institute[17111056] % Your institution as it will appear on the bottom of every slide, may be shorthand to save space
 {
   \usetheme{Madrid}       % or try default, Darmstadt, Warsaw, ...
   \usecolortheme{default} % or try albatross, beaver, crane, ...
