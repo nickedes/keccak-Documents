@@ -156,26 +156,22 @@
 
 \section{Introduction}
 
-\begin{frame}{Introduction}
-
-\begin{itemize}
-  \item In these slides we show how Overleaf can be used with standard chemistry packages to easily create professional presentations.
-  \item If you're new to \LaTeX{}, check out this free introductory course by Overleaf founder Dr John Lees-Miller: \url{www.overleaf.com/blog/7}
-  \item You can also find more quick tips and tricks on the help pages at \url{www.overleaf.com/help}
-\end{itemize}
-
-% Example from Chemfig documentation - Fischer indole synthesis:
-% www.tex.ac.uk/ctan/macros/generic/chemfig/chemfig_doc_en.pdf
-\begin{center}\small\setatomsep{1.5em}
-\schemestart
-  \chemfig{*6(=-*6(-\chembelow{N}{H}-NH_2)=-=-)}
-  \+
-  \chemfig{(=[:-150]O)(-[:-30]R_2)-[2]-[:150]R_1}
-  \arrow(.mid east--.mid west){->[\chemfig{H^+}]}
-  \chemfig{*6(-=*5(-\chembelow{N}{H}-(-R_2)=(-R_1)-)-=-=)}
-\schemestop
-\end{center}
-
+\begin{frame}
+	\frametitle{Hash Function}
+	\begin{itemize}
+		\item $H:\{0,1\}^* \rightarrow \{0,1\}^n $
+		\item Deterministic	function
+		\item Takes as input a arbitrary size string and outputs a fixed size ($n$) string
+		\item Cryptographic applications require it to satisfy the following conditions
+		\begin{itemize}\setlength\itemindent{10pt}
+			\item {\bf Efficiency}: Given $m$, it is easy to compute $H(m)$.
+			\item {\bf Preimage Resistance}: Given $H(m)$, it is computationally hard to find $m$.
+			\item {\bf Second-preimage Resistance}: Given $m$, it is computationally hard to find $m^\prime$ such that $H(m)=H(m^\prime)$.
+			\item {\bf Collision Resistance}: It is computationally hard to find $m$ and $m^\prime$ such that $H(m)=H(m^\prime)$.
+		\end{itemize}
+		\item Hash functions having the above properties are referred to as cryptographic hash functions
+		\item Used in cryptographic applications such as Authentication, Digital Signatures and Integrity etc..
+	\end{itemize}
 \end{frame}
 
 \subsection{The chemistry packages}
