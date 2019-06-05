@@ -174,49 +174,31 @@
 	\end{itemize}
 \end{frame}
 
-\subsection{The chemistry packages}
-\begin{frame}{The chemistry packages}
-
-We focus on two \LaTeX{} chemistry packages:
-\begin{block}{The \texttt{chemfig} package}
-This package provides the command which draws molecules. Created by Christian Tellechea, a detailed user guide can be found here:\\[0.4cm]
-\small{\url{www.tex.ac.uk/ctan/macros/generic/chemfig/chemfig_doc_en.pdf}}
-\end{block}
-\begin{block}{The \texttt{mhchem} package}
-The \texttt{mhchem} package provides simple commands for typesetting chemical molecular formulae and equations. Created by Martin Hensel, a detailed user guide can be found here:\\[0.4cm]
-\small{\url{http://mirror.ox.ac.uk/sites/ctan.org/macros/latex/contrib/mhchem/mhchem.pdf}}
-\end{block}
-% The LaTeX wikibook is also a good source of info, e.g.
-% http://en.wikibooks.org/wiki/LaTeX/Chemical_Graphics
-
+\begin{frame}
+	\frametitle{Need For \SHA-$3$}
+	\begin{itemize}
+		\item MD$5$, \SHA-$1$, \SHA-$2$ are very popular hash functions and are widely used
+		\item In the year $2005$, the first practical collision attack on MD$5$ was published by Xiaoyun Wang \etal
+		\item in the same year, a practical collision attack on \SHA-$0$ and \SHA-$1$ was published by Xiaoyun Wang \etal
+		\item NIST was worried about the security of hash functions, though by that time NIST had started using the \SHA-$2$ family of hash functions.
+		\item But as \SHA-$2$ was also based on Merkle-Damgard construction like \SHA-$0$, \SHA-$1$, so there was a possibility that it could also be attacked in a similar fashion.
+		\item With this thought, in the year $2006$ NIST decided to hold a competition for the next secure hash function.
+		\item In $2008$, NIST announced a competition for the Secure Hash Algorithm-$3$ (\SHA-$3$)
+		\item 
+	\end{itemize}
 \end{frame}
 
-\section{Using chemistry packages with \LaTeX{}}
-
-\subsection{Chemical equations with \texttt{mhchem}}
-
-\begin{frame}[fragile]
-\frametitle{Chemical equations with \texttt{mhchem}}
-
-\begin{itemize}
-\item The \texttt{mhchem} package lets you write chemical equations in \LaTeX{} with the minimum of effort. 
-\item The example below shows how the standard representation of a reaction (on the left) is created from the simple code on the right:
-\end{itemize}
-
-\begin{center}
-\ce{CO2 + C -> 2CO} is created with \verb|\ce{CO2 + C -> 2CO}|
-\end{center}
-
-\begin{itemize}
-\item More complicated reactions are still easy to write:
-\end{itemize}
-
-\begin{center}
-\ce{SO4^2- + Ba^2+ -> BaSO4 v}\\[0.1cm]
-is created with\\[0.1cm]
-\verb|\ce{SO4^2- + Ba^2+ -> BaSO4 v}|
-\end{center}
-
+\begin{frame}
+	\frametitle{\KECCAK{}}
+	\begin{itemize}
+		\item \KECCAK{} hash function is based on sponge construction
+		\item \SHA-$3$ family of hash functions is based on \Keccak{}
+		\item The \SHA-$3$ family provides four hash functions: \SHA3-$224$, \SHA3-$256$, \SHA3-$384$ and \SHA3-$512$
+		\item Designed to provide resistance against preimage attacks, collision attacks, and second-preimage attacks
+		\item  In the year $2012$, NIST announced \KECCAK{} as the winner of the competition among the five finalists viz. BLAKE, Gr\o stl, JH, \KECCAK{} and Skein
+		\item Since $2015$, \KECCAK{} has been standardized as \SHA-$3$ by NIST
+		\item \Keccak{}'s excellent resistance towards crypt-analytic attacks is one of the main reasons for its selection by NIST. The algorithm is a good mixture of linear as well as non-linear operations.
+	\end{itemize}
 \end{frame}
 
 \subsection{Getting started with some \texttt{chemfig} coffee}
