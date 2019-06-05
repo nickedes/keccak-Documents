@@ -201,31 +201,74 @@
 	\end{itemize}
 \end{frame}
 
-\subsection{Getting started with some \texttt{chemfig} coffee}
-
-\begin{frame}[fragile]
-\frametitle{Getting started with some \texttt{chemfig} coffee}
-
-It's easy to use the \texttt{chemfig} package for drawing complex molecules:
-
-\vskip 0.5cm
-
-\begin{center}\small\setatomsep{2.0em}
-\schemestart  
-\chemfig{*6((=O)-N(-CH_3)-*5(-N=-N(-CH_3)-=)--(=O)-N(-H_3C)-)}
-\schemestop
-\end{center}
-
-This is the caffeine molecule, represented clearly and neatly, and built from a single line of text: \small{\verb|\chemfig{*6((=O)-N(-CH_3)-*5(-N=-N(-CH_3)-=)--(=O)-N(-H_3C)-)}|}\\[0.3cm]
-
-If that looks quite daunting, we can learn from simpler molecules\dots{}how about a single water molecule?
-
+\begin{frame}
+	\frametitle{Sponge Construction}
+	\begin{itemize}
+		\item A sponge construction consists of
+			\begin{itemize}
+				\item A permutation function $f$
+				\item a parameter ``rate'' $r$
+				\item a padding rule pad
+				\begin{figure}
+					\resizebox{\linewidth}{!}{
+						\includegraphics[scale=0.5]{sponge.png}
+					}
+					\caption{The sponge construction\label{sponge}}
+				\end{figure}
+				\item This construction produces a sponge function that takes as input a bit string $M$ and generates a string of length $l$
+			\end{itemize}
+	\end{itemize}
 \end{frame}
 
-\subsection{Experiments with water and rings}
-
-\begin{frame}[fragile]
-\frametitle{Experiments with water and rings}
+\begin{frame}
+	\begin{itemize}
+		\frametitle{\KECCAK{}-$p$ Permutation}
+		\item The function $f$ in the sponge construction is denoted by \KECCAK-$f[b]$
+		\item $b$ is the length of input string
+		\item Internally, \KECCAK-$f[b]$ consists of a round function $p$ which is applied $n_r$ number of times
+		\item \KECCAK-$f[b]$ function is specialization of \KECCAK-$p[b, n_r]$
+		
+	\end{itemize}
+\end{frame}
+		
+\begin{frame}
+	\frametitle{State}
+	\begin{itemize}
+		\item The state input to \KECCAK-$f[b]$ consists of $b$ bits, the state is divided into slices
+		\item Size of a slice is fixed i.e., $25$ bits
+		\begin{figure}
+			\begin{tikzpicture}[on grid,scale=0.3]
+				\shade[yslant=-0.5,right color=gray!10, left color=black!40] (0,2) rectangle +(5,1) node[xshift=-1.2cm, yshift=0.2cm] at (0,2){ a row($5$-bits)};
+				%lane 1x1
+				\shade[yslant=-0.5,left color=black!40,  color=black!10] (4,4) rectangle +(1,1);
+				%column
+				\draw[yslant=-0.5,pattern=north east hatch,  pattern color=black!70, hatch distance=3pt, hatch thickness=0.5pt] (2,0) rectangle +(1,5)
+				node[xshift=-0.8cm, yshift=-0.2cm] at (2,0){ a column($5$-bits)};
+				
+				\draw[yslant=-0.5, dashed] (0,0) grid (5,5);
+				\shade[yslant=0.5,right color=black!60,left color=black!40](5,-1) rectangle +(8,1);
+				\draw[yslant=0.5] (5,-5) grid (13,0);
+				\node at (15.9,6.5){a lane($w$-bits)};
+				%slice front
+				\draw[yslant=0.5,pattern=north east hatch,  pattern color=black!70, hatch distance=3pt, hatch thickness=0.5pt](7,-5) rectangle +(1,5)
+				node[xshift=1.5cm, yshift=-0.1cm] at (7,-5){ a slice($5\times 5$-bits)};
+				%row front
+				\shade[yslant=0.5,left color=black!20,right color=black!70] (5,-3) rectangle +(1,1);
+				%top shade
+				\shade[yslant=0.5,xslant=-1,bottom color=gray!5,top color=gray!60] (5,0) rectangle +(8,5);
+				\shade[yslant=0.5,xslant=-1, bottom color=black!40,top color=black!60](5,0) 
+				rectangle +(8,1); 
+				%slice top 
+				\draw[yslant=0.5,xslant=-1,pattern=north east hatch,  pattern color=black, hatch distance=3pt, hatch thickness=0.5pt] (7,0) rectangle +(1,5);
+				%column top
+				\draw[yslant=0.5,xslant=-1,pattern=north east hatch,  pattern color=black, hatch distance=3pt, hatch thickness=0.5pt] (5,2) rectangle +(1,1);
+				
+				\draw[yslant=0.5,xslant=-1] (5,0) grid (13,5);
+				\end{tikzpicture}
+			\caption{The \KECCAK{} State \label{ss}}
+		\end{figure}
+	\end{itemize}
+\end{frame}
 
 To see how the \texttt{chemfig} package creates the drawings from your code, let us look at the simple water molecule:
 
