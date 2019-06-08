@@ -132,8 +132,9 @@
 \author{Nikhil Mittal} % Your name
 \institute[17111056] % Your institution as it will appear on the bottom of every slide, may be shorthand to save space
 {
-	Under supervision of \\
-	\large Prof. Manindra Agrawal and Dr. Shashank Singh\\
+	Under supervision of\\
+	\medskip
+	{\large Prof. Manindra Agrawal and Dr. Shashank Singh}\\
 	\medskip
 	IIT Kanpur \\ % Your institution for the title page
 	\medskip
@@ -160,17 +161,30 @@
 	\frametitle{Hash Function}
 	\begin{itemize}
 		\item $H:\{0,1\}^* \rightarrow \{0,1\}^n $
-		\item Deterministic	function
+		\pause
+		\item A Deterministic	function
 		\item Takes as input a arbitrary size string and outputs a fixed size ($n$) string
-		\item Cryptographic applications require it to satisfy the following conditions
-		\begin{itemize}\setlength\itemindent{10pt}
-			\item {\bf Efficiency}: Given $m$, it is easy to compute $H(m)$.
-			\item {\bf Preimage Resistance}: Given $H(m)$, it is computationally hard to find $m$.
-			\item {\bf Second-preimage Resistance}: Given $m$, it is computationally hard to find $m^\prime$ such that $H(m)=H(m^\prime)$.
-			\item {\bf Collision Resistance}: It is computationally hard to find $m$ and $m^\prime$ such that $H(m)=H(m^\prime)$.
-		\end{itemize}
-		\item Hash functions having the above properties are referred to as cryptographic hash functions
+		\pause
 		\item Used in cryptographic applications such as Authentication, Digital Signatures and Integrity etc..
+	\end{itemize}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Cryptographic Hash Functions}
+	\begin{itemize}
+		\item Cryptographic applications require Hash functions to satisfy the following conditions\\
+		\begin{itemize}\setlength\itemindent{10pt}
+			\pause
+			\item {\bf Efficiency}: Given $m$, it is easy to compute $H(m)$\\
+			\pause
+			\item {\bf Preimage Resistance}: Given $H(m)$, it is computationally hard to find $m$\\
+			\pause
+			\item {\bf Second-preimage Resistance}: Given $m$, it is computationally hard to find $m^\prime$ such that $H(m)=H(m^\prime)$\\
+			\pause
+			\item {\bf Collision Resistance}: It is computationally hard to find $m$ and $m^\prime$ such that $H(m)=H(m^\prime)$\\
+		\end{itemize}
+		\pause
+		\item Hash functions having the above properties are referred to as cryptographic hash functions 
 	\end{itemize}
 \end{frame}
 
@@ -178,13 +192,32 @@
 	\frametitle{Need For \SHA-$3$}
 	\begin{itemize}
 		\item MD$5$, \SHA-$1$, \SHA-$2$ are very popular hash functions and are widely used
-		\item In the year $2005$, the first practical collision attack on MD$5$ was published by Xiaoyun Wang \etal
-		\item in the same year, a practical collision attack on \SHA-$0$ and \SHA-$1$ was published by Xiaoyun Wang \etal
-		\item NIST was worried about the security of hash functions, though by that time NIST had started using the \SHA-$2$ family of hash functions.
-		\item But as \SHA-$2$ was also based on Merkle-Damgard construction like \SHA-$0$, \SHA-$1$, so there was a possibility that it could also be attacked in a similar fashion.
-		\item With this thought, in the year $2006$ NIST decided to hold a competition for the next secure hash function.
+		\pause
+		\item In year 2005, First practical collision attacks on
+		\begin{itemize}
+			\item MD$5$, \SHA-$0$ and \SHA-$1$ by Xiaoyun Wang \etal
+		\end{itemize}
+		
+%		\item In the year $2005$, the first practical collision attack on MD$5$ was published by Xiaoyun Wang \etal
+%		\item in the same year, a practical collision attack on \SHA-$0$ and \SHA-$1$ was published by Xiaoyun Wang \etal
+		\pause
+		\item NIST was worried about the security of hash functions
+		
+		\item Though by that time \SHA-$2$ family of hash functions was standardized
+		\pause
+		\item But as \SHA-$2$ was also based on Merkle-Damgard construction like \SHA-$0$, \SHA-$1$
+		\item There was a possibility that it could also be attacked in a similar fashion
+	\end{itemize}
+\end{frame}
+
+\begin{frame}
+	\frametitle{\KECCAK{}}
+	\begin{itemize}
+		\item With this thought, in the year $2006$ NIST decided to hold a competition for the next secure hash function
 		\item In $2008$, NIST announced a competition for the Secure Hash Algorithm-$3$ (\SHA-$3$)
-		\item 
+		\item  In the year $2012$, NIST announced \KECCAK{} as the winner of the competition among the five finalists viz. BLAKE, Gr\o stl, JH, \KECCAK{} and Skein
+		\item Since $2015$, \KECCAK{} has been standardized as \SHA-$3$ by NIST
+		
 	\end{itemize}
 \end{frame}
 
@@ -194,10 +227,8 @@
 		\item \KECCAK{} hash function is based on sponge construction
 		\item \SHA-$3$ family of hash functions is based on \Keccak{}
 		\item The \SHA-$3$ family provides four hash functions: \SHA3-$224$, \SHA3-$256$, \SHA3-$384$ and \SHA3-$512$
-		\item Designed to provide resistance against preimage attacks, collision attacks, and second-preimage attacks
-		\item  In the year $2012$, NIST announced \KECCAK{} as the winner of the competition among the five finalists viz. BLAKE, Gr\o stl, JH, \KECCAK{} and Skein
-		\item Since $2015$, \KECCAK{} has been standardized as \SHA-$3$ by NIST
-		\item \Keccak{}'s excellent resistance towards crypt-analytic attacks is one of the main reasons for its selection by NIST. The algorithm is a good mixture of linear as well as non-linear operations.
+		\item \Keccak{}'s excellent resistance towards crypt-analytic attacks is one of the main reasons for its selection by NIST
+		\item The algorithm is a good mixture of linear as well as non-linear operations
 	\end{itemize}
 \end{frame}
 
@@ -209,32 +240,31 @@
 				\item A permutation function $f$
 				\item a parameter ``rate'' $r$
 				\item a padding rule pad
-				\begin{figure}
-					\resizebox{\linewidth}{!}{
-						\includegraphics[scale=0.5]{sponge.png}
-					}
-					\caption{The sponge construction\label{sponge}}
-				\end{figure}
 				\item This construction produces a sponge function that takes as input a bit string $M$ and generates a string of length $l$
 			\end{itemize}
 	\end{itemize}
+	\begin{figure}
+	\resizebox{250pt}{!}{
+		\includegraphics[scale=0.5]{sponge.png}
+	}
+	\caption{The sponge construction\label{sponge}}
+\end{figure}
 \end{frame}
 
 \begin{frame}
 	\begin{itemize}
 		\frametitle{\KECCAK{}-$p$ Permutation}
-		\item The function $f$ in the sponge construction is denoted by \KECCAK-$f[b]$
+		\item The function $f$ in the sponge construction is denoted by \KECCAK-$f\left[b\right]$
 		\item $b$ is the length of input string
-		\item Internally, \KECCAK-$f[b]$ consists of a round function $p$ which is applied $n_r$ number of times
-		\item \KECCAK-$f[b]$ function is specialization of \KECCAK-$p[b, n_r]$
-		
+		\item Internally, \KECCAK-$f\left[b\right]$ consists of a round function $p$ which is applied $n_r$ number of times
+		\item \KECCAK-$f\left[b\right]$ function is specialization of \KECCAK-$p\left[b, n_r\right]$
 	\end{itemize}
 \end{frame}
 		
 \begin{frame}
 	\frametitle{State}
 	\begin{itemize}
-		\item The state input to \KECCAK-$f[b]$ consists of $b$ bits, the state is divided into slices
+		\item The state input to \KECCAK-$f\left[b\right]$ consists of $b$ bits, the state is divided into slices
 		\item Size of a slice is fixed i.e., $25$ bits
 		\begin{figure}
 			\begin{tikzpicture}[on grid,scale=0.3]
@@ -270,43 +300,725 @@
 	\end{itemize}
 \end{frame}
 
-To see how the \texttt{chemfig} package creates the drawings from your code, let us look at the simple water molecule:
+\begin{frame}
+	\frametitle{Round Function}
+	\begin{itemize}
+		\item The round function $p$ in \Keccak{} comprises of $5$ steps
+		\item In each of which the state undergoes transformations specified by the step mapping
+		\item These step mappings are called $\theta,\;\rho,\;\pi,\;\chi\;and\;\iota$
+		\item These transformations are applied in sequence
+		\item A state $S$, which is a $b$-bit string, in \Keccak{} is usually denoted by a $3$-dimensional grid of size $(5 \times 5 \times w)$
+		\item Now, we will describe these $5$ step mappings in detail
+	\end{itemize}
+\end{frame}
 
-\vskip 0.3cm
-\begin{center} 
-\chemfig{H_2O} is created with \verb|\chemfig{H_2O}|
-\end{center}
+\begin{frame}
+	\frametitle{$\theta$ Step mapping}
+	\begin{itemize}
+		\item XORs each bit in the state with the parities of two neighboring columns
+		\item For bit position $\left(x,\; y,\; z\right)$, one column is $\left(\left(x - 1\right) \bmod 5,\; z\right) $ and the other is $\left(\left(x+1\right)\bmod 5,\; \left(z - 1\right) \bmod w\right)$
+		\item If we have $A$ as the input state to $\theta$ then the output state $B$ is:
+		\begin{align}\nonumber
+		B\left[x,\; y,\; z\right] &= A\left[x,\; y,\; z\right] \bigoplus P\left[(x - 1) \bmod 5 ,\, z \right] \\
+		&\hspace{1.3cm}\bigoplus P\left[ (x + 1) \bmod 5 ,\, (z - 1) \bmod w \right]
+		\end{align}
+		\item $P\left[x,\; z\right]$ represents the parity of the column $(x,\; z)$
+		\[
+		P\left[x,\; z\right]  = \bigoplus_{y = 0}^{4} A\left[x,\; y,\; z\right]
+		\]
+	\end{itemize}
+\end{frame}
 
-The simple \LaTeX{} code on the right is automatically converted into the molecular formula for water on the left. 
-\vskip 0.3cm
-Rings are similarly easy to code - consider the examples below:
+\begin{frame}
+	\frametitle{$\rho$ Step mapping}
+	\begin{itemize}
+		\item $\rho$ ({\bf rho}): This step rotates each lane by a constant value towards the MSB
+		\item $B\left[x, \,y,\, z\right] = A\left[x, \,y, \,z + \rho\left(x, y\right) \bmod w\; \right]$
+		\item $\rho\left(x,\; y\right)$ is the constant for lane $\left(x,\; y\right)$
+		\item The constant value $\rho\left(x,\; y\right)$ is specified for each lane in the construction of \Keccak{}
+		\item $\rho$ is also a linear step mapping 
+	\end{itemize}
+\end{frame}
 
-\vskip 0.3cm
+\begin{frame}
+	\frametitle{$\pi$ Step mapping}
+	\begin{itemize}
+		\item $\pi$ ({\bf pi}): It permutes the positions of lanes
+		\item The new position of a lane is determined by a matrix, 
+		\begin{align}
+		\begin{bmatrix} x'\\ y'\end{bmatrix} = 
+		\begin{bmatrix} $0$ & $1$ \\ $2$ &  $3$ \end{bmatrix} \cdot \begin{bmatrix} x\\ y\end{bmatrix},
+		\end{align}
+		where $\left(x',\; y'\right)$ is the position of lane $\left(x,\; y\right)$ after $\pi$ step
+		\item $\pi$ is also a linear step mapping
+	\end{itemize}
+\end{frame}
 
-\chemfig[][scale=0.5]{A*5(-B-C-D-E-)} = \verb|\chemfig{A*5(-B-C-D-E-)}|
+\begin{frame}
+	\frametitle{$\chi$ Step mapping}
+	\begin{itemize}
+		\item $\chi$ ({\bf chi}): Each bit in the original state is XOR-ed with a non-linear function of next two bits in the same row
+		
+		\begin{align}\nonumber
+		B[x,\; y,\; z] &=  A[x,\; y,\; z] \;\oplus \\
+		& \hspace{0.5cm} \left( \left(A[ (x + 1 )\bmod 5,\; y,\; z] \oplus 1\right) \cdot  A[ (x + 2) \bmod 5,\; y,\; z] ) \right).
+		\end{align}
+		
+		\item $\chi$ is the only non-linear operation among the $5$ step mappings in \KECCAK{}
+	\end{itemize}
+\end{frame}
 
-\vskip 0.3cm
+\begin{frame}
+	\frametitle{$\iota$ Step mapping}
+	\begin{itemize}
+	    \item $\iota$ ({\bf iota}): This step mapping only modifies the $(0,\;0)$ lane depending on the round number i.e., 
+		\begin{align}
+		B[0,\; 0] = A[0,\; 0] \oplus RC_i,
+		\end{align}
+		where $RC_i$ is round constant that depends on the round number. The remaining $24$ lanes remain unaffected.	
+		\item All the rounds are identical but the symmetry is destroyed by this step due to the addition of a round constant to a particular lane
+	\end{itemize}
+\end{frame}
 
-\chemfig[][scale=0.5]{*6(=-=-=-)} = \verb|\chemfig{*6(=-=-=-)}|
+\begin{frame}
+	\frametitle{Specification of \KECCAK-$p\left[ b, n_r \right]$}
+	\begin{itemize}
+		\item Round in \Keccak{} is given by ${\tt Round}\left(A,\; i_r\right) = \iota\left( \chi\left( \pi \left( \rho \left( \theta \left( A \right) \right) \right) \right),\; i_r\right)$
+		\item Consists of $n_r$ number of rounds
+		\item \KECCAK-$p\left[ b,\;n_r \right] \left( S \right)$
+			\begin{itemize}
+				\item Convert $S$ into a state array $A$
+				\item For $i_r$ from $0$ to $n_r - 1$, let $A = {\tt Round}\left(A,\; i_r\right)$
+				\item Convert $A$ into string $S'$ of length $b$
+				\item Return $S'$
+			\end{itemize}
+	\end{itemize}
+\end{frame}
 
+\begin{frame}
+	\frametitle{\SHA-$3$ Hash Function}
+	\begin{itemize}
+		\item The \SHA-$3$ hash function is \Keccak-$p\left[b,\; 12 + 2\cdot l\right]$
+		\item $w = b/25$ and $l = \log_{2}\left(w\right)$
+		\item The value of $b = 1600$, so we have $l = 6$
+		\item Thus the $f$ function in \SHA-$3$ is \Keccak-$p\left[1600,\; 24\right]$
+		\item Instances of \Keccak{} are denoted by $\Keccak\left[r,\;c\right]$
+		\item Where $r=1600-c$ and the capacity $c$ is chosen to be twice the size of hash output $d$
+		\item To avoid generic attacks with expected cost below $2^d$
+		\item The hash function with output length $d$ is denoted by 
+		\begin{eqnarray}
+		\mbox{\Keccak-$d$}  &=& \Keccak\left[r:=1600-2\cdot d,\;c:=2\cdot d\right]
+		\end{eqnarray}
+	\end{itemize}
+\end{frame}
+
+\begin{frame}
+	\frametitle{pad10*1}
+	\begin{itemize}
+		\item The padding rule followed by \KECCAK{} is \textbf{pad10*1}
+		\item Rule is that the input string is appended with a $1$ bit followed by some number of $0$ bits and followed by $1$ bit
+		\item The asterisk in the padding rule indicates that $0$ bit is either not present or is repeated as required so that the length of output string after padding is a multiple of the block length (i.e. $r$)
+	\end{itemize}
+\end{frame}
+
+\begin{frame}
+	\frametitle{\KECCAK[r:=800-384, c:=384]}
+	\begin{itemize}
+		\item $\KECCAK\left[r:=800-384, c:=384\right] = \KECCAK\text{-}p\left[800,24\right]\left[r:=800-384, c:=384\right]$\\
+		\pause
+		\medskip
+		\item $2$-round $\KECCAK\left[r:=800-384, c:=384\right] = \KECCAK\text{-}p\left[800,2\right]\left[r:=800-384, c:=384\right]$
+	\end{itemize}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Observations}
+	\begin{itemize}
+		\item \label{ob1}\textbf{Observation 1:} If we know all the bits of a row then we can invert $\chi$ for that row. It is depicted below.
+		%------------------------------------------------------
+		\begin{figure}
+			\begin{center}
+				\begin{tikzpicture}[ampersand replacement=\&]
+				\matrix (m1) [matrix of nodes,
+				nodes={inner sep=5pt,text width=0.5cm,align=center,minimum height=.5cm, draw,text height=1em,text depth=.2em}
+				]{
+					$a_0$ \& $a_1$\& $a_2$ \& $a_3$ \& $a_4$\\
+				};
+				
+				\matrix (m2) [right = 1.2cm of m1, matrix of nodes,
+				nodes={inner sep=5pt,text width=0.5cm,align=center,minimum height=.5cm, draw,text height=1em,text depth=.2em}
+				]{
+					$a_0^\prime$ \& $a_1^\prime$\& $a_2^\prime$ \& $a_3^\prime$ \& $a_4^\prime$\\
+				};
+				\draw[->, very thick] (m1)-- node[above, pos=0.5] {$\chi^{-1}$} (m2);
+				\end{tikzpicture}
+			\end{center}
+			\caption{Computation of $\chi^{-1}$ for full row \label{chi_inv}}
+		\end{figure}
+		%------------------------------------------------------
+		% check it for correctness
+		\begin{align}
+		a_i^\prime = a_i \oplus \left( a_{i+1} \oplus 1\right) \cdot \left( a_{i+2} \oplus \left( a_{i+3} \oplus 1 \right) \cdot a_{i+4}\right)
+		\end{align}
+		
+		\item \label{ob2}\textbf{Observation 2:} When only one output bit is known after $\chi$ step, then we can fix the first output bit to be the same as the input bit and the second bit as $1$. 		
+		%------------------------------------------------------
+		\begin{figure}[ht]
+			\begin{center}
+				\begin{tikzpicture}[ampersand replacement=\&]
+				\matrix (m1) [matrix of nodes,
+				nodes={inner sep=5pt,text width=0.5cm,align=center,minimum height=.5cm, draw,text height=1em,text depth=.2em}
+				]{
+					$a_0$ \& $*$ \& $*$ \& $*$ \& $*$\\
+				};
+				
+				\matrix (m2) [right = 1.2cm of m1, matrix of nodes,
+				nodes={inner sep=5pt,text width=0.5cm,align=center,minimum height=.5cm, draw,text height=1em,text depth=.2em}
+				]{
+					$a_0$ \& $1$ \& $*$ \& $*$ \& $*$\\
+				};
+				\draw[->, very thick] (m1)-- node[above, pos=0.5] {$\chi^{-1}$} (m2);
+				\end{tikzpicture}
+			\end{center}
+			\caption{Computation of $\chi^{-1}$ when only 1-bit is known in row \label{chi_inv2}}
+		\end{figure}
+	\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{Observations}
+\begin{itemize}
+	\item \label{ob3}\textbf{Observation 3:} 
+	
+	\item $a_i$ are the output bits of $\chi$ and $a_i^\prime$ are the input bits
+	
+	\item Guo \etal observed that when $4$ out of $5$ output bits of $\chi$ are known
+	\item Then we can obtain $4$ linear relations in terms of $a_i'$
+	
+	
+	\begin{align}\label{eq:a0}
+	a_i^\prime = a_i \oplus \left( a_{i+1} \oplus 1\right) \cdot \left( a_{i+2} \oplus \left( a_{i+3} \oplus 1 \right) \cdot a_{i+4}\right)
+	\end{align}
+	
+	\item If the values of $a_0,\;a_1,\;a_2,\;a_3$ are known
+	\item Using the Equation~\ref{eq:a0}, we can eliminate the expression $a_4$ from the rest of the equations 
+	\item Hence obtain $4$ linear relations
+	
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Notations}
+	\begin{itemize}
+		\item State is represented by $25$ lanes
+		\item Each lane is represented by a variable which is a $32$-bit array
+		\item A variable with a number in round bracket $``\left( \cdot \right)"$ represents the shift of the bits in array towards MSB
+		\item A variable with a number in square bracket $``\left[ \cdot \right]"$ represents the bit value of the variable at that index. 
+		\item If there are multiple numbers in the square bracket then it represents the corresponding bit values.
+	\end{itemize}
+\end{frame}
+
+\begin{frame}
+	\frametitle{2 rounds of \KECCAK[r:=800-384,c:=384]}
+	\begin{figure}
+		\centering
+		\includegraphics[scale=0.5]{keccak2Rstate.pdf}
+		\caption{Two rounds of \KECCAK$[r:=800-384, c:=384]$}
+		\label{two_rnd}
+	\end{figure}
+	% first one is initial state, second is intermediate state and last is final state
+	\begin{itemize}
+		\item We will discuss a preimage attack on above structure
+	\end{itemize}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Final State of 2-round \KECCAK[r:=800-384,c:=384]}
+	\begin{itemize}
+		\item $c = 384 \rightarrow d = 192 \rightarrow$ hash of $6$ lanes
+	\end{itemize}
+	\begin{figure}[ht]
+		\begin{center}
+			\begin{tikzpicture}[ampersand replacement=\&]
+			\matrix (sm1) [matrix of nodes,
+			nodes={inner sep=5pt,text width=0.5cm,align=center,minimum height=.5cm, draw,text height=1em,text depth=.2em}
+			]{
+				$\star$ \& $\star$\& $\star$ \& $\star$ \& $\star$\\
+				$\star$ \& $\star$\& $\star$ \& $\star$ \& $\star$\\
+				$\star$ \& $\star$\& $\star$ \& $\star$ \& $\star$\\
+				$h_5$ \& $\star$\& $\star$ \& $\star$ \& $\star$\\
+				$h_0$ \& $h_1$\& $h_2$ \& $h_3$ \& $h_4$\\
+			};
+			\node[] at (-1.7,-2.5) { 0 };
+			\node[] at (-0.85,-2.5) { 1 };
+			\node[] at (0.0,-2.5) { 2 };
+			\node[] at (0.9,-2.5) { 3 };
+			\node[] at (1.8,-2.5) { 4 };
+			\draw[thick,->] (-1.5, -3.2) -- node [above] {$x$} (0.0, -3.2);
+			\node[] at (-2.5,-1.5) { 0 };
+			\node[] at (-2.5,-0.75) { 1 };
+			\node[] at (-2.5,0.0) { 2 };
+			\node[] at (-2.5,0.8) { 3 };
+			\node[] at (-2.5,1.5) { 4 };
+			\draw[thick,->] (-3, -0.7) --  (-3, 0.8);
+			\node[] at (-3.3, 0) {$y$};
+			\end{tikzpicture}
+		\end{center}
+		\caption{The Final Hash State for \KECCAK{}$\left[r:=800-384, c:=384\right]$ \label{initial_sq}}
+	\end{figure}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Initial State of 2-round \KECCAK[r:=800-384,c:=384]}
+	\begin{itemize}
+		\item $r = 800 - 384 \rightarrow r = 416 \rightarrow$ Message block of $13$ lanes
+	\end{itemize}
+	\begin{figure}
+		\begin{center}
+			\begin{tikzpicture}[ampersand replacement=\&]
+			\matrix (sm1) [matrix of nodes,
+			nodes={inner sep=5pt,text width=0.5cm,align=center,minimum height=.5cm, draw,text height=1em,text depth=.2em}
+			]{
+				$0$ \& $0$\& $0$ \& $0$ \& $0$\\
+				$0$ \& $0$\& $0$ \& $0$ \& $0$\\
+				$a_1$ \& $b_1$\& $c_2$ \& $0$ \& $0$\\
+				$a_2$ \& $b_2$\& $c_1$ \& $d_1$ \& $e_1$\\
+				$a_0$ \& $b_0$\& $c_0$ \& $d_0$ \& $e_0$\\
+			};
+			\end{tikzpicture}
+		\end{center}
+		\caption{Setting of Initial State in the Attack}
+	\end{figure}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Attack}
+	\begin{itemize}
+		\item Our aim is to find the values of $a_0,\; a_1,\; a_2$, $b_0,\; b_1,\; b_2$, $c_0,\; c_1,\; c_2$, $d_0,\; d_1$ and $e_0,\; e_1$ variables in the initial state
+		\item Such that they lead to a final state having first six lanes as $h_0,\;h_1,\;h_2,\;h_3,\;h_4$ and $h_5$
+		\item We follow the basic idea of the attack given by Naya \etal in $2011$
+		\item $2$ rounds of \KECCAK{}$\left[r:=800-384,\;c:=384\right]$\\
+			\begin{itemize}
+				\item Best-known attack, has a time complexity of $O(2^{64})$
+				\item Based on the idea of Linear structures given by Jian Guo \etal in $2016$
+			\end{itemize} 
+	\end{itemize}
+\end{frame}
+
+\begin{frame}
+	\frametitle{First round $\theta$ step mapping}
+	\begin{itemize}
+		\item $\theta$ step mapping diffuses message bits to full state
+		\item Aim : Control the diffusion
+		\item By adding constraints on message bits
+		\item Conditions to make column parity zero:
+		\begin{align}\nonumber
+		a_2 &= a_0 \oplus a_1,\quad b_2 = b_0 \oplus b_1, \quad c_2 = c_0 \oplus c_1\\ \label{cond_state1}
+		d_1 & = 0,\quad d_0 = 0\;\;\text{ and }\;\; e_1 = e_0
+		\end{align}
+	\end{itemize}
+\end{frame}
+
+\begin{frame}
+	\frametitle{State $1$ to State $2$}
+	\begin{figure}[!t]
+		\begin{center}
+			\resizebox{\textwidth}{!}{%
+				\begin{tikzpicture}[ampersand replacement=\&, scale=0.5]
+				\matrix (am1) [matrix of nodes,nodes in empty cells,
+				nodes={inner sep=5pt,text width=1.0cm,align=center,minimum height=1.0cm, draw,text height=1em,text depth=.2em},
+				myrow/.list={(1,white),(2,white),(4,gray!30),(5,gray!30)},
+				mycell/.list={(3,1,gray!30),(3,2,gray!30),(3,3,gray!30),(3,4,white),(3,5,white)}]    
+				{
+					$0$ \& $0$\& $0$ \& $0$ \& $0$\\
+					$0$ \& $0$\& $0$ \& $0$ \& $0$\\
+					$a_1$ \& $b_1$\& $c_2$ \& $0$ \& $0$\\
+					$a_2$ \& $b_2$\& $c_1$ \& $d_1$ \& $e_1$\\
+					$a_0$ \& $b_0$\& $c_0$ \& $d_0$ \& $e_0$\\
+				};
+				\matrix (am2) [right=1.5 cm of am1,matrix of nodes,nodes in empty cells,
+				nodes={inner sep=5pt,text width=1.0cm,align=center,minimum height=1.0cm, draw,text height=1em,text depth=.2em},
+				mycolumn/.list={(1,gray!30),(2,gray!30),(4,white),(5,white)},
+				mycell/.list={(1,3,white),(3,3,white),(2,3,gray!30),(4,3,gray!30),(5,3,gray!30)}
+				]    
+				{
+					$c_0(30)$ \& $d_1(23)$ \& $0$         \& $0$ \& $0$\\
+					$e_0(27)$ \& $a_2(4)$ \& $b_1(10)$ \& $0$ \& $0$\\
+					$b_0(1)$  \& $c_1(6)$  \& $0$         \& $0$ \& $0$\\
+					$d_0(28)$ \& $e_1(20)$ \& $a_1(3)$  \& $0$ \& $0$\\
+					$a_0(0)$  \& $b_2(12)$ \& $c_2(11)$ \& $0$ \& $0$\\
+				};
+				
+			
+				
+				
+				\node[ below=0.2cm of am1-5-3]{\bf State~1};
+				\node[ below=0.2cm of am2-5-4]{\bf State~2};
+				\draw[->, very thick] (am1)-- node[above]{$\theta, \pi,\rho$} (am2);
+				
+				\end{tikzpicture}
+			}
+			\caption{Preimage attack on $2$-round \KECCAK{}$[r:=800-384,\; c:=384]$}
+		\end{center}
+	\end{figure}
+\end{frame}
+
+\begin{frame}{$\chi$ and $\iota$ inverse}
+\begin{figure}[!t]
+	\begin{center}
+		\resizebox{\textwidth}{!}{%
+			\begin{tikzpicture}[ampersand replacement=\&, scale=0.5]
+			
+			\matrix (am3) [below=1.5 cm of am2,matrix of nodes,nodes in empty cells,
+			nodes={inner sep=5pt,text width=1.0cm,align=center,minimum height=1.0cm, draw,text height=1em,text depth=.2em, fill=gray!10},
+			mycell/.list={(5,1,gray!50),(5,2,gray!50),(5,3,gray!50),(5,4,gray!50),(5,5,gray!50),(4,1,gray!50),(4,2,gray!50)}
+			]	
+			{
+				\&  	\&   	\&  	\& \\
+				\&  	\&   	\& \& 		\\
+				\&  	\& \&  	\& 		\\
+				$h_5^\prime$ 	\& $1$ \&   	\&  	\& 		\\
+				$h_0^\prime$ \& $h_1^\prime$		\& $h_2^\prime$  	\& $h_3^\prime$ 	\& $h_4^\prime$		\\
+			};
+			\matrix (am4) [left=1.50 cm of am3,matrix of nodes,nodes in empty cells,
+			nodes={inner sep=5pt,text width=1.0cm,align=center,minimum height=1.0cm, draw,text height=1em,text depth=.2em, fill=gray!10},
+			mycell/.list={(5,1,gray!50),(5,2,gray!50),(5,3,gray!50),(5,4,gray!50),(5,5,gray!50),(4,1,gray!50)}
+			]	
+			{
+				\&  \&   \&  \& \\
+				\&  \&   \&  \& \\
+				\&  \&   \&  \& \\
+				$h_5$ \&  \&   \&  \& \\
+				$h_0$ \& $h_1$\& $h_2$ \& $h_3$ \& $h_4$\\
+			};
+			
+			\node[ below=0.2cm of am3-5-3]{};
+			\node[ below=0.2cm of am4-5-3]{\bf State~4};
+			\draw[->, very thick] (am4)-- node[above, pos=0.4]{$\;\;\chi^{-1} \circ \iota^{-1}$}  (am3);
+			\end{tikzpicture}
+		}
+		\caption{Inversion of hash through $\chi^{-1} \circ \iota^{-1}$}
+	\end{center}
+\end{figure}
+\end{frame}
+
+
+\begin{frame}
+	\frametitle{State $4$ to State $3$}
+	    \begin{figure}[!t]
+		\begin{center}
+			\resizebox{\textwidth}{!}{%
+				\begin{tikzpicture}[ampersand replacement=\&, scale=0.5]
+				
+				\matrix (am3) [below=1.5 cm of am2,matrix of nodes,nodes in empty cells,
+				nodes={inner sep=5pt,text width=1.0cm,align=center,minimum height=1.0cm, draw,text height=1em,text depth=.2em, fill=gray!10},
+				mycell/.list={(5,1,gray!50),(4,2,gray!50),(3,3,gray!50),(2,4,gray!50),(1,5,gray!50),(5,4,gray!50),(4,5,gray!50)}
+				]	
+				{
+					\&  	\&   	\&  	\& $h_4^\prime(18)$\\
+					\&  	\&   	\&$h_3^\prime(11)$ \& 		\\
+					\&  	\& $h_2^\prime(21)$\&  	\& 		\\
+					\&$h_1^\prime(20)$ \&   	\&  	\& $1$		\\
+					$h_0^\prime(0)$ \& 		\&  	\& $h_5^\prime(4)$ 	\& 		\\
+				};
+				\matrix (am4) [left=1.50 cm of am3,matrix of nodes,nodes in empty cells,
+				nodes={inner sep=5pt,text width=1.0cm,align=center,minimum height=1.0cm, draw,text height=1em,text depth=.2em, fill=gray!10},
+				mycell/.list={(5,1,gray!50),(5,2,gray!50),(5,3,gray!50),(5,4,gray!50),(5,5,gray!50),(4,1,gray!50)}
+				]	
+				{
+					\&  \&   \&  \& \\
+					\&  \&   \&  \& \\
+					\&  \&   \&  \& \\
+					$h_5$ \&  \&   \&  \& \\
+					$h_0$ \& $h_1$\& $h_2$ \& $h_3$ \& $h_4$\\
+				};
+				
+				\node[ below=0.2cm of am3-5-3]{\bf State~3};
+				\node[ below=0.2cm of am4-5-3]{\bf State~4};
+				\draw[->, very thick] (am4)-- node[above, pos=0.4]{$\iota^{-1},\chi^{-1}$} node[below, pos=0.6]{$ \pi^{-1},\rho^{-1}$} (am3);
+				\end{tikzpicture}
+			}
+%			\caption{}
+		\end{center}
+	\end{figure}
+\end{frame}
+
+\begin{frame}{State 1 to 4}
+
+\begin{figure}[!t]
+	\begin{center}
+		\resizebox{250pt}{!}{%
+			\begin{tikzpicture}[ampersand replacement=\&, scale=0.5]
+			\matrix (am1) [matrix of nodes,nodes in empty cells,
+			nodes={inner sep=5pt,text width=1.0cm,align=center,minimum height=1.0cm, draw,text height=1em,text depth=.2em},
+			myrow/.list={(1,white),(2,white),(4,gray!30),(5,gray!30)},
+			mycell/.list={(3,1,gray!30),(3,2,gray!30),(3,3,gray!30),(3,4,white),(3,5,white)}]    
+			{
+				$0$ \& $0$\& $0$ \& $0$ \& $0$\\
+				$0$ \& $0$\& $0$ \& $0$ \& $0$\\
+				$a_1$ \& $b_1$\& $c_2$ \& $0$ \& $0$\\
+				$a_2$ \& $b_2$\& $c_1$ \& $d_1$ \& $e_1$\\
+				$a_0$ \& $b_0$\& $c_0$ \& $d_0$ \& $e_0$\\
+			};
+			\matrix (am2) [right=1.5 cm of am1,matrix of nodes,nodes in empty cells,
+			nodes={inner sep=5pt,text width=1.0cm,align=center,minimum height=1.0cm, draw,text height=1em,text depth=.2em},
+			mycolumn/.list={(1,gray!30),(2,gray!30),(4,white),(5,white)},
+			mycell/.list={(1,3,white),(3,3,white),(2,3,gray!30),(4,3,gray!30),(5,3,gray!30)}
+			]    
+			{
+				$c_0(30)$ \& $d_1(23)$ \& $0$         \& $0$ \& $0$\\
+				$e_0(27)$ \& $a_2(4)$ \& $b_1(10)$ \& $0$ \& $0$\\
+				$b_0(1)$  \& $c_1(6)$  \& $0$         \& $0$ \& $0$\\
+				$d_0(28)$ \& $e_1(20)$ \& $a_1(3)$  \& $0$ \& $0$\\
+				$a_0(0)$  \& $b_2(12)$ \& $c_2(11)$ \& $0$ \& $0$\\
+			};
+			
+			\matrix (am3) [below=1.5 cm of am2,matrix of nodes,nodes in empty cells,
+			nodes={inner sep=5pt,text width=1.0cm,align=center,minimum height=1.0cm, draw,text height=1em,text depth=.2em, fill=gray!10},
+			mycell/.list={(5,1,gray!50),(4,2,gray!50),(3,3,gray!50),(2,4,gray!50),(1,5,gray!50),(5,4,gray!50),(4,5,gray!50)}
+			]    
+			{
+				\&      \&       \&      \& $h_4^\prime(18)$\\
+				\&      \&       \&$h_3^\prime(11)$ \&         \\
+				\&      \& $h_2^\prime(21)$\&      \&         \\
+				\&$h_1^\prime(20)$ \&       \&      \& $1$        \\
+				$h_0^\prime(0)$ \&         \&      \& $h_5^\prime(4)$     \&         \\
+			};
+			\matrix (am4) [left=1.50 cm of am3,matrix of nodes,nodes in empty cells,
+			nodes={inner sep=5pt,text width=1.0cm,align=center,minimum height=1.0cm, draw,text height=1em,text depth=.2em, fill=gray!10},
+			mycell/.list={(5,1,gray!50),(5,2,gray!50),(5,3,gray!50),(5,4,gray!50),(5,5,gray!50),(4,1,gray!50)}
+			]    
+			{
+				\&  \&   \&  \& \\
+				\&  \&   \&  \& \\
+				\&  \&   \&  \& \\
+				$h_5$ \&  \&   \&  \& \\
+				$h_0$ \& $h_1$\& $h_2$ \& $h_3$ \& $h_4$\\
+			};
+			
+			\node[ below=0.2cm of am1-5-3]{\bf State~1};
+			\node[ below=0.2cm of am2-5-4]{\bf State~2};
+			\node[ below=0.2cm of am3-5-3]{\bf State~3};
+			\node[ below=0.2cm of am4-5-3]{\bf State~4};
+			\draw[->, very thick] (am1)-- node[above]{$\theta, \pi,\rho$} (am2);
+			\draw[->, very thick] (am2)-- node[left]{$\chi, \iota,\theta$} (am3);
+			\draw[->, very thick] (am4)-- node[above, pos=0.4]{$\iota^{-1},\chi^{-1}$} node[below, pos=0.6]{$ \pi^{-1},\rho^{-1}$} (am3);
+			\end{tikzpicture}
+		}
+		\caption{Preimage attack on $2$-round \KECCAK{}$[r:=800-384,\; c:=384]$ \label{atk}}
+	\end{center}
+\end{figure}
 
 \end{frame}
 
-\section{Where to go next\dots{}}
 
-\begin{frame}{Where to go next\dots{}}
 
+%---------------------------------------------------------------
+\begin{frame}{State 2 to State 3}
+\begin{figure}
+\begin{center}
+	\resizebox{\textwidth}{!}{%
+		\begin{tikzpicture}[ampersand replacement=\&, scale=0.5]
+		
+		\matrix (am2) [matrix of nodes,nodes in empty cells,
+		nodes={inner sep=5pt,text width=1.0cm,align=center,minimum height=1.0cm, draw,text height=1em,text depth=.2em},
+		mycolumn/.list={(1,gray!30),(2,gray!30),(4,white),(5,white)},
+		mycell/.list={(1,3,white),(3,3,white),(2,3,gray!30),(4,3,gray!30),(5,3,gray!30)}
+		]	
+		{
+			$c_0(30)$ \& $d_1(23)$ \& $0$ 		\& $0$ \& $0$\\
+			$e_0(27)$ \& $a_2(4)$ \& $b_1(10)$ \& $0$ \& $0$\\
+			$b_0(1)$  \& $c_1(6)$  \& $0$ 		\& $0$ \& $0$\\
+			$d_0(28)$\& $e_1(20)$ \& $a_1(3)$  \& $0$ \& $0$\\
+			$a_0(0)$  \& $b_2(12)$ \& $c_2(11)$ \& $0$ \& $0$\\
+		};
+		
+		\matrix (am3) [right=1.5 cm of am2,matrix of nodes,nodes in empty cells,
+		nodes={inner sep=5pt,text width=1.0cm,align=center,minimum height=1.0cm, draw,text height=1em,text depth=.2em, fill=gray!10},
+		mycell/.list={(5,1,gray!50),(4,2,gray!50),(3,3,gray!50),(2,4,gray!50),(1,5,gray!50),(5,4,gray!50),(4,5,gray!50)}
+		]	
+		{
+			\&  	\&   	\&  \& $h_4^\prime(18)$ \\
+			\&  	\&   	\&$h_3^\prime(11)$ \& 	\\
+			\&  	\& $h_2^\prime(21)$\&  	\& 		\\
+			\&$h_1^\prime(20)$ \&   \&  \& $1$		\\
+			$h_0^\prime(0)$ \& \& \& $h_5^\prime(4)$ \& 	\\
+		};
+		
+		\node[ below=0.2cm of am2-5-3]{\bf State~2};
+		\node[ below=0.2cm of am3-5-3]{\bf State~3};
+		
+		\draw[->, very thick] (am2)-- node[above]{$\chi, \iota,\theta$} (am3);
+		\end{tikzpicture}
+	}
+	\caption{Intermediate States in $2$-round preimage attack on \Keccak-$384$ \label{atk_partial}}
+\end{center}
+\end{figure}
+\end{frame}
+
+
+%----------------------------------------------------------------
+
+\begin{frame}{Description of Attack}
 \begin{itemize}
-\item This short example was designed to introduce you to using Overleaf for scientific presentations.
-\item This is made possible by the many great packages that have been developed for \LaTeX{}, including the two we focused on here (plus the \texttt{Beamer} package used for the overall presentation style). 
-\item For more help on using \LaTeX{}, see the links on the Overleaf help page: \url{www.overleaf.com/help} or check out our free introductory course: \url{www.overleaf.com/blog/7}.
+\setlength\itemsep{2em}
+\item Fix $d_0,d_1$ as constants (with condition that $d_0=d_1$).
+\pause
+\item In state $2$, we have $11\cdot 32$ free variables.
+\pause
+\item And we need to satisfy $7\cdot 32$ Boolean equations and $4\cdot 32$ column parity conditions.
+\pause
+\item So, we expect a solution.
+\pause
+\item We do find the possible solution subspace. 
 \end{itemize}
 
-\begin{center}
-Follow @overleaf on Twitter for all the latest news and updates.\\[0.3cm]
-Happy \LaTeX ing!
-\end{center}
+\end{frame}
 
+%-----------------------------------------------------------
+\begin{frame}{Description of Attack}
+\begin{itemize}
+\setlength\itemsep{2em}
+\item In state $3$, the values of $i^{\rm\;th}$-slice  depend on the $(i-1)^{\rm th}$ and $i^{\rm\;th}$-slice of state $2$.
+\pause
+\item We first find the set of input message bits which satisfy the small collection of consecutive slices of state $3$.
+\pause
+\item  We then merge the solutions to find message bits which satisfy large collection of consecutive slices.
+\end{itemize}
+
+\end{frame}
+%---------------------------------------------------------------
+\begin{frame}{Possible solutions for groups of $3$ slices}
+\begin{itemize}
+\setlength\itemsep{1em}    
+\item Consider a group of $3$ slices (for example take the first $3$ slices).
+\pause
+\item It contains the following message bits 
+\begin{itemize}
+\item $a_0[0,1,2],\;\;a_1[3,4,5],\;\;a_2[4,5,6]$
+\item $b_0[1,2,3],\;\; b_1[10,11,12],\;\;b_2[12,13,14]$
+\item $c_0[30,31,0],\;\;c_1[6,7,8],\;\;c_2[11,12,13]$
+\item $e_0[27,28,29],\;\; e_1[20,21,22]$
+\end{itemize}
+\pause
+\item Once we fix these message bits in the State~$2$, the slice~$1$ and slice~$2$ of State~$3$ get fixed
+\pause
+\item Furthermore there is no dependency between these message bits
+\pause
+\item Thus the total possible solutions for this $3$-slice  $=2^{33-2\cdot 7}=2^{19}$
+\end{itemize}
+\end{frame}
+
+
+%------------------------------------------------------------------
+\begin{frame}{Possible solutions for groups of 6 slices }
+\begin{itemize}
+\setlength\itemsep{1em}
+\item This is obtained by merging two groups of $3$ slices
+\pause
+\item Consider, for example, the first two $3$-slices (first $6$ slices). It  contains the following message bits:
+\begin{itemize}
+\item $a_0[0-5],\;\;a_1[3-8],\;\;a_2[4-9]$
+\item $b_0[1-6],\;\; b_1[10-15],\;\;b_2[12-17]$
+\item $c_0[30-3],\;\;c_1[6-11],\;\;c_2[11-16]$
+\item $e_0[27-0],\;\; e_1[20-25]$
+\end{itemize}
+\pause
+\item During merging, we get to compute the bit values of slice~$3$ of the State~$3$ as well.
+\pause
+\item Since, we already have the correct bit values of slice~$3$ of the State~$3$, and there is dependency between the above message bit variables, we end up having total possible solutions = $2^{2 \cdot 19 - 2 - 7}=2^{29}$.
+
+\item There is dependency between bits $a_0[4,5], a_1[4,5]$ and $a_2[4,5]$.
+\end{itemize}
+\end{frame}
+
+%-----------------------------------------------------------------
+\begin{frame}{Possible solutions for groups of 12 slices}
+\begin{itemize}
+\setlength\itemsep{1em}
+\item Similar to the case of $6$-slice, the solution for a $12$-slice is obtained by merging two $6$-slices
+\pause
+\item Consider, for example, the first $12$ slices. It contain the following message bits:
+\begin{itemize}
+\item $a_0[0-11],\;\;a_1[3-14],\;\;a_2[4-15]$
+\item $b_0[1-12],\;\; b_1[10-21],\;\;b_2[12-23]$
+\item $c_0[30-9],\;\;c_1[6-17],\;\;c_2[11-22]$
+\item $e_0[27-6],\;\; e_1[20-31]$
+\end{itemize}
+\pause
+\item As before, here we again get the values of slice~$6$ of State~$3$ 
+\pause
+\item Similar to $6$-slice, the bit variables are not independent
+
+\item The bit variables $a_0,a_1,a_2[6,7,8,9], b_0,b_1,b_2[12]$, $e_0[27-31]$ and $e_1[27-31]$ are dependent
+\pause
+\item Hence, the total possible solutions = $2^{2 \cdot 29-10-7}=2^{41}$
+\end{itemize}
+\end{frame}
+%-----------------------------------------------------------------
+\begin{frame}{Possible solutions for groups of $24$ slices}
+\begin{itemize}
+\setlength\itemsep{1.5em}
+\item This is obtained by merging two groups of $12$ slices
+\pause
+\item For example, consider the first $24$ slices i.e., 
+\begin{itemize}
+\item $a_0[0-23],\;\;a_1[3-26],\;\;a_2[4-27]$
+\item $b_0[1-24],\;\; b_1[10-1],\;\;b_2[12-3]$
+\item $c_0[30-21],\;\;c_1[6-29],\;\;c_2[11-2]$
+\item $e_0[27-18],\;\; e_1[20-11]$
+\end{itemize}
+\pause
+\item This is very much similar to the $12$~slice solution
+\item In this case we get $34$ dependencies 
+\item The total number of possible solutions is equal to  $2^{2 \cdot 41-34-7}=2^{41}$
+\end{itemize}
+\end{frame}
+
+
+%-----------------------------------------------------------------
+
+%--------------------------------------------------------------------
+\begin{frame}{Final solutions}
+\begin{itemize}
+\setlength\itemsep{2em}
+\item Thus, using above method, we find the possible solutions for the remaining $6$ slices and $2$ slices
+\pause
+\item For finding the solution for the last consicutive $8$ slices, we merge possible solution of its consituent $6$-slice and $2$-slice
+\pause
+\item Final solution space is obtained by merging the solution space of first $24$ slices and the last $8$ slices
+\pause
+\item Space complexity of the attack = $2^{42}$
+\pause
+\item Time complexity of the attack = $2^{44}$
+\end{itemize}
+
+\end{frame}
+
+\section{pre}
+
+\begin{frame}
+
+\end{frame}
+
+\section{Conclusion}
+
+\begin{frame}{Conclusion}
+\begin{itemize}
+\setlength\itemsep{2em}
+
+\item We have presented a preimage attack on the 2 rounds of round reduced \KECCAK$[r:=800-384, c:=384]$.
+\pause
+\item A practical attack with attack complexity of $2^{44}$
+\pause
+\item Future work: Variant(s) of this attack for more rounds of \KECCAK.
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}{Questions?}
+\centering{\huge{Thank You} 
+}
 \end{frame}
 
 \end{document}
