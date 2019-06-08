@@ -158,7 +158,7 @@ mycell/.list={(5,1,gray!50),(5,2,gray!50),(5,3,gray!50),(5,4,gray!50),(5,5,gray!
 \draw[->, very thick] (am4)-- node[above, pos=0.4]{$\iota^{-1},\chi^{-1}$} node[below, pos=0.6]{$ \pi^{-1},\rho^{-1}$} (am3);
 \end{tikzpicture}
 }
-\caption{Diagram for $2$-round preimage attack on \Keccak-$384$ \label{atk}}
+\caption{Diagram for $2$-round preimage attack on \KECCAK{}$[r:=800-384,\; c:=384]$ \label{atk}}
 \end{center}
 \end{figure}
 %-------------------------------------
@@ -216,7 +216,7 @@ We focus on the two intermediate states of the attack i.e., the State~2 and the 
             \draw[->, very thick] (am2)-- node[above]{$\chi, \iota,\theta$} (am3);
             \end{tikzpicture}
         }
-        \caption{Intermediate States in $2$-round preimage attack on \Keccak-$384$ \label{atk_partial}}
+        \caption{Intermediate States in $2$-round preimage attack on \KECCAK{}$[r:=800-384,\; c:=384]$ \label{atk_partial}}
     \end{center}
 \end{figure}
 We can ignore the $\iota$ mapping in the transformation from State~2 to State~3, without the loss of generality. The $\chi$-mapping depends only on the row, so it will not get affected by the bit values of the other slices. It is $\theta$-mapping that depends on the values in the two slices; these two slices are the slice on its original bit position and a slice just before it.
