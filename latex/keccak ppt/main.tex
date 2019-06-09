@@ -434,17 +434,17 @@
 \begin{frame}
 	\frametitle{\SHA-$3$ Hash Function}
 	\begin{itemize}
-		\item The \SHA-$3$ hash function is \Keccak-$p\left[b,\; 12 + 2\cdot l\right]$
+		\item The \SHA-$3$ hash function is \Keccak-$p\left[b,\; 12 + 2\cdot l\right]$.
 		\item $w = b/25$ and $l = \log_{2}\left(w\right)$
 		\pause
-		\item The value of $b = 1600$, so we have $l = 6$
-		\item Thus the $f$ function in \SHA-$3$ is \Keccak-$p\left[1600,\; 24\right]$
+		\item When the value of $b = 1600$, we have $l = 6$.
+		\item Thus, the $f$ function in \SHA-$3$ is \Keccak-$p\left[1600,\; 24\right]$.
 		\pause
-		\item Instances of \Keccak{} are denoted by $\Keccak\left[r,\;c\right]$
-		\item Where $r=1600-c$ and the capacity $c$ is chosen to be twice the size of hash output $d$
+		\item Instances of \Keccak{} are denoted by $\Keccak\left[r,\;c\right]$.
+		\item Where $r=1600\text{-}c$ and the capacity $c$ is chosen to be twice the size of hash output $d$.
 		\pause
-		\item To avoid generic attacks with expected cost below $2^d$
-		\item The hash function with output length $d$ is denoted by 
+		\item We set $c = 2\cdot d$, to avoid generic attacks with expected cost below $2^d$.
+		\item The hash function with output length $d$ is denoted by: 
 		\begin{eqnarray}
 		\mbox{\Keccak-$d$}  &=& \Keccak\left[r:=1600-2\cdot d,\;c:=2\cdot d\right]
 		\end{eqnarray}
@@ -454,9 +454,9 @@
 \begin{frame}
 	\frametitle{pad10*1}
 	\begin{itemize}
-		\item The padding rule followed by \KECCAK{} is \textbf{pad10*1}
-		\item Rule is that the input string is appended with a $1$ bit followed by some number of $0$ bits and followed by $1$ bit
-		\item The asterisk in the padding rule indicates that $0$ bit is either not present or is repeated as required so that the length of output string after padding is a multiple of the block length (i.e. $r$)
+		\item The padding rule followed by \KECCAK{} is \textbf{pad10*1}.
+		\item According to the rule, the input string is appended with a $1$ bit followed by some number of $0$ bits and followed by $1$ bit.
+		\item The asterisk in the padding rule indicates that $0$ bit is either not present or is repeated as required so that the length of output string after padding is a multiple of the block length (i.e. $r$).
 	\end{itemize}
 \end{frame}
 
