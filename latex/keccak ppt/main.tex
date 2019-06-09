@@ -436,10 +436,13 @@
 	\begin{itemize}
 		\item The \SHA-$3$ hash function is \Keccak-$p\left[b,\; 12 + 2\cdot l\right]$
 		\item $w = b/25$ and $l = \log_{2}\left(w\right)$
+		\pause
 		\item The value of $b = 1600$, so we have $l = 6$
 		\item Thus the $f$ function in \SHA-$3$ is \Keccak-$p\left[1600,\; 24\right]$
+		\pause
 		\item Instances of \Keccak{} are denoted by $\Keccak\left[r,\;c\right]$
 		\item Where $r=1600-c$ and the capacity $c$ is chosen to be twice the size of hash output $d$
+		\pause
 		\item To avoid generic attacks with expected cost below $2^d$
 		\item The hash function with output length $d$ is denoted by 
 		\begin{eqnarray}
