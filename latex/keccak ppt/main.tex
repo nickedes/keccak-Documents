@@ -463,10 +463,10 @@
 \begin{frame}
 	\frametitle{\KECCAK[r:=800-384, c:=384]}
 	\begin{itemize}
-		\item $\KECCAK\left[r:=800-384, c:=384\right] = \KECCAK\text{-}p\left[800,24\right]\left[r:=800-384, c:=384\right]$\\
+		\item $\KECCAK\left[r:=800-384, c:=384\right] = \KECCAK\text{-}p\left[800,24\right]\left[r:=800-384, c:=384\right]$.\\
 		\pause
 		\medskip
-		\item $2$-round $\KECCAK\left[r:=800-384, c:=384\right] = \KECCAK\text{-}p\left[800,2\right]\left[r:=800-384, c:=384\right]$
+		\item $2$-round $\KECCAK\left[r:=800-384, c:=384\right] = \KECCAK\text{-}p\left[800,2\right]\left[r:=800-384, c:=384\right]$.
 	\end{itemize}
 \end{frame}
 
@@ -529,9 +529,9 @@
 \begin{itemize}
 	\item \label{ob3}\textbf{Observation 3:} 
 	
-	\item $a_i$ are the output bits of $\chi$ and $a_i^\prime$ are the input bits
+	\item $a_i', \;a_i$ are the input and output bits of $\chi$ respectively.
 	
-	\item Guo \etal observed that when $4$ out of $5$ output bits of $\chi$ are known
+	\item Guo \etal observed that when $4$ out of $5$ output bits of $\chi$ are known,
 	\item Then we can obtain $4$ linear relations in terms of $a_i'$
 	
 	
@@ -541,7 +541,7 @@
 	
 	\item If the values of $a_0,\;a_1,\;a_2,\;a_3$ are known
 	\item Using the Equation~\ref{eq:a0}, we can eliminate the expression $a_4$ from the rest of the equations 
-	\item Hence obtain $4$ linear relations
+	\item Hence obtain $4$ linear equations on the input bits.
 	
 \end{itemize}
 \end{frame}
