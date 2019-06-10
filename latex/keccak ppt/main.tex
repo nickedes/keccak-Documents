@@ -75,7 +75,7 @@
 	%\setbeamertemplate{footline}[page number] % To replace the footer line in all slides with a simple slide count uncomment this line
 	
 %	\setbeamertemplate{navigation symbols}{} % To remove the navigation symbols from the bottom of all slides uncomment this line
-%	\usefonttheme{serif}
+	\usefonttheme{serif}
 }
 \usepackage{graphicx,wrapfig,lipsum}
 \usepackage{graphicx} % Allows including images
@@ -140,7 +140,7 @@
 	\medskip
 	\textit{nickedes@cse.iitk.ac.in} % Your email address
 }
-\date{\today} % Date, can be changed to a custom date
+\date{June 13, 2019} % Date, can be changed to a custom date
 % \documentclass[border=10pt]{standalone}
 
 \begin{document}
@@ -161,9 +161,12 @@
 	\frametitle{Hash Function}
 	\begin{itemize}
 		\item A hash function is of the form $H:\{0,1\}^* \rightarrow \{0,1\}^n $.
+		\medskip
 		\pause
 		\item It is a deterministic	function.
+		\medskip
 		\item It takes as input an arbitrary size string and outputs a fixed size ($n$) string.
+		\medskip
 		\pause
 		\item It is used in cryptographic applications such as Authentication, Digital Signatures and Integrity etc..
 	\end{itemize}
@@ -172,10 +175,10 @@
 \begin{frame}
 	\frametitle{Cryptographic Hash Functions}
 	\begin{itemize}
-		\item Cryptographic applications require Hash functions to satisfy the following conditions:\\
+		\item Cryptographic applications require hash functions to satisfy the following conditions:\\
 		\begin{itemize}\setlength\itemindent{10pt}
 			\pause
-			\item {\bf Efficiency}: Given a message $m$, it is easy to compute its Hash i.e. $H(m)$.\\
+			\item {\bf Efficiency}: Given a message $m$, it is easy to compute its hash i.e. $H(m)$.\\
 			\medskip
 			\pause
 			\item {\bf Preimage Resistance}: Given $H(m)$, it is computationally hard to find the message $m$.\\
@@ -196,7 +199,7 @@
 	\begin{itemize}
 		\item MD$5$, \SHA-$1$, \SHA-$2$ are very popular hash functions and are widely used.
 		\pause
-		\item In year 2005, First practical collision attacks were found on:
+		\item In year 2005, first practical collision attacks were found on:
 		\begin{itemize}
 			\item MD$5$, \SHA-$0$ and \SHA-$1$ by Xiaoyun Wang \etal
 		\end{itemize}
@@ -216,11 +219,14 @@
 \begin{frame}
 	\frametitle{\SHA-$3$ Competition}
 	\begin{itemize}
-		\item With this thought, in the year $2006$ NIST decided to hold a competition for the next secure hash function.
+		\item With this thought, in the year $2006$, NIST decided to hold a competition for the next secure hash function.
+		\medskip
 		\pause
 		\item In $2008$, NIST announced a competition for the Secure Hash Algorithm-$3$ (\SHA-$3$).
+				\medskip
 		\pause
 		\item  In the year $2012$, NIST announced \KECCAK{} as the winner of the competition among the five finalists viz. BLAKE, Gr\o stl, JH, \KECCAK{} and Skein.
+				\medskip
 		\pause
 		\item Since $2015$, \KECCAK{} has been standardized as \SHA-$3$ by NIST.
 		
@@ -231,13 +237,17 @@
 	\frametitle{\KECCAK{}}
 	\begin{itemize}
 		\item \KECCAK{} hash function is based on sponge construction.
+				\medskip
 		\item \SHA-$3$ family of hash functions is based on \Keccak{}.
+				\medskip
 		\item The \SHA-$3$ family provides four hash functions:
 			\begin{itemize}
 				\item \SHA3-$224$, \SHA3-$256$, \SHA3-$384$ and \SHA3-$512$.
 			\end{itemize}
+				\medskip
 		\pause
 		\item \Keccak{}'s excellent resistance towards crypt-analytic attacks is one of the main reasons for its selection by NIST.
+				\medskip
 		\item The algorithm is a good mixture of linear as well as non-linear operations.
 	\end{itemize}
 \end{frame}
@@ -266,8 +276,11 @@
 	\begin{itemize}
 		\frametitle{\KECCAK{}-$p$ Permutation}
 		\item The function $f$ in the sponge construction is denoted by \KECCAK-$f\left[b\right]$.
+				\medskip
 		\item $b$ is the length of input string.
+				\medskip
 		\item Internally, \KECCAK-$f\left[b\right]$ consists of a round function $p$ which is applied $n_r$ number of times.
+				\medskip
 		\item \KECCAK-$f\left[b\right]$ function is specialization of \KECCAK-$p\left[b, n_r\right]$.
 	\end{itemize}
 \end{frame}
@@ -317,10 +330,13 @@
 	\frametitle{Round Function of \KECCAK{}-$p$}
 	\begin{itemize}
 		\item The round function $p$ in \Keccak{} comprises of $5$ step mappings.
+		\medskip
 		\item The \Keccak{} state undergoes some transformations specified by the step mapping.
+		\medskip
 		\item These step mappings are called $\theta,\;\rho,\;\pi,\;\chi\;and\;\iota$.
+				\medskip
 		\item These transformations are applied in sequence.
-		
+				\medskip
 		\item Now, we will describe these $5$ step mappings in detail.
 	\end{itemize}
 \end{frame}
@@ -328,11 +344,11 @@
 \begin{frame}
 	\frametitle{$\theta$ step mapping}
 	\begin{itemize}
-		\item XORs each bit in the state with the parities of two neighboring columns.
+		\item XOR each bit in the state with the parities of two neighboring columns.
 		\pause
 		\item For bit position $\left(x,\; y,\; z\right)$, one column is $\left(\left(x - 1\right) \bmod 5,\; z\right) $ and the other is $\left(\left(x+1\right)\bmod 5,\; \left(z - 1\right) \bmod w\right)$.
 		\pause
-		\item If we have $A$ as the input state to $\theta$ then the output state $B$ is:
+		\item If we have $A$ as the input state to $\theta$, then the output state $B$ is:
 		\begin{align}\nonumber
 		B\left[x,\; y,\; z\right] &= A\left[x,\; y,\; z\right] \bigoplus P\left[(x - 1) \bmod 5 ,\, z \right] \\
 		&\hspace{1.3cm}\bigoplus P\left[ (x + 1) \bmod 5 ,\, (z - 1) \bmod w \right]
@@ -349,15 +365,19 @@
 	\frametitle{$\rho$ step mapping}
 	\begin{itemize}
 		\item $\rho$ ({\bf rho}): This step rotates each lane by a constant value towards the MSB.
+				\medskip
 		\pause
-		\item If we have $A$ as the input state to $\rho$ then the output state $B$ is:
+		\item If we have $A$ as the input state to $\rho$, then the output state $B$ is:
 		\begin{itemize}
 			\item $B\left[x, \,y,\, z\right] = A\left[x, \,y, \,z + \rho\left(x, y\right) \bmod w\; \right]$
 		\end{itemize}
+			\medskip
 		\pause
 		\item $\rho\left(x,\; y\right)$ is the constant for lane $\left(x,\; y\right)$.
+				\medskip
 		\item The constant value $\rho\left(x,\; y\right)$ is specified for each lane in the construction of \Keccak{}.
 		\pause
+				\medskip
 		\item $\rho$ is a linear step mapping.
 	\end{itemize}
 \end{frame}
@@ -366,12 +386,14 @@
 	\frametitle{$\pi$ step mapping}
 	\begin{itemize}
 		\item $\pi$ ({\bf pi}): It permutes the position of lanes.
+				\medskip
 		\item The new position of a lane is determined by a matrix, 
 		\begin{align}
 		\begin{bmatrix} x'\\ y'\end{bmatrix} = 
 		\begin{bmatrix} $0$ & $1$ \\ $2$ &  $3$ \end{bmatrix} \cdot \begin{bmatrix} x\\ y\end{bmatrix},
 		\end{align}
 		where $\left(x',\; y'\right)$ is the position of lane $\left(x,\; y\right)$ after $\pi$ step.
+				\medskip
 		\item $\pi$ is a linear step mapping.
 	\end{itemize}
 \end{frame}
@@ -395,7 +417,7 @@
 	\begin{itemize}
 	    \item $\iota$ ({\bf iota}): This step mapping only modifies the $(0,\;0)$ lane depending on the round number.
 	    
-	    \item If we have $A$ as the input state to $\iota$ then the output state $B$ is:
+	    \item If we have $A$ as the input state to $\iota$, then the output state $B$ is:
 		\begin{align}
 			B[0,\; 0] = A[0,\; 0] \oplus RC_i,
 		\end{align}
@@ -455,7 +477,9 @@
 	\frametitle{pad10*1}
 	\begin{itemize}
 		\item The padding rule followed by \KECCAK{} is \textbf{pad10*1}.
+				\medskip
 		\item According to the rule, the input string is appended with a $1$ bit followed by some number of $0$ bits and followed by $1$ bit.
+				\medskip
 		\item The asterisk in the padding rule indicates that $0$ bit is either not present or is repeated as required so that the length of output string after padding is a multiple of the block length (i.e. $r$).
 	\end{itemize}
 \end{frame}
@@ -465,7 +489,7 @@
 	\begin{itemize}
 		\item $\KECCAK\left[r:=800-384, c:=384\right] = \KECCAK\text{-}p\left[800,24\right]\left[r:=800-384, c:=384\right]$.\\
 		\pause
-		\medskip
+		\bigskip
 		\item $2$-round $\KECCAK\left[r:=800-384, c:=384\right] = \KECCAK\text{-}p\left[800,2\right]\left[r:=800-384, c:=384\right]$.
 	\end{itemize}
 \end{frame}
@@ -473,7 +497,7 @@
 \begin{frame}
 	\frametitle{Observations}
 	\begin{itemize}
-		\item \label{ob1}\textbf{Observation 1:} If we know all the bits of a row then we can invert $\chi$ for that row. It is depicted below.
+		\item \label{ob1}\textbf{Observation 1:} If we know all the bits of a row, then we can invert $\chi$ for that row. It is depicted below.
 		%------------------------------------------------------
 		\begin{figure}
 			\begin{center}
@@ -531,17 +555,15 @@
 	
 	\item $a_i', \;a_i$ are the input and output bits of $\chi$ respectively.
 	
-	\item Guo \etal observed that when $4$ out of $5$ output bits of $\chi$ are known,
-	\item Then we can obtain $4$ linear relations in terms of $a_i'$
+	\item Guo \etal observed that when $4$ out of $5$ output bits of $\chi$ are known, then we can obtain $4$ linear relations in terms of $a_i'$.
 	
 	
 	\begin{align}\label{eq:a0}
 	a_i^\prime = a_i \oplus \left( a_{i+1} \oplus 1\right) \cdot \left( a_{i+2} \oplus \left( a_{i+3} \oplus 1 \right) \cdot a_{i+4}\right)
 	\end{align}
 	
-	\item If the values of $a_0,\;a_1,\;a_2,\;a_3$ are known
-	\item Using the Equation~\ref{eq:a0}, we can eliminate the expression $a_4$ from the rest of the equations 
-	\item Hence obtain $4$ linear equations on the input bits.
+	\item If the values of $a_0,\;a_1,\;a_2,\;a_3$ are known using the Equation~\ref{eq:a0}, we can eliminate the expression $a_4$ from the rest of the equations.
+	\item Hence, we obtain $4$ linear equations on the input bits.
 	
 \end{itemize}
 \end{frame}
@@ -549,16 +571,20 @@
 \begin{frame}
 	\frametitle{Notations}
 	\begin{itemize}
-		\item State is represented by $25$ lanes
-		\item Each lane is represented by a variable which is a $32$-bit array
-		\item A variable with a number in round bracket $``\left( \cdot \right)"$ represents the shift of the bits in array towards MSB
+		\item The \KECCAK{} state is represented by $25$ lanes.
+				\medskip
+		\item Each lane is represented by a variable which is a $32$-bit array.
+				\medskip
+		\item A variable with a number in round bracket $``\left( \cdot \right)"$ represents the shift of the bits in array towards MSB.
+				\medskip
 		\item A variable with a number in square bracket $``\left[ \cdot \right]"$ represents the bit value of the variable at that index. 
-		\item If there are multiple numbers in the square bracket then it represents the corresponding bit values.
+				\medskip
+		\item If there are multiple numbers in the square bracket, then it represents the corresponding bit values.
 	\end{itemize}
 \end{frame}
 
 \begin{frame}
-	\frametitle{2 rounds of \KECCAK[r:=800-384,c:=384]}
+	\frametitle{2 rounds of \KECCAK[r:=800-384, c:=384]}
 	\begin{figure}
 		\centering
 		\includegraphics[scale=0.5]{keccak2Rstate.pdf}
@@ -567,12 +593,12 @@
 	\end{figure}
 	% first one is initial state, second is intermediate state and last is final state
 	\begin{itemize}
-		\item We will discuss a preimage attack on above structure
+		\item We will discuss a preimage attack on above structure.
 	\end{itemize}
 \end{frame}
 
 \begin{frame}
-	\frametitle{Final State of 2-round \KECCAK[r:=800-384,c:=384]}
+	\frametitle{Final State of 2-round \KECCAK[r:=800-384, c:=384]}
 	\begin{itemize}
 		\item $c = 384 \rightarrow d = 192 \rightarrow$ hash of $6$ lanes
 	\end{itemize}
@@ -608,7 +634,7 @@
 \end{frame}
 
 \begin{frame}
-	\frametitle{Initial State of 2-round \KECCAK[r:=800-384,c:=384]}
+	\frametitle{Initial State of 2-round \KECCAK[r:=800-384, c:=384]}
 	\begin{itemize}
 		\item $r = 800 - 384 \rightarrow r = 416 \rightarrow$ Message block of $13$ lanes
 	\end{itemize}
@@ -633,13 +659,20 @@
 \begin{frame}
 	\frametitle{Attack}
 	\begin{itemize}
-		\item Our aim is to find the values of $a_0,\; a_1,\; a_2$, $b_0,\; b_1,\; b_2$, $c_0,\; c_1,\; c_2$, $d_0,\; d_1$ and $e_0,\; e_1$ variables in the initial state
-		\item Such that they lead to a final state having first six lanes as $h_0,\;h_1,\;h_2,\;h_3,\;h_4$ and $h_5$
-		\item We follow the basic idea of the attack given by Naya \etal in $2011$
+		\item Our aim is to find the values of $a_0,\; a_1,\; a_2$, $b_0,\; b_1,\; b_2$, $c_0,\; c_1,\; c_2$, $d_0,\; d_1$ and $e_0,\; e_1$ variables in the initial state.
+		\medskip
+		\pause
+		\item Such that, they lead to a final state having first six lanes as $h_0,\;h_1,\;h_2,\;h_3,\;h_4$ and $h_5$.
+		\medskip
+		\pause
+		\item We follow the basic idea of the attack given by Naya \etal in $2011$.
+		\medskip
+		\pause
 		\item $2$ rounds of \KECCAK{}$\left[r:=800-384,\;c:=384\right]$\\
 			\begin{itemize}
-				\item Best-known attack, has a time complexity of $O(2^{64})$
-				\item Based on the idea of Linear structures given by Jian Guo \etal in $2016$
+				\item Best-known attack, has a time complexity of $O(2^{64})$.
+				\medskip
+				\item It is based on the idea of linear structures given by Jian Guo \etal in $2016$.
 			\end{itemize} 
 	\end{itemize}
 \end{frame}
@@ -647,15 +680,60 @@
 \begin{frame}
 	\frametitle{First round $\theta$ step mapping}
 	\begin{itemize}
-		\item $\theta$ step mapping diffuses message bits to full state
-		\item Aim : Control the diffusion
-		\item By adding constraints on message bits
-		\item Conditions to make column parity zero:
+		\item $\theta$ step mapping diffuses message bits to full state.
+		\pause
+				\medskip
+		\item In this step, our aim is to control the diffusion by $\theta$.
+				\medskip
+		\item This can be done by adding constraints on message bits.
+		\pause
+				\medskip
+		\item We add the following conditions to make column parity zero:
 		\begin{align}\nonumber
 		a_2 &= a_0 \oplus a_1,\quad b_2 = b_0 \oplus b_1, \quad c_2 = c_0 \oplus c_1\\ \label{cond_state1}
-		d_1 & = 0,\quad d_0 = 0\;\;\text{ and }\;\; e_1 = e_0
+		d_1 & = 0,\quad d_0 = 0\;\;\text{ and }\;\; e_1 = e_0.
 		\end{align}
 	\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{Effect of $\theta$}
+\begin{figure}[!t]
+	\begin{center}
+		\resizebox{\textwidth}{!}{%
+			\begin{tikzpicture}[ampersand replacement=\&, scale=0.5]
+			\matrix (am1) [matrix of nodes,nodes in empty cells,
+			nodes={inner sep=5pt,text width=1.0cm,align=center,minimum height=1.0cm, draw,text height=1em,text depth=.2em},
+			myrow/.list={(1,white),(2,white),(4,gray!30),(5,gray!30)},
+			mycell/.list={(3,1,gray!30),(3,2,gray!30),(3,3,gray!30),(3,4,white),(3,5,white)}]    
+			{
+				$0$ \& $0$\& $0$ \& $0$ \& $0$\\
+				$0$ \& $0$\& $0$ \& $0$ \& $0$\\
+				$a_1$ \& $b_1$\& $c_2$ \& $0$ \& $0$\\
+				$a_2$ \& $b_2$\& $c_1$ \& $d_1$ \& $e_1$\\
+				$a_0$ \& $b_0$\& $c_0$ \& $d_0$ \& $e_0$\\
+			};
+			\matrix (am2) [right=1.5 cm of am1,matrix of nodes,nodes in empty cells,
+			nodes={inner sep=5pt,text width=1.0cm,align=center,minimum height=1.0cm, draw,text height=1em,text depth=.2em},
+			myrow/.list={(1,white),(2,white),(4,gray!30),(5,gray!30)},
+			mycell/.list={(3,1,gray!30),(3,2,gray!30),(3,3,gray!30),(3,4,white),(3,5,white)}
+			]    
+			{
+				$0$ \& $0$\& $0$ \& $0$ \& $0$\\
+				$0$ \& $0$\& $0$ \& $0$ \& $0$\\
+				$a_1$ \& $b_1$\& $c_2$ \& $0$ \& $0$\\
+				$a_2$ \& $b_2$\& $c_1$ \& $d_1$ \& $e_1$\\
+				$a_0$ \& $b_0$\& $c_0$ \& $d_0$ \& $e_0$\\
+			};
+			\node[ below=0.2cm of am1-5-3]{\bf State~1};
+			\node[ below=0.2cm of am2-5-4]{};
+			\draw[->, very thick] (am1)-- node[above]{$\theta$} (am2);
+			
+			\end{tikzpicture}
+		}
+		\caption{Effect of $\theta$ on initial state}
+	\end{center}
+\end{figure}
 \end{frame}
 
 \begin{frame}
@@ -890,7 +968,7 @@
 		\draw[->, very thick] (am2)-- node[above]{$\chi, \iota,\theta$} (am3);
 		\end{tikzpicture}
 	}
-	\caption{Intermediate States in $2$-round preimage attack on \Keccak-$384$ \label{atk_partial}}
+	\caption{Intermediate States in $2$-round preimage attack on \KECCAK{}$[r:=800-384,\; c:=384]$ \label{atk_partial}}
 \end{center}
 \end{figure}
 \end{frame}
@@ -900,16 +978,22 @@
 
 \begin{frame}{Description of Attack}
 \begin{itemize}
-\setlength\itemsep{2em}
+
 \item Fix $d_0,d_1$ as constants (with condition that $d_0=d_1$).
+\medskip
 \pause
-\item In state $2$, we have $11\cdot 32$ free variables.
+\item In state $2$, we initially have $13\cdot 32$ variables.
 \pause
-\item And we need to satisfy $7\cdot 32$ Boolean equations and $4\cdot 32$ column parity conditions.
+\medskip
+\item In the state $3$, there are $7$ lanes whose values are fixed, this will impose a total of $7\cdot 32$ conditions.
+\medskip
+\item We also set $6$ conditions on the initial state (Equation~\ref{cond_state1}). This will further add $6 \cdot 32$ conditions.
 \pause
+\medskip
+\item The number of variables and the number of conditions are equal. 
+\pause
+\medskip
 \item So, we expect a solution.
-\pause
-\item We do find the possible solution subspace. 
 \end{itemize}
 
 \end{frame}
@@ -917,34 +1001,91 @@
 %-----------------------------------------------------------
 \begin{frame}{Description of Attack}
 \begin{itemize}
-\setlength\itemsep{2em}
-\item In state $3$, the values of $i^{\rm\;th}$-slice  depend on the $(i-1)^{\rm th}$ and $i^{\rm\;th}$-slice of state $2$.
+\item In state $3$, the values of $i^{\rm\;th}$-slice depend on the $(i-1)^{\rm th}$ and $i^{\rm\;th}$-slice of state $2$.
+\medskip
 \pause
-\item We first find the set of input message bits which satisfy the small collection of consecutive slices of state $3$.
+\item First, we find the set of input message bits which satisfy the small collection of consecutive slices of state $3$.
+\medskip
 \pause
-\item  We then merge the solutions to find message bits which satisfy large collection of consecutive slices.
-\end{itemize}
+\item Then, we merge the solutions to find message bits which satisfy large collection of consecutive slices.
 
+\end{itemize}
 \end{frame}
+
+\begin{frame}
+	\frametitle{Attack Layout}
+	\begin{itemize}
+		\item We need to find values of variables in initial state for all the $32$ slices.
+		\medskip
+		\pause
+		\item We solve for first $24$ slices and then solve for the remaining $8$ slices.
+		\medskip
+		\pause
+		\item Solving for first $24$ slices:
+		\medskip
+			\begin{itemize}
+				\item Find solutions for $8$ groups of $3$ slices.
+				\medskip
+				\pause
+				\item Merge consecutive $3$ slices to get solutions for $6$ slices i.e. $4$ groups of $6$ slices.
+				\medskip
+				\pause
+				\item Merge consecutive $6$ slices to get solutions for $12$ slices i.e. $2$ groups of $12$ slices.
+				\medskip
+				\pause
+				\item Merge the two groups of $12$ slices to get solutions for $24$ slices.
+			\end{itemize}
+	\end{itemize}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Attack Layout}
+	\begin{itemize}
+		\item Solving for remaining $8$ slices:
+		\medskip
+		\pause
+		\begin{itemize}
+			\item Find solutions for the first $6$ slices.
+			\medskip
+			\pause
+			\item Find solutions for the remaining $2$ slices.
+			\medskip
+			\pause
+			\item Merge the above two groups to obtain solutions for the $8$ slices.			
+			\medskip
+			\pause
+		\end{itemize}
+		\item The last step of the attack is to merge solutions of the $24$ slices and $8$ slices.
+		\medskip
+		\pause
+		\item Finally, we obtain a solution for all the $32$ slices.
+	\end{itemize}
+\end{frame}
+
 %---------------------------------------------------------------
 \begin{frame}{Possible solutions for groups of $3$ slices}
 \begin{itemize}
-\setlength\itemsep{1em}    
+
 \item Consider a group of $3$ slices (for example take the first $3$ slices).
+\medskip
 \pause
-\item It contains the following message bits 
+\item It contains the following message bits:
+\medskip
 \begin{itemize}
 \item $a_0[0,1,2],\;\;a_1[3,4,5],\;\;a_2[4,5,6]$
 \item $b_0[1,2,3],\;\; b_1[10,11,12],\;\;b_2[12,13,14]$
 \item $c_0[30,31,0],\;\;c_1[6,7,8],\;\;c_2[11,12,13]$
 \item $e_0[27,28,29],\;\; e_1[20,21,22]$
 \end{itemize}
+\medskip
 \pause
-\item Once we fix these message bits in the State~$2$, the slice~$1$ and slice~$2$ of State~$3$ get fixed
+\item Once we fix these message bits in the state~$2$, the slice~$1$ and slice~$2$ of state~$3$ get fixed.
+\medskip
 \pause
-\item Furthermore there is no dependency between these message bits
+\item Furthermore, there is no dependency between these message bits.
+\medskip
 \pause
-\item Thus the total possible solutions for this $3$-slice  $=2^{33-2\cdot 7}=2^{19}$
+\item Thus, the total number of possible solutions for this $3$-slice are $2^{33-2\cdot 7}=2^{19}$.
 \end{itemize}
 \end{frame}
 
@@ -952,10 +1093,10 @@
 %------------------------------------------------------------------
 \begin{frame}{Possible solutions for groups of 6 slices }
 \begin{itemize}
-\setlength\itemsep{1em}
-\item This is obtained by merging two groups of $3$ slices
+\item This is obtained by merging two groups of $3$ slices.
 \pause
-\item Consider, for example, the first two $3$-slices (first $6$ slices). It  contains the following message bits:
+\item Consider, for example, the first two $3$-slices (first $6$ slices).
+\item  It contains the following message bits:
 \begin{itemize}
 \item $a_0[0-5],\;\;a_1[3-8],\;\;a_2[4-9]$
 \item $b_0[1-6],\;\; b_1[10-15],\;\;b_2[12-17]$
@@ -963,10 +1104,11 @@
 \item $e_0[27-0],\;\; e_1[20-25]$
 \end{itemize}
 \pause
-\item During merging, we get to compute the bit values of slice~$3$ of the State~$3$ as well.
+\item During merging, we get to compute the bit values of slice~$3$ of the state~$3$ as well.
 \pause
-\item Since, we already have the correct bit values of slice~$3$ of the State~$3$, and there is dependency between the above message bit variables, we end up having total possible solutions = $2^{2 \cdot 19 - 2 - 7}=2^{29}$.
-
+\item We already have the correct bit values of slice~$3$ of the state~$3$, and there is dependency between the above message bit variables.
+\pause
+\item The total number of possible solutions are $2^{2 \cdot 19 - 2 - 7}=2^{29}$.
 \item There is dependency between bits $a_0[4,5], a_1[4,5]$ and $a_2[4,5]$.
 \end{itemize}
 \end{frame}
@@ -974,10 +1116,9 @@
 %-----------------------------------------------------------------
 \begin{frame}{Possible solutions for groups of 12 slices}
 \begin{itemize}
-\setlength\itemsep{1em}
-\item Similar to the case of $6$-slice, the solution for a $12$-slice is obtained by merging two $6$-slices
+\item Similar to the case of $6$-slice, the solution for a $12$-slice is obtained by merging two $6$-slices.
 \pause
-\item Consider, for example, the first $12$ slices. It contain the following message bits:
+\item Consider, for example, the first $12$ slices. It contains the following message bits:
 \begin{itemize}
 \item $a_0[0-11],\;\;a_1[3-14],\;\;a_2[4-15]$
 \item $b_0[1-12],\;\; b_1[10-21],\;\;b_2[12-23]$
@@ -985,32 +1126,36 @@
 \item $e_0[27-6],\;\; e_1[20-31]$
 \end{itemize}
 \pause
-\item As before, here we again get the values of slice~$6$ of State~$3$ 
+\item As before, here we again get the values of slice~$6$ of state~$3$. 
 \pause
-\item Similar to $6$-slice, the bit variables are not independent
+\item Similar to $6$-slice, the bit variables are dependent.
 
-\item The bit variables $a_0,a_1,a_2[6,7,8,9], b_0,b_1,b_2[12]$, $e_0[27-31]$ and $e_1[27-31]$ are dependent
+\item The bit variables $a_0,a_1,a_2[6-9], b_0,b_1,b_2[12]$, and $e_0,e_1[27-31]$ are dependent.
 \pause
-\item Hence, the total possible solutions = $2^{2 \cdot 29-10-7}=2^{41}$
+\item Hence, the total number of possible solutions are $2^{2 \cdot 29-10-7}=2^{41}$.
 \end{itemize}
 \end{frame}
 %-----------------------------------------------------------------
 \begin{frame}{Possible solutions for groups of $24$ slices}
 \begin{itemize}
-\setlength\itemsep{1.5em}
-\item This is obtained by merging two groups of $12$ slices
+\item This is obtained by merging two groups of $12$ slices.
+\medskip
 \pause
 \item For example, consider the first $24$ slices i.e., 
+\medskip
 \begin{itemize}
 \item $a_0[0-23],\;\;a_1[3-26],\;\;a_2[4-27]$
 \item $b_0[1-24],\;\; b_1[10-1],\;\;b_2[12-3]$
 \item $c_0[30-21],\;\;c_1[6-29],\;\;c_2[11-2]$
 \item $e_0[27-18],\;\; e_1[20-11]$
 \end{itemize}
+\medskip
 \pause
-\item This is very much similar to the $12$~slice solution
-\item In this case we get $34$ dependencies 
-\item The total number of possible solutions is equal to  $2^{2 \cdot 41-34-7}=2^{41}$
+\item This is very much similar to the $12$~slice solution.
+\medskip
+\item In this case, we get $34$ dependencies.
+\medskip
+\item The total number of possible solutions are $2^{2 \cdot 41-34-7}=2^{41}$.
 \end{itemize}
 \end{frame}
 
@@ -1020,35 +1165,46 @@
 %--------------------------------------------------------------------
 \begin{frame}{Final solutions}
 \begin{itemize}
-\setlength\itemsep{2em}
-\item Thus, using above method, we find the possible solutions for the remaining $6$ slices and $2$ slices
+\item Using the same method, we find the possible solutions for the remaining $6$ slices and $2$ slices.
+\medskip
 \pause
-\item For finding the solution for the last consicutive $8$ slices, we merge possible solution of its consituent $6$-slice and $2$-slice
+\item For finding the solution for the last consecutive $8$ slices, we merge possible solution of its constituent $6$-slice and $2$-slice.
+\medskip
 \pause
-\item Final solution space is obtained by merging the solution space of first $24$ slices and the last $8$ slices
+\item Final solution space is obtained by merging the solution space of first $24$ slices and the last $8$ slices.
+\medskip
 \pause
-\item Space complexity of the attack = $2^{42}$
+\item In merging, we can compute the $\theta$ mapping of
+the remaining two slices, in turn, we get the additional restriction of $2\cdot 7$ bits.
+\medskip
 \pause
-\item Time complexity of the attack = $2^{44}$
+\item In this case, we get $61$ dependencies.
+\medskip
+\item Total number of solutions are $2^{41 + 34 - 61 - 2\cdot 7} = 2^0 = 1$.
 \end{itemize}
 
 \end{frame}
 
-\section{pre}
-
 \begin{frame}
-
+	\frametitle{Attack Complexity}
+	\begin{itemize}
+		\item Space complexity of the attack = $2^{42}$
+		\bigskip
+		\item Time complexity of the attack = $2^{44}$
+		\bigskip
+		\item Also, we can find second preimages by setting $d_0$, $d_1$ to a constant such that it satisfies $d_0\left[i\right]=d_1\left[i\right]$ and then repeating the attack for this setting.
+	\end{itemize}
 \end{frame}
 
 \section{Conclusion}
 
 \begin{frame}{Conclusion}
 \begin{itemize}
-\setlength\itemsep{2em}
-
 \item We have presented a preimage attack on the 2 rounds of round reduced \KECCAK$[r:=800-384, c:=384]$.
+\medskip
 \pause
-\item A practical attack with attack complexity of $2^{44}$
+\item This is a practical attack with attack complexity of $2^{44}$.
+\medskip
 \pause
 \item Future work: Variant(s) of this attack for more rounds of \KECCAK.
 \end{itemize}
