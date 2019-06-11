@@ -144,7 +144,7 @@
 % \documentclass[border=10pt]{standalone}
 
 \begin{document}
-	\setbeamertemplate{caption}{\raggedright\insertcaption\par}
+%	\setbeamertemplate{caption}{\raggedright\insertcaption\par}
 	
 	\begin{frame}
 	\titlepage % Print the title page as the first slide
@@ -160,15 +160,12 @@
 \begin{frame}
 	\frametitle{Hash Function}
 	\begin{itemize}
-		\item A hash function is of the form $H:\{0,1\}^* \rightarrow \{0,1\}^n $.
+		\item A hash function is a deterministic function of the form $H:\{0,1\}^* \rightarrow \{0,1\}^n $.
+		\medskip
+		\item It takes as input an arbitrary string (of $0$'s and $1$'s) and outputs a fixed size (say $n$) string.
 		\medskip
 		\pause
-		\item It is a deterministic	function.
-		\medskip
-		\item It takes as input an arbitrary size string and outputs a fixed size ($n$) string.
-		\medskip
-		\pause
-		\item It is used in cryptographic applications such as Authentication, Digital Signatures and Integrity etc..
+		\item It is used in many cryptographic applications e.g., Authentication, Digital Signatures and Integrity etc..
 	\end{itemize}
 \end{frame}
 
@@ -180,17 +177,17 @@
 			\pause
 			\item {\bf Efficiency}: Given a message $m$, it is easy to compute its hash i.e. $H(m)$.\\
 			\medskip
-			\pause
+%			\pause
 			\item {\bf Preimage Resistance}: Given $H(m)$, it is computationally hard to find the message $m$.\\
 			\medskip
-			\pause
+%			\pause
 			\item {\bf Second-preimage Resistance}: Given a message $m$, it is computationally hard to find another message $m^\prime$ such that $H(m)=H(m^\prime)$.\\
 			\medskip
-			\pause
+%			\pause
 			\item {\bf Collision Resistance}: It is computationally hard to find two messages $m$ and $m^\prime$ such that $H(m)=H(m^\prime)$.\\
 		\end{itemize}
 		\pause
-		\item Hash functions having the above properties are referred to as cryptographic hash functions.
+		\item Hash functions having the above properties are referred to as cryptographic/secure hash functions.
 	\end{itemize}
 \end{frame}
 
@@ -198,19 +195,19 @@
 	\frametitle{Need For \SHA-$3$}
 	\begin{itemize}
 		\item MD$5$, \SHA-$1$, \SHA-$2$ are very popular hash functions and are widely used.
-		\pause
+%		\pause
 		\item In year 2005, first practical collision attacks were found on:
 		\begin{itemize}
-			\item MD$5$, \SHA-$0$ and \SHA-$1$ by Xiaoyun Wang \etal
+			\item MD$5$, \SHA-$0$ and \SHA-$1$ by Xiaoyun Wang \etal.
 		\end{itemize}
 		
 %		\item In the year $2005$, the first practical collision attack on MD$5$ was published by Xiaoyun Wang \etal
 %		\item in the same year, a practical collision attack on \SHA-$0$ and \SHA-$1$ was published by Xiaoyun Wang \etal
-		\pause
+%		\pause
 		\item National Institute of Standards and Technology (NIST) was worried about the security of hash functions.
 		
 		\item Though by that time \SHA-$2$ family of hash functions was standardized.
-		\pause
+%		\pause
 		\item \SHA-$2$ was also based on Merkle-Damgard construction like \SHA-$0$, \SHA-$1$.
 		\item There was a possibility that it could also be attacked in a similar fashion.
 	\end{itemize}
@@ -219,15 +216,15 @@
 \begin{frame}
 	\frametitle{\SHA-$3$ Competition}
 	\begin{itemize}
-		\item With this thought, in the year $2006$, NIST decided to hold a competition for the next secure hash function.
+		\item In the year $2006$, NIST decided to hold a competition for the next secure hash function.
 		\medskip
-		\pause
+%		\pause
 		\item In $2008$, NIST announced a competition for the Secure Hash Algorithm-$3$ (\SHA-$3$).
 				\medskip
-		\pause
+%		\pause
 		\item  In the year $2012$, NIST announced \KECCAK{} as the winner of the competition among the five finalists viz. BLAKE, Gr\o stl, JH, \KECCAK{} and Skein.
-				\medskip
-		\pause
+%				\medskip
+%		\pause
 		\item Since $2015$, \KECCAK{} has been standardized as \SHA-$3$ by NIST.
 		
 	\end{itemize}
@@ -260,7 +257,7 @@
 				\item Permutation function $f$,
 				\item Parameter ``rate'' $r$, and
 				\item Padding rule pad.
-				\pause
+%				\pause
 				\item This construction produces a sponge function that takes as input a bit string $M$ and generates a string of length $l$.
 			\end{itemize}
 	\end{itemize}
@@ -330,14 +327,14 @@
 	\frametitle{Round Function of \KECCAK{}-$p$}
 	\begin{itemize}
 		\item The round function $p$ in \Keccak{} comprises of $5$ step mappings.
-		\medskip
-		\item The \Keccak{} state undergoes some transformations specified by the step mapping.
+%		\medskip
+%		\item The \Keccak{} state undergoes some transformations specified by the step mapping.
 		\medskip
 		\item These step mappings are called $\theta,\;\rho,\;\pi,\;\chi\;and\;\iota$.
 				\medskip
 		\item These transformations are applied in sequence.
 				\medskip
-		\item Now, we will describe these $5$ step mappings in detail.
+%		\item Now, we will describe these $5$ step mappings in detail.
 	\end{itemize}
 \end{frame}
 
@@ -346,15 +343,19 @@
 	\begin{itemize}
 		\item XOR each bit in the state with the parities of two neighboring columns.
 		\pause
-		\item For bit position $\left(x,\; y,\; z\right)$, one column is $\left(\left(x - 1\right) \bmod 5,\; z\right) $ and the other is $\left(\left(x+1\right)\bmod 5,\; \left(z - 1\right) \bmod w\right)$.
-		\pause
+%		\item For bit position $\left(x,\; y,\; z\right)$, one column is $\left(\left(x - 1\right) \bmod 5,\; z\right) $ and the other is $\left(\left(x+1\right)\bmod 5,\; \left(z - 1\right) \bmod w\right)$.
+%		\pause
 		\item If we have $A$ as the input state to $\theta$, then the output state $B$ is:
+		
+		\vskip5pt
+		\tikz\node[draw, rounded corners, fill=yellow!40]{\parbox{0.95\linewidth}{
 		\begin{align}\nonumber
 		B\left[x,\; y,\; z\right] &= A\left[x,\; y,\; z\right] \bigoplus P\left[(x - 1) \bmod 5 ,\, z \right] \\
 		&\hspace{1.3cm}\bigoplus P\left[ (x + 1) \bmod 5 ,\, (z - 1) \bmod w \right]
 		\end{align}
-		\pause
-		\item $P\left[x,\; z\right]$ represents the parity of the column $(x,\; z)$.
+		}};	\vskip5pt
+	
+		where $P\left[x,\; z\right]$ represents the parity of the column $(x,\; z)$ i.e.,
 		\[
 		P\left[x,\; z\right]  = \bigoplus_{y = 0}^{4} A\left[x,\; y,\; z\right]
 		\]
@@ -367,16 +368,19 @@
 		\item $\rho$ ({\bf rho}): This step rotates each lane by a constant value towards the MSB.
 				\medskip
 		\pause
-		\item If we have $A$ as the input state to $\rho$, then the output state $B$ is:
-		\begin{itemize}
-			\item $B\left[x, \,y,\, z\right] = A\left[x, \,y, \,z + \rho\left(x, y\right) \bmod w\; \right]$
-		\end{itemize}
-			\medskip
-		\pause
-		\item $\rho\left(x,\; y\right)$ is the constant for lane $\left(x,\; y\right)$.
-				\medskip
-		\item The constant value $\rho\left(x,\; y\right)$ is specified for each lane in the construction of \Keccak{}.
-		\pause
+		\item If we have $A$ as the input state to $\rho$, then the output state $B$ is given by:\vskip5pt
+		\begin{center}
+		\tikz\node[draw, rounded corners, fill=yellow!40]{\parbox{0.65\linewidth}{
+		\begin{equation*}
+			B\left[x, \,y,\, z\right] = A\left[x, \,y, \,z + \rho\left(x, y\right) \bmod w\; \right],
+		\end{equation*}
+		}};
+		\end{center}
+		\vskip5pt
+		where $\rho\left(x,\; y\right)$ is the constant for a given lane $\left(x,\; y\right)$.
+%				\medskip
+%		\item The constant value $\rho\left(x,\; y\right)$ is specified for each lane in the construction of \Keccak{}.
+%		\pause
 				\medskip
 		\item $\rho$ is a linear step mapping.
 	\end{itemize}
@@ -388,13 +392,17 @@
 		\item $\pi$ ({\bf pi}): It permutes the position of lanes.
 				\medskip
 		\item The new position of a lane is determined by a matrix, 
+	\begin{center}
+		\tikz\node[draw, rounded corners, fill=yellow!40]{\parbox{0.55\linewidth}{
 		\begin{align}
 		\begin{bmatrix} x'\\ y'\end{bmatrix} = 
 		\begin{bmatrix} $0$ & $1$ \\ $2$ &  $3$ \end{bmatrix} \cdot \begin{bmatrix} x\\ y\end{bmatrix},
 		\end{align}
+	}};
+	\end{center}
 		where $\left(x',\; y'\right)$ is the position of lane $\left(x,\; y\right)$ after $\pi$ step.
 				\medskip
-		\item $\pi$ is a linear step mapping.
+		\item $\pi$ is also a linear step mapping.
 	\end{itemize}
 \end{frame}
 
@@ -402,12 +410,17 @@
 	\frametitle{$\chi$ step mapping}
 	\begin{itemize}
 		\item $\chi$ ({\bf chi}): Each bit in the original state is XOR-ed with a non-linear function of next two bits in the same row.
-		
+		\vskip5pt
+		\begin{center}
+			\tikz\node[draw, rounded corners, fill=yellow!40]{\parbox{0.97\linewidth}{
 		\begin{align}\nonumber
-		B[x,\; y,\; z] &=  A[x,\; y,\; z] \;\oplus \\
+		&B[x,\; y,\; z] =  A[x,\; y,\; z] \;\oplus \\
 		& \hspace{0.5cm} \left( \left(A[ (x + 1 )\bmod 5,\; y,\; z] \oplus 1\right) \cdot  A[ (x + 2) \bmod 5,\; y,\; z] ) \right).
 		\end{align}
-		\pause
+		}};
+		\end{center}
+		\vskip5pt
+%		\pause
 		\item $\chi$ is the only non-linear operation among the $5$ step mappings in \KECCAK{}.
 	\end{itemize}
 \end{frame}
@@ -422,9 +435,9 @@
 			B[0,\; 0] = A[0,\; 0] \oplus RC_i,
 		\end{align}
 		where $RC_i$ is round constant that depends on the round number.
-		\pause
+%		\pause
 		\item The remaining $24$ lanes remain unaffected.	
-		\pause
+%		\pause
 		\item All the rounds are identical but the symmetry is destroyed by this step due to the addition of a round constant to a particular lane.
 	\end{itemize}
 \end{frame}
