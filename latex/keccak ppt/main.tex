@@ -476,12 +476,12 @@
 		\item Thus, the $f$ function in \SHA-$3$ is \Keccak-$p\left[1600,\; 24\right]$.
 		\pause
 		\item Instances of \Keccak{} are denoted by $\Keccak\left[r,\;c\right]$.
-		\item Where $r=1600\text{-}c$ and the capacity $c$ is chosen to be twice the size of hash output $d$.
+		\item Where $r=b-c$ and the capacity $c$ is chosen to be twice the size of hash output $d$.
 		\pause
 		\item We set $c = 2\cdot d$, to avoid generic attacks with expected cost below $2^d$.
 		\item The hash function with output length $d$ is denoted by: 
 		\begin{eqnarray}
-		\mbox{\Keccak-$d$}  &=& \Keccak\left[r:=1600-2\cdot d,\;c:=2\cdot d\right]
+		\mbox{\Keccak-$d$}  &=& \Keccak\left[r:=b-2\cdot d,\;c:=2\cdot d\right]
 		\end{eqnarray}
 	\end{itemize}
 \end{frame}
@@ -992,10 +992,7 @@
 \begin{frame}{Description of Attack}
 \begin{itemize}
 
-\item Fix $d_0,d_1$ as constants (with condition that $d_0=d_1$).
-\medskip
-\pause
-\item In state $2$, we initially have $13\cdot 32$ variables.
+\item In state $1$, we initially have $13\cdot 32$ variables.
 \pause
 \medskip
 \item In the state $3$, there are $7$ lanes whose values are fixed, this will impose a total of $7\cdot 32$ conditions.
